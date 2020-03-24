@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np 
 from enum import Enum
 class TipoSeccion(Enum):
 	RECTANGULAR = 1
