@@ -20,8 +20,7 @@ class Tipo(Enum):
 class Seccion:
     "Clase que representa la sección de los elementos a utilizar, asi como los materiales que la componen"
     def __init__(this, nombre, tipo, propiedades, material):
-        """
-        Método de inicialización de las secciones
+        """Método de inicialización de las secciones
         :param nombre: Nombre definido para la sección a crear
         :param tipo: Geometría de la sección transversal (Rectangular, Circular o General)
         :param propiedades: Dimensiones en metros relacionadas al tipo de geometría (Rectangular: base y altura, Circular: diámetro, General: área, inercia y área de cortante)
@@ -52,8 +51,7 @@ class Seccion:
 class Resorte:
     "Clase que simula la rigidez de un resorte en un nodo de la estructura"
     def __init__(this, nodo, rigidez, completo):
-        """
-    Método de i0nicialización de resortes
+        """Método de i0nicialización de resortes
         :param nodo: Nodo sobre el cual se quiere asignar el resorte
         :param rigidez: Vector con las magnitudes de la rigideces asignadas al resorte en kiloPascales (Kx, Ky, Km)
         :param completo: TODO i dont know what is this Mama
