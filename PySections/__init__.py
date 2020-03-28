@@ -1140,8 +1140,7 @@ TOdo no aun
                                        -margen + wiw - (i.y * mult + 50), fill="red", width=2)
                     canvas.create_text(margen + i.x * mult, -margen + wiw - (i.y * mult + 60),
                                        text=format(np.round(this.Rn[j - this.libres.size][0], 3)), fill="red")
-                    canvas.create_line(margen + i.x * mult, -margen + wiw - (i.y * mult + 50), margen + i.x
-mult - 10,
+                    canvas.create_line(margen + i.x * mult, -margen + wiw - (i.y * mult + 50), margen + i.x*mult - 10,
                                        -margen + wiw - (i.y * mult + 40), fill="red", width=2)
                     canvas.create_line(margen + i.x * mult, -margen + wiw - (i.y * mult + 50), margen + i.x * mult + 10,
                                        -margen + wiw - (i.y * mult + 40), fill="red", width=2)
