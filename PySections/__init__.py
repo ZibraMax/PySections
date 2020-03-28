@@ -608,7 +608,7 @@ class Estructura:
             this.resortes[i] = Resorte(this.nodos[this.resortes[i].nodo.ID], this.resortes[i].rigidez,
                                        this.resortes[i].completo)
 
-    def agregarElemento(this, seccion, nodoInicial, nodoFinal, tipo, apoyoIzquierdo=0, za=0, apoyoDerecho=0, zb=0,
+    def agregarElemento(this, seccion, nodoInicial, nodoFinal, tipo=Tipo.UNO, apoyoIzquierdo=0, za=0, apoyoDerecho=0, zb=0,
                         defCortante=True):
         """
     Función que permite añadir un nuevo elemento a la estructura
