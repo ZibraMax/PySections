@@ -205,7 +205,61 @@ class Elemento:
             this.fi = 0
             this.fidiag = 0
         this.calcularMatrizElemento()
+    def hallarKb(this,psi=0):
+        E = this.E
+        I = this.Inercia
+        A = this.Area
+        L = this.Longitud
+        if psi == 0:
+            kb1 = 4*E*I/L
+            kb2 = 3*E*I/L
+            kb3 = 2*E*I/L
+        else:
+            kb1=(psi*(np.sin(psi)-psi*np.cos(psi))*E*I)/(2-2*np.cos(psi)-psi*np.sin(psi)*L)
+            kb2=(E*I*(psi*(psi-np.sin(psi))))/(L*(2-2*np.cos(psi)-psi*np.sin(psi)))
+            kb3=(E*I*(psi**2*np.sin(psi)))/(L*(np.sin(psi)-psi*np.cos(psi)))
+        if this.Tipo == Tipo.UNO:
+            kb = np.array([[E*A/L,0,0],[0,kb1,kb2],[0,kb2,kb1]])
+        elif this.Tipo == Tipo.DOS:
+            kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,kb3]])
+        elif this.Tipo == Tipo.TRES:
+            kb = np.array([[E*A/L,0,0],[0,0,kb3],[0,0,0]])
+        else:
+            kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,0]])
+        return kb
+    def determinarV0(this):
+        this.kb0 = this.hallarKb()
+        this.q0 = this.p0[np.ix_([3,2,5]),0].T
+        this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
+    def calcularv(this):
 
+        this.deltax0 = this.Longitud*np.cos(this.Angulo)
+        this.deltay0 = this.Longitud*np.sin(this.Angulo)
+        this.deltaux = this.Ue[3]-this.Ue[0]
+        this.deltauy = this.Ue[4]-this.Ue[1]
+        this.deltax = this.deltaux+this.deltax0
+        this.deltay = this.deltauy+this.deltay0
+        this.L = np.sqrt(this.deltax**2+this.deltay**2)
+        this.theta = np.arcsin(this.deltay/this.L)
+        this.deltatheta = this.theta-this.Angulo
+
+        if this.Tipo == Tipo.UNO:
+            v1 = this.L-this.Longitud
+            v2 = this.Ue[2]-this.deltatheta
+            v3 = this.Ue[5]-this.deltatheta
+        elif this.Tipo == Tipo.DOS:
+            v1 = this.L-this.Longitud
+            v3 = this.Ue[5]-this.deltatheta
+            v2 = -v3/2+this.v0[2][0]/2+this.v0[1][0]
+        elif this.Tipo == Tipo.TRES:
+            v1 = this.L-this.Longitud
+            v2 = this.Ue[2]-this.deltatheta
+            v3 = -v2/2+this.v0[1][0]/2+this.v0[2][0]
+        else:
+            v1 = this.L-this.Longitud
+            v2 = 0
+            v3 = 0
+        this.v = np.array([[v1],[v2],[v3]])
     def calcularMatrizElemento(this):
         """
     Función para generar la matriz de rigidez del elemento
@@ -285,7 +339,39 @@ class Elemento:
         this.lbda[4, 3] = -s
         this.lbda[4, 4] = c
         this.lbda[5, 5] = 1
+    def fuerzasBasicas(this):
+        q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
+        q1 = np.min([(q1<0)*q1,-1*10**-5])
+        this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
+        this.kb = this.hallarKb(this.psi)
+        this.q = np.dot(this.kb,this.v-this.v0)
+        c = np.cos(this.theta)
+        s = np.sin(this.theta)
+        l = this.L
+        this.T = np.array([[-c,-s/l,-s/l],[-s,c/l,c/l],[0,1,0],[c,s/l,s/l],[s,-c/l,-c/l],[0,0,1]]).T
 
+        this.lbd = np.zeros([6, 6])
+        this.lbd[0, 0] = c
+        this.lbd[0, 1] = s
+        this.lbd[1, 0] = -s
+        this.lbd[1, 1] = c
+        this.lbd[2, 2] = 1
+        this.lbd[3, 3] = c
+        this.lbd[3, 4] = s
+        this.lbd[4, 3] = -s
+        this.lbd[4, 4] = c
+        this.lbd[5, 5] = 1
+    def matrizYFuerzas(this):
+        matrizMaterial  = np.dot(this.T.T,np.dot(this.kb,this.T))
+        c = np.cos(this.theta)
+        s = np.sin(this.theta)
+        l = this.L
+        A = np.array([[1-c**2,-s*c,0,c**2-1,s*c,0],[-s*c,1-s**2,0,s*c,s**2-1,0],[0,0,0,0,0,0],[c**2-1,s*c,0,1-c**2,-s*c,0],[s*c,s**2-1,0,-s*c,1-s**2,0],[0,0,0,0,0,0]])
+        B = np.array([[-2*s*c,c**2-s**2,0,2*s*c,s**2-c**2,0],[c**2-s**2,2*s*c,0,s**2-c**2,-2*s*c,0],[0,0,0,0,0,0],[2*s*c,s**2-c**2,0,-2*c*s,c**2-s**2,0],[s**2-c**2,-2*c*s,0,c**2-s**2,2*s*c,0],[0,0,0,0,0,0]])
+        parteAxial = this.q[0][0]/l*1+(this.q[2][0]*A+this.q[1][0])/(l**2)*B
+        Ke = parteAxial + matrizMaterial
+        p = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
+        return Ke,p
     def calcularVectorDeFuerzas(this):
         """
     Función que calcula el vector de fuerzas del elemento en coordenadas globales
@@ -562,7 +648,7 @@ TODO: En super orden perro
 
 
 class Estructura:
-    "Clase que representa las estructuras creadas en el proyecto"
+    "Clase que representa una estructura."
     def __init__(this):
         """
     Método de inicialización de la estructura
@@ -589,6 +675,7 @@ class Estructura:
 
     def actualizarElementos(this):
         """TODO: arturo y esto porque (todos los metodos de actualizar)?
+        Esta sirve para poder agregar cargas antes de definir la estructura completa, es un metodo que "sobra" pero tenerlo es ventajoso a la hora de definir una estructura. 
     Función que actualiza constantemente los atributos de los elementos en caso de existir una modificación
         """
         for i in range(0, this.elementos.size):
