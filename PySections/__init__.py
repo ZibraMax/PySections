@@ -1,9 +1,5 @@
 import numpy as np
 from enum import Enum
-"Hola esto es una prueba"
-class prueba(Enum):
-    HOla=1
-    Adio=2
 
 class TipoSeccion(Enum):
     "Clase auxiliar para enumerar los tipos de secciones transversales (Rectangular, Circular o General)"
