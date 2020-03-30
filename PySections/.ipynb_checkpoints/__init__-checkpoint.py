@@ -210,12 +210,12 @@ class Elemento:
         I = this.Inercia
         A = this.Area
         L = this.Longitud
-        if psi == 0:
+        if psi < 0.001:
             kb1 = 4*E*I/L
-            kb2 = 3*E*I/L
-            kb3 = 2*E*I/L
+            kb2 = 2*E*I/L
+            kb3 = 3*E*I/L
         else:
-            kb1=(psi*(np.sin(psi)-psi*np.cos(psi))*E*I)/(2-2*np.cos(psi)-psi*np.sin(psi)*L)
+            kb1=((E*I)/(L))*((psi*(np.sin(psi)-psi*np.cos(psi)))/(2-2*np.cos(psi)-psi*np.sin(psi)))
             kb2=(E*I*(psi*(psi-np.sin(psi))))/(L*(2-2*np.cos(psi)-psi*np.sin(psi)))
             kb3=(E*I*(psi**2*np.sin(psi)))/(L*(np.sin(psi)-psi*np.cos(psi)))
         if this.Tipo == Tipo.UNO:
@@ -341,7 +341,7 @@ class Elemento:
         this.lbda[5, 5] = 1
     def fuerzasBasicas(this):
         q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
-        q1 = np.min([(q1<0)*q1,-1*10**-5])
+        q1 = np.min([q1,-1*10**-5])
         this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
         this.kb = this.hallarKb(this.psi)
         this.q = np.dot(this.kb,this.v-this.v0)
@@ -368,10 +368,12 @@ class Elemento:
         l = this.L
         A = np.array([[1-c**2,-s*c,0,c**2-1,s*c,0],[-s*c,1-s**2,0,s*c,s**2-1,0],[0,0,0,0,0,0],[c**2-1,s*c,0,1-c**2,-s*c,0],[s*c,s**2-1,0,-s*c,1-s**2,0],[0,0,0,0,0,0]])
         B = np.array([[-2*s*c,c**2-s**2,0,2*s*c,s**2-c**2,0],[c**2-s**2,2*s*c,0,s**2-c**2,-2*s*c,0],[0,0,0,0,0,0],[2*s*c,s**2-c**2,0,-2*c*s,c**2-s**2,0],[s**2-c**2,-2*c*s,0,c**2-s**2,2*s*c,0],[0,0,0,0,0,0]])
-        parteAxial = this.q[0][0]/l*1+(this.q[2][0]*A+this.q[1][0])/(l**2)*B
-        Ke = parteAxial + matrizMaterial
-        p = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
-        return Ke,p
+        parteAxial = A*this.q[0][0]/l+B*(this.q[2][0]+this.q[1][0])/(l**2)
+        this.matrizMaterial = matrizMaterial
+        this.matrizGlobal = parteAxial
+        this.Ke1 = parteAxial + matrizMaterial
+        this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
+        return this.Ke1,this.p1
     def calcularVectorDeFuerzas(this):
         """
     Función que calcula el vector de fuerzas del elemento en coordenadas globales
@@ -672,6 +674,36 @@ class Estructura:
         this.actualizarElementos()
         this.actualizarResortes()
         this.Ur = np.zeros([this.restringidos.size, 1])
+    def newton(this,param,semilla=None):
+        try:
+            if semilla == None:
+                Ul = np.zeros([this.libres.size])
+            else:
+                Ul = semilla
+        except:
+            Ul = semilla
+        Ur = np.zeros([this.restringidos.size])
+        Fn = this.Fn[np.ix_(this.libres)]
+        for i in range(0,param[0]):
+            for i in this.elementos:
+                U = np.append(Ul,Ur)
+                i.Ue = U[np.ix_(i.diccionario)]
+            Kll , P = this.determinacionDeEstado()
+            A = np.dot(np.linalg.inv(Kll),(Fn-P))
+            Ul = Ul + A.T
+        return Ul.T
+    def determinacionDeEstado(this):
+        n=this.libres.size+this.restringidos.size
+        Kll = np.zeros([n,n])
+        Pl = np.zeros([n,1])
+        for i in this.elementos:
+            i.determinarV0()
+            i.calcularv()
+            i.fuerzasBasicas()
+            [Ke, P] = i.matrizYFuerzas()
+            Kll[np.ix_(i.diccionario,i.diccionario)] = Kll[np.ix_(i.diccionario,i.diccionario)] + Ke
+            Pl[np.ix_(i.diccionario)] = Pl[np.ix_(i.diccionario)] + P
+        return Kll[np.ix_(this.libres,this.libres)], Pl[np.ix_(this.libres)]
 
     def actualizarElementos(this):
         """TODO: arturo y esto porque (todos los metodos de actualizar)?
@@ -968,7 +1000,7 @@ TOdo no aun
         b = this.Kll[np.ix_(gdlVisibles, gdlVisibles)] - np.dot(klgc, this.Kll[np.ix_(gdlInvisibles, gdlVisibles)])
         return a, b
 
-    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados'):
+    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',iteraciones=100):
         """
     Función que resuelve el método matricial de rigidez de la estructura
         :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
@@ -976,15 +1008,19 @@ TOdo no aun
         :param guardar: Opción para guardar los resultados del análisis (True = guardar, False = no guardar)
         :param carpeta: Dirección de la carpeta destinno
         """
-        this.crearMatrizDeRigidez()
-        this.calcularF0()
-        this.calcularFn()
-        this.calcularSubmatrices()
-        this.calcularVectorDesplazamientosLibres()
-        this.calcularVectoresDeFuerzasInternas()
-        this.calcularReacciones()
-        this.gdls = np.append(this.libres, this.restringidos)
-        this.U = np.append(this.Ul, this.Ur)
+        if analisis == 'EL':
+            this.crearMatrizDeRigidez()
+            this.calcularF0()
+            this.calcularFn()
+            this.calcularSubmatrices()
+            this.calcularVectorDesplazamientosLibres()
+            this.calcularVectoresDeFuerzasInternas()
+            this.calcularReacciones()
+            this.gdls = np.append(this.libres, this.restringidos)
+            this.U = np.append(this.Ul, this.Ur)
+        elif analisis == 'CR':
+            this.solucionar(verbose=False, dibujar=False, guardar=False, carpeta='',analisis='EL',iteraciones=1)
+            return this.newton([iteraciones])
         if verbose:
             print(
                 'Se ha terminado de calcular, puedes examinar la variable de la estructura para consultar los resultados.')
