@@ -781,9 +781,8 @@ class Estructura:
             this.Fn = this.Fn + this.nodos[i].Fn
 
     def definirDesplazamientosRestringidos(this, desplazamientos):
-        """#Todo: son indicadores o valores o ke
-    Función que permite asignar desplazamientos restringidos a los grados de libertad restringidos
-        :param desplazamientos: Vector de los desplazamientos restringidos (metros o Newtons-metros según el caso)
+        """Función que permite asignar desplazamientos conocidos a los grados de libertad restringidos
+        :param desplazamientos: Vector de los desplazamientos restringidos (metros o radianes según el caso)
         """
         if desplazamientos.size == this.restringidos.size:
             this.Ur = desplazamientos
@@ -791,11 +790,10 @@ class Estructura:
             'No se asignaron los desplazamientos restringidos porque el vector no tiene el mismo tamaño.'
 
     def definirDesplazamientoRestringido(this, nodo, gdl, valor):
-        """
-    TODO no entiendo
-        :param nodo:
-        :param gdl:
-        :param valor:
+        """Función que permite asignar un desplazamiento conocido a uno de los grados de libertad restringidos
+        :param nodo: Identificador del nodo sobre el que se va a asignar el desplazamiento
+        :param gdl: Grado de libertad del nodo sobre el que se va a asignar el desplazamiento
+        :param valor: Magnitud del desplazamiento asignado (en metros o radianes según el caso)
         """
         if any(np.isin(this.restringidos, this.nodos[nodo].gdl[gdl])):
             for i in range(0, this.restringidos.size):
@@ -835,11 +833,10 @@ class Estructura:
             this.elementos[i].calcularVectorDeFuerzasInternas(np.concatenate([this.Ul, this.Ur], axis=None))
 
     def hacerSuperElemento(this, gdlVisibles, gdlInvisibles):
-        """
-TOdo no aun
-        :param gdlVisibles:
-        :param gdlInvisibles:
-        :return:
+        """Función para realizar un superelemento en la estructura
+        :param gdlVisibles: Conjunto de grados de libertad que se quieren mantener
+        :param gdlInvisibles: Conjunto de grados de libertad que se quieren condensar
+        :return: El vector de fuerzas y la matriz de rigidez condensados
         """
         this.crearMatrizDeRigidez()
         this.calcularF0()
@@ -877,8 +874,7 @@ TOdo no aun
             this.guardarResultados(carpeta)
 
     def actualizarGDL(this):
-        """
-    #Todo analisar aqui ocurre la magia
+        """Función que actualiza los grados de libertad de la estructura
         """
         count = 0
         this.libres = np.array([])
