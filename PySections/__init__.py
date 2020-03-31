@@ -50,12 +50,13 @@ class Seccion:
 
 
 class Resorte:
-    "Clase que simula la rigidez de un resorte en un nodo de la estructura"
+    """Clase que simula la rigidez de un resorte en un nodo de la estructura
+    """
     def __init__(this, nodo, rigidez, completo):
         """Método de inicialización de resortes
         :param nodo: Nodo sobre el cual se quiere asignar el resorte
         :param rigidez: Vector con las magnitudes de la rigideces asignadas al resorte en kiloNewtons / metros (Kx, Ky, Km)
-        :param completo: TODO 1: Sigo sin entender la función de este parámetro
+        :param completo: Sintetiza un resorte con 3 GDL si se especifica el parametro rigidez debe contener una matriz de numpy 3x3
         """
         this.nodo = nodo
         this.completo = completo
@@ -77,7 +78,8 @@ class Resorte:
 
 
 class Nodo:
-    "Clase que representa un nodo de la estructura y todos sus atributos"
+    """Clase que representa un nodo de la estructura y todos sus atributos
+    """
     def __init__(this, pX, pY, pRestraints, pID):
         """Método de inicialización de nodos
         :param pX: Coordenada x del nodo a crear

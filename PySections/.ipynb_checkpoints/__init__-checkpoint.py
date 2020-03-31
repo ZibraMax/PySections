@@ -50,13 +50,13 @@ class Seccion:
 
 
 class Resorte:
-    "Clase que simula la rigidez de un resorte en un nodo de la estructura"
+    """Clase que simula la rigidez de un resorte en un nodo de la estructura
+    """
     def __init__(this, nodo, rigidez, completo):
-        """
-    Método de i0nicialización de resortes
+        """Método de inicialización de resortes
         :param nodo: Nodo sobre el cual se quiere asignar el resorte
-        :param rigidez: Vector con las magnitudes de la rigideces asignadas al resorte en kiloPascales (Kx, Ky, Km)
-        :param completo: TODO i dont know what is this Mama
+        :param rigidez: Vector con las magnitudes de la rigideces asignadas al resorte en kiloNewtons / metros (Kx, Ky, Km)
+        :param completo: Sintetiza un resorte con 3 GDL si se especifica el parametro rigidez debe contener una matriz de numpy 3x3
         """
         this.nodo = nodo
         this.completo = completo
@@ -68,9 +68,8 @@ class Resorte:
         this.gdl = nodo.gdl
 
     def calcularKe(this, ngdl):
-        """
-TODO más tarde
-        :param ngdl:
+        """Función auxiliar para agregar los valores de rigidez del resorte a la matriz de rigidez de la estructura
+        :param ngdl: Número de grados de libertad de la estructura
         """
         this.Kee = np.zeros([ngdl, ngdl])
         for i in range(0, 3):
@@ -79,10 +78,10 @@ TODO más tarde
 
 
 class Nodo:
-    "Clase que representa un nodo de la estructura y todos sus atributos"
+    """Clase que representa un nodo de la estructura y todos sus atributos
+    """
     def __init__(this, pX, pY, pRestraints, pID):
-        """
-    Método de inicialización de nodos
+        """Método de inicialización de nodos
         :param pX: Coordenada x del nodo a crear
         :param pY: Coordenada y del nodo a crear
         :param pRestraints: Restricciones del nodo (x,y,m)
@@ -96,11 +95,10 @@ class Nodo:
         this.ID = pID
 
     def definirCargas(this, pX, pY, pM, remplazar):
-        """
-    Función para asignar cargas puntuales en los nodos creados
-        :param pX: Magnitud de carga puntual en x en kiloPascales
-        :param pY: Magnitud de carga puntual en y en kiloPascales
-        :param pM: Magnitud de momento puntual en kiloPascales-metro
+        """Función para asignar cargas puntuales en los nodos creados
+        :param pX: Magnitud de carga puntual en x en kiloNewtons
+        :param pY: Magnitud de carga puntual en y en kiloNewtons
+        :param pM: Magnitud de momento puntual en kiloNewtons-metro
         :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         if remplazar:
@@ -109,20 +107,18 @@ class Nodo:
             this.cargas = this.cargas + np.array([[pX], [pY], [pM]])
 
     def calcularFn(this, ngdl):
-        """
-    Función para definir el vector de fuerzas nodales
+        """Función para definir el vector de fuerzas nodales
         :param ngdl: Número de grados de libertad de toda la estructura
         """
         this.Fn = np.zeros([ngdl, 1])
         for i in range(0, 3):
-            this.Fn[this.gdl[i]] = this.cargas[i] #TODO Pinche nomenclatura
+            this.Fn[this.gdl[i]] = this.cargas[i]
 
 
 class Material:
     "Clase auxiliar para definir el material de los elementos"
     def __init__(this, nombre, E, v, alfa, gamma):
-        """
-    Método de inicialización de los materiales
+        """Método de inicialización de los materiales
         :param nombre: Nombre del material a crear
         :param E: Modulo de elasticidad del material a crear en kiloPascales
         :param v: Coeficiente de Poisson
@@ -149,7 +145,7 @@ class Elemento:
         :param pApoyoDerecho:TODO
         :param pZa:TODO
         :param pZb:TODO
-        :param pDefCortante:TODO
+        :param pDefCortante:Parámetro binario para tener en cuenta deformaciones por cortante (1,0)
         """
         this.seccion = pSeccion
         this.Area = this.seccion.area
@@ -261,8 +257,7 @@ class Elemento:
             v3 = 0
         this.v = np.array([[v1],[v2],[v3]])
     def calcularMatrizElemento(this):
-        """
-    Función para generar la matriz de rigidez del elemento
+        """Función para generar la matriz de rigidez del elemento
         """
         E = this.E
         v = this.seccion.material.v
@@ -279,7 +274,6 @@ class Elemento:
         fi = this.fi
         fidiag = this.fidiag
         this.G = E / (2 + 2 * v)
-        #TODO REforzar el concepto de mu
         mu = (12 * E * I) / (this.G * As * L ** 2) * this.defCortante
 
         c = np.cos(0)
@@ -290,17 +284,14 @@ class Elemento:
         k4 = (E * A / L - alfa * E * I / ((1 + mu) * L ** 3)) * s * c
         k5 = gamma * E * I / ((1 + mu) * L ** 2) * c
         k6 = gamma * E * I / ((1 + mu) * L ** 2) * s
-        #TODO revisar nuevas inplicacones del k7
         k7 = (beta / 2 - mu) * E * I / ((1 + mu) * L)
         this.Ke = np.array([[k1, k4, -k6 * fi, -k1, -k4, -k6 * fidiag], [k4, k2, k5 * fi, -k4, -k2, k5 * fidiag],
                             [-k6 * fi, k5 * fi, k3 * fi, k6 * fi, -k5 * fi, fi * k7 * fidiag],
                             [-k1, -k4, k6 * fi, k1, k4, k6 * fidiag], [-k4, -k2, -k5 * fi, k4, k2, -k5 * fidiag],
                             [-k6 * fidiag, k5 * fidiag, fidiag * k7 * fi, k6 * fidiag, -k5 * fidiag, k3 * fidiag]])
-        #TODO revisar rigidez
         this.lbdaz = np.array([[1, 0, 0, 0, 0, 0], [0, 1, this.za, 0, 0, 0], [0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0],
                                [0, 0, 0, 0, 1, -this.zb], [0, 0, 0, 0, 0, 1]])
-        #TODO ke loko
-        this.Ke = np.dot(np.dot(np.dot(this.lbdaz.T, this.lbda.T), this.Ke), np.dot(this.lbdaz, this.lbda))
+        this.Ke = np.dot(np.dot(np.dot(this.lbdaz.T, this.lbda.T), this.Ke), np.dot(this.lbdaz, this.lbda)) #TODO ¿está bien el orden con la multiplicación de las transpuestas?
 
     #TODO como funciona el diccionario
     def crearDiccionario(this):
@@ -375,18 +366,16 @@ class Elemento:
         this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
         return this.Ke1,this.p1
     def calcularVectorDeFuerzas(this):
+        """Función que calcula el vector de fuerzas del elemento en coordenadas globales
         """
-    Función que calcula el vector de fuerzas del elemento en coordenadas globales
-        """
-        this.P0 = np.dot(np.dot(this.lbda.T, this.lbdaz.T), this.p0) #TODO Desglozar esto
+        this.P0 = np.dot(np.dot(this.lbda.T, this.lbdaz.T), this.p0)
 
     def definirCargas(this, pWx, pWy, pF, remplazar):
-        """
-    #TODO da pereza hacerlo ahora xdxd
-        :param pWx:
-        :param pWy:
-        :param pF:
-        :param remplazar:
+        """Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento
+        :param pWx: Carga distribuida en la dirección +x en kiloNewtons / metros
+        :param pWy: Carga distribuida en la dirección -y en kiloNewtons / metros
+        :param pF: Carga aplicada cada L/3 en la dirección -y en kiloNewtons
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.wx = pWx
         this.wy = pWy
@@ -417,7 +406,7 @@ class Elemento:
                 this.cargasPuntuales = np.append([], np.array([2 * this.Longitud / 3, -pF]))
         else:
             this.p0 = this.p0 + p0
-            # TODO Mom come pick me up, I'm scared.
+            # TODO Mom come pick me up, I'm scared. ¿Los if not son usados para más adelante graficar en la interfaz?
             if not pWy == 0:
                 this.cargasDistribuidas = np.append(this.cargasDistribuidas,
                                                     np.array([[0, -pWy], [2, 1]]).reshape([2, 2]))
@@ -467,11 +456,10 @@ class Elemento:
         this.calcularVectorDeFuerzas()
 
     def agregarDefectoDeFabricacion(this, e0, fi0, remplazar):
-        """
-    #Todo vamos en orden
-        :param e0:
-        :param fi0:
-        :param remplazar:
+        """Función que simula los defectos de fabricación del elemento y los tiene en cuenta para el vector de fuerzas
+        :param e0: Elongación del elemento
+        :param fi0: Curvatura del elemetno (1 / metros)
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         L = this.Longitud
         E = this.seccion.material.E
@@ -494,11 +482,10 @@ class Elemento:
         this.calcularVectorDeFuerzas()
 
     def agregarCargaPorTemperatura(this, pDeltaT0, pDeltaTFh, remplazar):
-        """
-#TODO mk esto no acaba
-        :param pDeltaT0:
-        :param pDeltaTFh:
-        :param remplazar:
+        """Función que simula los efectos de la temperatura en el elemento y los tiene en cuenta para el vector de fuerzas
+        :param pDeltaT0: Variación de la temperatura en el elemento (°C)
+        :param pDeltaTFh: Relación entre el gradiente de temperatura en el elemento y la altura de este (°C / metros)
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.deltaT0 = pDeltaT0
         this.deltaTFh = pDeltaTFh
@@ -509,10 +496,9 @@ class Elemento:
         this.agregarDefectoDeFabricacion(e0, fi0, remplazar)
 
     def agregarCargaPresfuerzoAxial(this, q0, remplazar):
-        """
-#TODO mk me perdi arto
-        :param q0:
-        :param remplazar:
+        """Función que simula los efectos de una carga de presfuerzo axial sobre el elemento
+        :param q0: Fuerza de presfuerzo en kiloNewtons
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         p0 = np.array([[-q0], [0], [0], [q0], [0], [0]])
         if remplazar:
@@ -522,13 +508,12 @@ class Elemento:
         this.calcularVectorDeFuerzas()
 
     def agregarCargaPostensadoFlexionYAxial(this, f0, e1, e2, e3, remplazar):
-        """
-#TODO son muchos metodos
-        :param f0:
-        :param e1:
-        :param e2:
-        :param e3:
-        :param remplazar:
+        """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento TODO Momento probable, my job
+        :param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
+        :param e1: Excentricidad del cable al comienzo del elemento en metros
+        :param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
+        :param e3: Excentricidad del cable al final del elemento en metros
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         L = this.Longitud
         c = e1
@@ -574,39 +559,13 @@ class Elemento:
         parcial = np.dot(this.Ke, this.Ue)
         this.P = np.reshape(parcial, [parcial.size, 1]) + this.P0
         this.p = np.dot(this.lbda, this.P)
-
-    def solucionarFEM(this, P, n=50):
-        """
-    Solución de diagramas de fuerzas internas por medio de elementos finitos
-        :param P: #TODO: Arturo
-        :param n:
-        """
-        he = this.Longitud / (n - 1)
-        K = tridiag(-1 / he, 2 / he, -1 / he, n)
-        F = np.zeros([n, 1])
-        for i in range(0, n):
-            F[i, 0] = P(he * i) * he
-        F = F - this.p[2] * K[:, 0].reshape([K[:, 0].size, 1])
-        F = F + this.p[-1] * K[:, -1].reshape([K[:, -1].size, 1])
-        F[0] = this.p[2]
-        F[-1] = -this.p[-1]
-        K[0, 0] = 1
-        K[0, 1] = 0
-        K[1, 0] = 0
-        K[-1, -1] = 1
-        K[-1, -2] = 0
-        K[-2, -1] = 0
-        this.DMomentos = np.dot(np.linalg.inv(K), F)
-        this.DCortante = np.dot(K, this.DMomentos) - F
-
-
 class Constraint:
+    "Clase que define los constraints presentes en una estructura" #TODO 2: ¿Clase en proceso?
     def __init__(this, tipo, nodoI, nodoF):
-        """
-TODO en orden mi perro
-        :param tipo:
-        :param nodoI:
-        :param nodoF:
+        """Métoddo que inicializa los constraints del elemento
+        :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
+        :param nodoI: Nodo inicial (objeto)
+        :param nodoF: Nodo final (objeto)
         """
         this.nodoI = nodoI
         this.nodoF = nodoF
@@ -627,23 +586,31 @@ TODO en orden mi perro
 
 
 class SuperElemento:
+    "Clase que define los superelementos presentes en una estructura"  #TODO 3: ¿Clase en proceso?
     def __init__(this, SE, SF, gdl):
-        """
-TODO: En super orden perro
+        """Método de inicialización de los elementos
         :param SE:
         :param SF:
-        :param gdl:
+        :param gdl: Grados de libertad de la estructura
         """
         this.SE = SE
         this.SF = SF
         this.gdl = gdl
 
     def calcularKSUMA(this, n):
+        """Función para calcular la matriz de rigidez condensada de la estructura
+        :param n:
+        :return:
+        """
         a = np.zeros([n, n])
         a[np.ix_(this.gdl, this.gdl)] = this.SE
         return a
 
     def calcularF0(this, n):
+        """Función para calcular el vector de fuerzas condensado de la estructura
+        :param n:
+        :return:
+        """
         a = np.zeros([n, 1])
         a[np.ix_(this.gdl)] = this.SF
         return a
@@ -652,8 +619,7 @@ TODO: En super orden perro
 class Estructura:
     "Clase que representa una estructura."
     def __init__(this):
-        """
-    Método de inicialización de la estructura
+        """Método de inicialización de la estructura
         """
         this.nodos = np.array([])
         this.resortes = np.array([])
@@ -663,10 +629,9 @@ class Estructura:
         this.superelementos = np.array([])
 
     def agregarNodo(this, x, y, fix=[True, True, True]):
-        """
-    Función que agrega un nodo a la estructura
-        :param x: Posición x del nodo
-        :param y: Posición y del nodo
+        """Función que agrega un nodo a la estructura
+        :param x: Posición x del nodo en metros
+        :param y: Posición y del nodo en metros
         :param fix: Condiciones de apoyo del nodo (True = restringido, False = libre)
         """
         this.nodos = np.append(this.nodos, Nodo(x, y, fix, this.nodos.size))
@@ -706,9 +671,7 @@ class Estructura:
         return Kll[np.ix_(this.libres,this.libres)], Pl[np.ix_(this.libres)]
 
     def actualizarElementos(this):
-        """TODO: arturo y esto porque (todos los metodos de actualizar)?
-        Esta sirve para poder agregar cargas antes de definir la estructura completa, es un metodo que "sobra" pero tenerlo es ventajoso a la hora de definir una estructura. 
-    Función que actualiza constantemente los atributos de los elementos en caso de existir una modificación
+        """Función que actualiza constantemente los atributos de los elementos en caso de existir una modificación
         """
         for i in range(0, this.elementos.size):
             parcial = this.elementos[i]
@@ -720,8 +683,7 @@ class Estructura:
             this.elementos[i].calcularVectorDeFuerzas()
 
     def actualizarResortes(this):
-        """
-    Función que actualiza constantemente los atributos de los resortes en caso de existir una modificación
+        """Función que actualiza constantemente los atributos de los resortes en caso de existir una modificación
         """
         for i in range(0, this.resortes.size):
             this.resortes[i] = Resorte(this.nodos[this.resortes[i].nodo.ID], this.resortes[i].rigidez,
@@ -729,8 +691,7 @@ class Estructura:
 
     def agregarElemento(this, seccion, nodoInicial, nodoFinal, tipo=Tipo.UNO, apoyoIzquierdo=0, za=0, apoyoDerecho=0, zb=0,
                         defCortante=True):
-        """
-    Función que permite añadir un nuevo elemento a la estructura
+        """Función que permite añadir un nuevo elemento a la estructura
         :param seccion: Sección del elemento a añadir
         :param nodoInicial: Identificador del nodo inicial del elemento
         :param nodoFinal: Identificador del nodo final del elemento
@@ -746,30 +707,27 @@ class Estructura:
                                             apoyoIzquierdo, apoyoDerecho, za, zb, defCortante))
 
     def agregarResorte(this, rigidez, nodo=-1, completo=False):
-        """
-    Función que permite añadir un nuevo resorte a la estructura
+        """Función que permite añadir un nuevo resorte a la estructura
         :param rigidez: Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)
         :param nodo: Nodo sobre el que se va a agregar el resorte
-        :param completo: #TOdo arturo
+        :param completo: #TODO 1 x2
         """
         this.resortes = np.append(this.resortes, Resorte(this.nodos[nodo], rigidez, completo))
 
     def agregarSuperElementos(this, SE, SF, gdl):
-        """
-TODO por partes
+        """Función que permite realizar un superelemento con la estructura TODO 3 x2
         :param SE:
         :param SF:
-        :param gdl:
+        :param gdl: Número de grados de libertad de la estructura
         """
         supelemento = SuperElemento(SE, SF, gdl)
         this.superelementos = np.append(this.superelementos, supelemento)
 
     def definirConstraint(this, tipo, nodoInicial, nodoFinal):
-        """
-TODO aun no
-        :param tipo:
-        :param nodoInicial:
-        :param nodoFinal:
+        """Función que permite definir un constraint en la estructura TODO 2 x2
+        :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
+        :param nodoInicial: Nodo inicial (objeto)
+        :param nodoFinal: Nodo final (objeto)
         """
         nodoF = this.nodos[nodoFinal]
         nodoI = this.nodos[nodoInicial]
@@ -777,8 +735,7 @@ TODO aun no
         this.constraints = np.append(this.constraints, constraint)
 
     def crearMatrizDeRigidez(this):
-        """
-TOdo ahi vamos
+        """Función que permite calcular la matriz de rigidez de la estructura
         """
         n = this.nodos.size * 3
         this.KE = np.zeros([n, n])
@@ -792,58 +749,53 @@ TOdo ahi vamos
             this.KE = this.KE + this.superelementos[i].calcularKSUMA(n)
 
     def definirCambiosTemperatura(this, inicial, interior, exterior, h, elemento=-1, remplazar=False):
-        """
-Todo casi
-        :param inicial:
-        :param interior:
-        :param exterior:
-        :param h:
-        :param elemento:
-        :param remplazar:
+        """Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 1)
+        :param inicial: Temperatura ambiente a la que fue construida la estructura en °C
+        :param interior: Temperatura interna de la estructura en °C
+        :param exterior: Temperatura externa de la estructura en °C
+        :param h: Altura de la sección transversal del elemento en metros
+        :param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         dta = 1 / 2 * ((exterior - inicial) + (interior - inicial))
         dtf = (interior - exterior)
         this.elementos[elemento].agregarCargaPorTemperatura(dta, dtf / h, remplazar)
 
     def agregarCargaPorTemperatura(this, deltaT0, deltaThf, elemento=-1, remplazar=False):
-        """
-Todo mierda
-        :param deltaT0:
-        :param deltaThf:
-        :param elemento:
-        :param remplazar:
+        """Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 2)
+        :param deltaT0: Variación de la temperatura en °C
+        :param deltaThf: Gradiente de temperatura (°C / metros)
+        :param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.elementos[elemento].agregarCargaPorTemperatura(deltaT0, deltaThf, remplazar)
 
     def agregarDefectoDeFabricacion(this, e0=0, fi0=0, elemento=-1, remplazar=False):
-        """
-Todo coño
-        :param e0:
-        :param fi0:
-        :param elemento:
-        :param remplazar:
+        """Función que permite calcular las fuerzas asociadas a los defectos de fabricación en el elemento
+        :param e0: Elongación del elemento
+        :param fi0: Curvatura del elemetno (1 / metros)
+        :param elemento: Elemento sobre el cual se quieren definir los defectos de fabricación
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.elementos[elemento].agregarDefectoDeFabricacion(e0, fi0, remplazar)
 
     def agregarCargaPresfuerzoAxial(this, el, q0, elemento=-1, remplazar=False):
-        """
-TOdo cuanto mas
-        :param el:
-        :param q0:
-        :param elemento:
-        :param remplazar:
+        """Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento
+        :param el: TODO ¿Parámetro innecesario?
+        :param q0: Fuerza de presfuerzo en kiloNewtons
+        :param elemento: Elemento sobre el cual se quieren definir las cargas de presfuerzo
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.elementos[elemento].agregarCargaPresfuerzoAxial(q0, remplazar)
 
     def agregarCargaPostensadoFlexionYAxial(this, f0, e1, e2, e3, elemento=-1, remplazar=False):
-        """
-Todo marika ya
-        :param f0:
-        :param e1:
-        :param e2:
-        :param e3:
-        :param elemento:
-        :param remplazar:
+        """Función que permite calcular las fuerzas asociadas a una carga de postensado a flexión y axial en el elemento
+        :param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
+        :param e1: Excentricidad del cable al comienzo del elemento en metros
+        :param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
+        :param e3: Excentricidad del cable al final del elemento en metros
+        :param elemento: Elemento sobre el cual se quieren definir las cargas de postensado
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         this.elementos[elemento].agregarCargaPostensadoFlexionYAxial(f0, e1, e2, e3, remplazar)
 
@@ -893,30 +845,27 @@ Todo marika ya
         this.elementos[elemento].definirCargas(s * WX, c * WX, 0, False)
 
     def definirFactorPesoPropio(this, f=0, remplazar=False):
-        """
-    Función que permite incluir la carga agregada producida por el peso propio del elemento
-        :param f:TODO no se que tan bien esta esto
-        :param remplazar:
+        """Función que permite incluir la carga agregada producida por el peso propio del elemento
+        :param f: Factor de multipliación de peso propio (utilizado para combinaciones de carga)
+        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         for i in range(0, this.elementos.size):
             sw = f * this.elementos[i].Area * this.elementos[i].seccion.material.gamma
             this.agregarCargaDistribuida(i, WY=sw, remplazar=remplazar)
 
     def calcularF0(this):
-        """
-    Función que calcula el vector de fuerzas externas globales de la estructura
+        """Función que calcula el vector de fuerzas externas globales de la estructura
         """
         n = this.nodos.size * 3
         this.F0 = np.zeros([n, 1])
         for i in range(0, this.elementos.size):
             this.elementos[i].calcularF0(n)
             this.F0 = this.F0 + this.elementos[i].F0
-        for i in range(0, this.superelementos.size): #TODO superelementos
+        for i in range(0, this.superelementos.size):
             this.F0 = this.F0 + this.superelementos[i].calcularF0(n)
 
     def calcularFn(this):
-        """
-    Función que calcula el vector de fuerzas nodales de la estructura
+        """Función que calcula el vector de fuerzas nodales de la estructura
         """
         n = this.nodos.size * 3
         this.Fn = np.zeros([n, 1])
@@ -925,9 +874,8 @@ Todo marika ya
             this.Fn = this.Fn + this.nodos[i].Fn
 
     def definirDesplazamientosRestringidos(this, desplazamientos):
-        """#Todo: son indicadores o valores o ke
-    Función que permite asignar desplazamientos restringidos a los grados de libertad restringidos
-        :param desplazamientos: Vector de los desplazamientos restringidos (metros o Newtons-metros según el caso)
+        """Función que permite asignar desplazamientos conocidos a los grados de libertad restringidos
+        :param desplazamientos: Vector de los desplazamientos restringidos (metros o radianes según el caso)
         """
         if desplazamientos.size == this.restringidos.size:
             this.Ur = desplazamientos
@@ -935,11 +883,10 @@ Todo marika ya
             'No se asignaron los desplazamientos restringidos porque el vector no tiene el mismo tamaño.'
 
     def definirDesplazamientoRestringido(this, nodo, gdl, valor):
-        """
-    TODO no entiendo
-        :param nodo:
-        :param gdl:
-        :param valor:
+        """Función que permite asignar un desplazamiento conocido a uno de los grados de libertad restringidos
+        :param nodo: Identificador del nodo sobre el que se va a asignar el desplazamiento
+        :param gdl: Grado de libertad del nodo sobre el que se va a asignar el desplazamiento
+        :param valor: Magnitud del desplazamiento asignado (en metros o radianes según el caso)
         """
         if any(np.isin(this.restringidos, this.nodos[nodo].gdl[gdl])):
             for i in range(0, this.restringidos.size):
@@ -950,8 +897,7 @@ Todo marika ya
             print('No se asignaron los desplazamientos porque el gdl' + format(this.nodos[nodo].gdl[gdl]) + ' no hace parte de los grados de libertad restringidos, los grados de libertad restringidos disponibles son: ' + format(this.restringidos))
 
     def calcularSubmatrices(this):
-        """
-    Función para crear las submatrices de la matriz de rigidez de la estructura
+        """Función para crear las submatrices de la matriz de rigidez de la estructura
         """
         this.Kll = this.KE[0:this.libres.size:1, 0:this.libres.size:1]
         this.Klr = this.KE[0:this.libres.size:1, this.libres.size:this.libres.size + this.restringidos.size:1]
@@ -960,8 +906,7 @@ Todo marika ya
                    this.libres.size:this.libres.size + this.restringidos.size:1]
 
     def calcularVectorDesplazamientosLibres(this):
-        """
-     Función que halla los desplazamientos de los grados de libertad libres de las estructura
+        """Función que halla los desplazamientos de los grados de libertad libres de las estructura
         """
         if this.Ur.size == 0:
             this.Ur = np.zeros([this.restringidos.size, 1])
@@ -969,25 +914,22 @@ Todo marika ya
         this.Ul = np.dot(np.linalg.inv(this.Kll), (this.Fl[this.libres] - np.dot(this.Klr, this.Ur)))
 
     def calcularReacciones(this):
-        """
-    Función que calcula las reacciones de los grados de libertad restringidos de la estructura
+        """Función que calcula las reacciones de los grados de libertad restringidos de la estructura
         """
         this.R0 = this.F0[this.restringidos]
         this.Rn = np.dot(this.Krl, this.Ul) + np.dot(this.Krr, this.Ur) + this.R0
 
     def calcularVectoresDeFuerzasInternas(this):
-        """
-    Función que calcula las fuerzas internas de los elementos de la estructura
+        """Función que calcula las fuerzas internas de los elementos de la estructura
         """
         for i in range(0, this.elementos.size):
             this.elementos[i].calcularVectorDeFuerzasInternas(np.concatenate([this.Ul, this.Ur], axis=None))
 
     def hacerSuperElemento(this, gdlVisibles, gdlInvisibles):
-        """
-TOdo no aun
-        :param gdlVisibles:
-        :param gdlInvisibles:
-        :return:
+        """Función para realizar un superelemento en la estructura
+        :param gdlVisibles: Conjunto de grados de libertad que se quieren mantener
+        :param gdlInvisibles: Conjunto de grados de libertad que se quieren condensar
+        :return: El vector de fuerzas y la matriz de rigidez condensados
         """
         this.crearMatrizDeRigidez()
         this.calcularF0()
@@ -1001,8 +943,7 @@ TOdo no aun
         return a, b
 
     def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',iteraciones=100):
-        """
-    Función que resuelve el método matricial de rigidez de la estructura
+        """Función que resuelve el método matricial de rigidez de la estructura
         :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
         :param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
         :param guardar: Opción para guardar los resultados del análisis (True = guardar, False = no guardar)
@@ -1030,8 +971,7 @@ TOdo no aun
             this.guardarResultados(carpeta)
 
     def actualizarGDL(this):
-        """
-    #Todo analisar aqui ocurre la magia
+        """Función que actualiza los grados de libertad de la estructura
         """
         count = 0
         this.libres = np.array([])
@@ -1066,8 +1006,7 @@ TOdo no aun
         this.restringidos = this.restringidos.astype(int)
 
     def pintar(this):
-        """
-    Función que permite correr la interfaz de visualización de resultados de modelo, fuerzas internas y desplazamientos obtenidos
+        """Función que permite correr la interfaz de visualización de resultados de modelo, fuerzas internas y desplazamientos obtenidos
         """
         maxcoord = 0
         for i in this.elementos:
@@ -1354,8 +1293,7 @@ TOdo no aun
         canvas.mainloop()
 
     def guardarResultados(this, carpeta):
-        """
-    Función para generar y guardar un archivo con los resultados del análisis obtenido
+        """Función para generar y guardar un archivo con los resultados del análisis obtenido
         :param carpeta: Dirección de la carpeta destino en donde se guardarán los archivos creados
         """
         import os
@@ -1392,8 +1330,7 @@ TOdo no aun
 
 
 def tridiag(a, b, c, n):
-    """
-Función auxiliar para crear una matriz tridiagonal (utilizada en FEM)
+    """Función auxiliar para crear una matriz tridiagonal (utilizada en FEM)
     :param a: Valor de la diagonal adyacente inferior
     :param b: Valor de la diagonal principal
     :param c: Valor de la diagonal adyacente superior
