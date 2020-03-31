@@ -133,16 +133,15 @@ class Material:
 class Elemento:
     "Clase para definir los elementos de la estructura y sus atributos"
     def __init__(this, pSeccion, pNodoI, pNodoF, pTipo, pApoyoIzquierdo, pApoyoDerecho, pZa, pZb, pDefCortante):
-        """
-    Método de inicialización de los elementos
+        """Método de inicialización de los elementos
         :param pSeccion: Sección del elemento (creada anteriormente)
         :param pNodoI: Indicador del nodo inicial (creado anteriormente)
         :param pNodoF: Indicador del nodo final (creado anteriormente)
         :param pTipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
         :param pApoyoIzquierdo:TODO
-        :param pApoyoDerecho:TODO
-        :param pZa:TODO
-        :param pZb:TODO
+        :param pApoyoDerecho:
+        :param pZa:
+        :param pZb:
         :param pDefCortante:Parámetro binario para tener en cuenta deformaciones por cortante (1,0)
         """
         this.seccion = pSeccion
@@ -199,7 +198,13 @@ class Elemento:
             this.fi = 0
             this.fidiag = 0
         this.calcularMatrizElemento()
+
     def hallarKb(this,psi=0):
+        """
+TODO nuevo
+        :param psi:
+        :return:
+        """
         E = this.E
         I = this.Inercia
         A = this.Area
@@ -221,12 +226,19 @@ class Elemento:
         else:
             kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,0]])
         return kb
+
     def determinarV0(this):
+        """
+TODO nuevo
+        """
         this.kb0 = this.hallarKb()
         this.q0 = this.p0[np.ix_([3,2,5]),0].T
         this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
-    def calcularv(this):
 
+    def calcularv(this):
+        """
+TODO nuevo
+        """
         this.deltax0 = this.Longitud*np.cos(this.Angulo)
         this.deltay0 = this.Longitud*np.sin(this.Angulo)
         this.deltaux = this.Ue[3]-this.Ue[0]
@@ -254,6 +266,7 @@ class Elemento:
             v2 = 0
             v3 = 0
         this.v = np.array([[v1],[v2],[v3]])
+
     def calcularMatrizElemento(this):
         """Función para generar la matriz de rigidez del elemento
         """
@@ -328,7 +341,11 @@ class Elemento:
         this.lbda[4, 3] = -s
         this.lbda[4, 4] = c
         this.lbda[5, 5] = 1
+
     def fuerzasBasicas(this):
+        """
+TODO nuevo
+        """
         q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
         q1 = np.min([q1,-1*10**-5])
         this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
@@ -350,7 +367,12 @@ class Elemento:
         this.lbd[4, 3] = -s
         this.lbd[4, 4] = c
         this.lbd[5, 5] = 1
+
     def matrizYFuerzas(this):
+        """
+TODO nuevo
+        :return:
+        """
         matrizMaterial  = np.dot(this.T.T,np.dot(this.kb,this.T))
         c = np.cos(this.theta)
         s = np.sin(this.theta)
@@ -363,6 +385,7 @@ class Elemento:
         this.Ke1 = parteAxial + matrizMaterial
         this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
         return this.Ke1,this.p1
+
     def calcularVectorDeFuerzas(this):
         """Función que calcula el vector de fuerzas del elemento en coordenadas globales
         """
@@ -637,7 +660,14 @@ class Estructura:
         this.actualizarElementos()
         this.actualizarResortes()
         this.Ur = np.zeros([this.restringidos.size, 1])
+
     def newton(this,param,semilla=None):
+        """
+TODO nuevo
+        :param param:
+        :param semilla:
+        :return:
+        """
         try:
             if semilla == None:
                 Ul = np.zeros([this.libres.size])
@@ -655,7 +685,12 @@ class Estructura:
             A = np.dot(np.linalg.inv(Kll),(Fn-P))
             Ul = Ul + A.T
         return Ul.T
+
     def determinacionDeEstado(this):
+        """
+TODO nuevo
+        :return:
+        """
         n=this.libres.size+this.restringidos.size
         Kll = np.zeros([n,n])
         Pl = np.zeros([n,1])
