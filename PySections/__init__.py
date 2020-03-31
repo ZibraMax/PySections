@@ -364,8 +364,7 @@ class Elemento:
         this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
         return this.Ke1,this.p1
     def calcularVectorDeFuerzas(this):
-        """
-    Función que calcula el vector de fuerzas del elemento en coordenadas globales
+        """Función que calcula el vector de fuerzas del elemento en coordenadas globales
         """
         this.P0 = np.dot(np.dot(this.lbda.T, this.lbdaz.T), this.p0)
 
@@ -558,32 +557,6 @@ class Elemento:
         parcial = np.dot(this.Ke, this.Ue)
         this.P = np.reshape(parcial, [parcial.size, 1]) + this.P0
         this.p = np.dot(this.lbda, this.P)
-
-    def solucionarFEM(this, P, n=50):
-        """
-    Solución de diagramas de fuerzas internas por medio de elementos finitos
-        :param P: #TODO No voy a comentar esto, No le daré la satisfacción de involucrarme en métodos finitos
-        :param n:
-        """
-        he = this.Longitud / (n - 1)
-        K = tridiag(-1 / he, 2 / he, -1 / he, n)
-        F = np.zeros([n, 1])
-        for i in range(0, n):
-            F[i, 0] = P(he * i) * he
-        F = F - this.p[2] * K[:, 0].reshape([K[:, 0].size, 1])
-        F = F + this.p[-1] * K[:, -1].reshape([K[:, -1].size, 1])
-        F[0] = this.p[2]
-        F[-1] = -this.p[-1]
-        K[0, 0] = 1
-        K[0, 1] = 0
-        K[1, 0] = 0
-        K[-1, -1] = 1
-        K[-1, -2] = 0
-        K[-2, -1] = 0
-        this.DMomentos = np.dot(np.linalg.inv(K), F)
-        this.DCortante = np.dot(K, this.DMomentos) - F
-
-
 class Constraint:
     "Clase que define los constraints presentes en una estructura" #TODO 2: ¿Clase en proceso?
     def __init__(this, tipo, nodoI, nodoF):
