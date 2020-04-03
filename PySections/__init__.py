@@ -50,12 +50,13 @@ class Seccion:
 
 
 class Resorte:
-    "Clase que simula la rigidez de un resorte en un nodo de la estructura"
+    """Clase que simula la rigidez de un resorte en un nodo de la estructura
+    """
     def __init__(this, nodo, rigidez, completo):
         """Método de inicialización de resortes
         :param nodo: Nodo sobre el cual se quiere asignar el resorte
         :param rigidez: Vector con las magnitudes de la rigideces asignadas al resorte en kiloNewtons / metros (Kx, Ky, Km)
-        :param completo:
+        :param completo: Sintetiza un resorte con 3 GDL si se especifica el parametro rigidez debe contener una matriz de numpy 3x3
         """
         this.nodo = nodo
         this.completo = completo
@@ -77,7 +78,8 @@ class Resorte:
 
 
 class Nodo:
-    "Clase que representa un nodo de la estructura y todos sus atributos"
+    """Clase que representa un nodo de la estructura y todos sus atributos
+    """
     def __init__(this, pX, pY, pRestraints, pID):
         """Método de inicialización de nodos
         :param pX: Coordenada x del nodo a crear
@@ -138,7 +140,7 @@ class Elemento:
         :param pNodoI: Indicador del nodo inicial (creado anteriormente)
         :param pNodoF: Indicador del nodo final (creado anteriormente)
         :param pTipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param pApoyoIzquierdo:TODO
+        :param pApoyoIzquierdo:
         :param pApoyoDerecho:
         :param pZa:
         :param pZb:
@@ -966,8 +968,7 @@ class Estructura:
         return a, b
 
     def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',iteraciones=100):
-        """
-    Función que resuelve el método matricial de rigidez de la estructura
+        """Función que resuelve el método matricial de rigidez de la estructura
         :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
         :param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
         :param guardar: Opción para guardar los resultados del análisis (True = guardar, False = no guardar)
