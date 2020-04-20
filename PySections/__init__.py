@@ -232,8 +232,14 @@ class Elemento:
         """Función que permite hallar los desplazamientos básicos iniciales del elemento
         """
         this.kb0 = this.hallarKb()
+        #Matriz singular
         this.q0 = this.p0[np.ix_([3,2,5]),0].T
-        this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
+        if this.Tipo == Tipo.CUATRO:
+            this.v0 = np.array([[1/this.kb0[0][0]*this.p0[0]],[0],[0]])
+        elif this.Tipo == Tipo.UNO:
+            this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
+        else:
+            this.v0 = np.array([[0],[0],[0]])
 
     def calcularv(this):
         """Función que permite hallar los desplazamientos básicos del elemento deformado
@@ -655,12 +661,13 @@ class Estructura:
         this.actualizarResortes()
         this.Ur = np.zeros([this.restringidos.size, 1])
 
-    def newton(this,param,semilla=None):
+    def newton(this,param,semilla=None,control='carga'):
         """Función que realiza el método iterativo de Newton
-        :param param:
-        :param semilla:
-        :return:
+        :param param: lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion
+        :param semilla: Semilla inicial del metodo de newton ndarray
+        :param control: Tipo de algotimo de solucion, puede ser carga o desplazamiento
         """
+        this.calcularFn()
         try:
             if semilla == None:
                 Ul = np.zeros([this.libres.size])
@@ -668,16 +675,78 @@ class Estructura:
                 Ul = semilla
         except:
             Ul = semilla
+        #Alerta de que no se usaran restringidos np.any() creo
         Ur = np.zeros([this.restringidos.size])
         Fn = this.Fn[np.ix_(this.libres)]
-        for i in range(0,param[0]):
-            for i in this.elementos:
-                U = np.append(Ul,Ur)
-                i.Ue = U[np.ix_(i.diccionario)]
-            Kll , P = this.determinacionDeEstado()
-            A = np.dot(np.linalg.inv(Kll),(Fn-P))
-            Ul = Ul + A.T
-        return Ul.T
+        this.RECORDU = []
+        this.RECORDF = []
+        if control == 'carga':
+            #Inicializacion
+            e1 = param[0]
+            e2 = param[1]
+            e3 = param[2]
+            dli = param[3]
+            Nd = param[4]
+            Nj = param[5]
+            gamma = param[6]
+            dlmax = param[7]
+            dlmin = param[8]
+            li = 0
+            incremento = param[9]
+            gdl = param[11]
+            for i in range(0,Nd):
+                
+                #Aasigan los desplazamientos
+                for e in this.elementos:
+                    U = np.append(Ul,Ur)
+                    e.Ue = U[np.ix_(e.diccionario)]
+                Kll , P = this.determinacionDeEstado()
+                if i ==0:
+                     Kll0 = np.copy(Kll)
+                if i > 0:
+                    if incremento == 'constante':
+                        dli = param[3]
+                        dlmin = param[3]
+                        dlmax = param[3]
+                    elif incremento == 'bergan':
+                        num = np.dot(Fn.T,np.dot(np.linalg.inv(Kll0),Fn))
+                        den = np.dot(Fn.T,np.dot(np.linalg.inv(Kll),Fn))
+                        dli = param[3]*(np.dot(num,1/den))**gamma
+                    elif incremento == 'numiter':
+                        dli = param[3]*((i)/Nd)**gamma
+                    else:
+                        dli = param[3]
+                        dlmin = param[3]
+                        dlmax = param[3]
+                dli = np.max([np.max(np.array([dlmin,np.min(np.array([dlmax,dli]))]))*param[10],dli])
+                
+                li = li + dli
+                F = li*Fn
+                #Pensar en un while mejor!
+                for j in range(1,Nj):
+                    R = F-P
+                    if np.linalg.norm(R) > e1:
+                        DUl = np.dot(np.linalg.inv(Kll),R)
+                        if np.linalg.norm(DUl) > e2:
+                            if np.linalg.norm(np.dot(DUl.T,R))*0.5 > e3:
+                                Ul = Ul + DUl.T
+                                for e in this.elementos:
+                                    U = np.append(Ul,Ur)
+                                    e.Ue = U[np.ix_(e.diccionario)]
+                                Kll , P = this.determinacionDeEstado()
+                this.RECORDU = np.append(this.RECORDU,U[np.ix_(gdl)])
+                this.RECORDF = np.append(this.RECORDF,P[np.ix_(gdl)])
+            return Ul.T
+        elif control == 'desplazamiento':
+            print('TODO')
+            for i in range(0,param[0]):
+                for i in this.elementos:
+                    U = np.append(Ul,Ur)
+                    i.Ue = U[np.ix_(i.diccionario)]
+                Kll , P = this.determinacionDeEstado()
+                A = np.dot(np.linalg.inv(Kll),(Fn-P))
+                Ul = Ul + A.T
+            return Ul.T
 
     def determinacionDeEstado(this):
         """Función para realizar determinación de estado de un elemento
@@ -967,7 +1036,7 @@ class Estructura:
         b = this.Kll[np.ix_(gdlVisibles, gdlVisibles)] - np.dot(klgc, this.Kll[np.ix_(gdlInvisibles, gdlVisibles)])
         return a, b
 
-    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',iteraciones=100):
+    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',param=[]):
         """Función que resuelve el método matricial de rigidez de la estructura
         :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
         :param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
@@ -985,8 +1054,8 @@ class Estructura:
             this.gdls = np.append(this.libres, this.restringidos)
             this.U = np.append(this.Ul, this.Ur)
         elif analisis == 'CR':
-            this.solucionar(verbose=False, dibujar=False, guardar=False, carpeta='',analisis='EL',iteraciones=1)
-            return this.newton([iteraciones])
+            #this.solucionar(verbose=False, dibujar=False, guardar=False, carpeta='',analisis='EL',param=[])
+            return this.newton(param)
         if verbose:
             print(
                 'Se ha terminado de calcular, puedes examinar la variable de la estructura para consultar los resultados.')

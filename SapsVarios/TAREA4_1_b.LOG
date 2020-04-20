@@ -6,7 +6,7 @@
 
 
 
- B E G I N   A N A L Y S I S                                2020/04/01  00:24:13
+ B E G I N   A N A L Y S I S                                2020/04/19  12:14:14
 
 
  RUNNING ANALYSIS WITHIN THE GUI PROCESS
@@ -18,7 +18,7 @@
  NUMBER OF CONSTRAINTS/WELDS               =           1
  NUMBER OF LOAD PATTERNS                   =           2
  NUMBER OF ACCELERATION LOADS              =           9
- NUMBER OF LOAD CASES                      =           6
+ NUMBER OF LOAD CASES                      =           7
 
  ADDRESSABLE PHYSICAL MEMORY (RAM)         =       7.879 GB
 
@@ -33,13 +33,13 @@
  NUMBER OF THREADS: FORM (AUTOMATIC)       =           4
 
 
- E L E M E N T   F O R M A T I O N                                      00:24:13
+ E L E M E N T   F O R M A T I O N                                      12:14:14
 
 
  NUMBER OF COUPLED CONSTRAINT EQUATIONS    =           0
 
 
- L I N E A R   E Q U A T I O N   S O L U T I O N                        00:24:13
+ L I N E A R   E Q U A T I O N   S O L U T I O N                        12:14:14
 
  FORMING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
 
@@ -72,7 +72,7 @@
  ---------------------------------
 
 
- L I N E A R   S T A T I C   C A S E S                                  00:24:13
+ L I N E A R   S T A T I C   C A S E S                                  12:14:14
 
  USING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
 
@@ -85,7 +85,7 @@
  CASE: FB+Q0-EL
 
 
- N O N L I N E A R   S T A T I C   A N A L Y S I S                      00:24:13
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      12:14:14
 
  CASE: FB-CR
 
@@ -216,19 +216,19 @@
 
  NUMBER OF STIFFNESS FORMATIONS/SOLUTIONS  =         100
 
- TIME FOR INITIALIZING ANALYSIS            =        0.01
- TIME FOR CONTROLLING ANALYSIS             =        0.02
- TIME FOR UPDATING LOADS AND STATE         =        0.08
+ TIME FOR INITIALIZING ANALYSIS            =        0.00
+ TIME FOR CONTROLLING ANALYSIS             =        0.00
+ TIME FOR UPDATING LOADS AND STATE         =        0.02
  TIME FOR FORMING STIFFNESS MATRIX         =        0.00
- TIME FOR SOLVING STIFFNESS MATRIX         =        0.75
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.45
  TIME FOR CALCULATING DISPLACEMENTS        =        0.00
- TIME FOR DETERMINING EVENTS               =        0.01
- TIME FOR SAVING RESULTS                   =        0.01
+ TIME FOR DETERMINING EVENTS               =        0.00
+ TIME FOR SAVING RESULTS                   =        0.00
                                                ----------
- TOTAL TIME FOR THIS ANALYSIS              =        0.88
+ TOTAL TIME FOR THIS ANALYSIS              =        0.47
 
 
- N O N L I N E A R   S T A T I C   A N A L Y S I S                      00:24:14
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      12:14:14
 
  CASE: FB-PD
 
@@ -444,19 +444,19 @@
 
  NUMBER OF STIFFNESS FORMATIONS/SOLUTIONS  =         100
 
- TIME FOR INITIALIZING ANALYSIS            =        0.00
- TIME FOR CONTROLLING ANALYSIS             =        0.00
- TIME FOR UPDATING LOADS AND STATE         =        0.04
+ TIME FOR INITIALIZING ANALYSIS            =        0.01
+ TIME FOR CONTROLLING ANALYSIS             =        0.02
+ TIME FOR UPDATING LOADS AND STATE         =        0.02
  TIME FOR FORMING STIFFNESS MATRIX         =        0.00
- TIME FOR SOLVING STIFFNESS MATRIX         =        0.66
- TIME FOR CALCULATING DISPLACEMENTS        =        0.04
- TIME FOR DETERMINING EVENTS               =        0.01
- TIME FOR SAVING RESULTS                   =        0.01
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.44
+ TIME FOR CALCULATING DISPLACEMENTS        =        0.05
+ TIME FOR DETERMINING EVENTS               =        0.00
+ TIME FOR SAVING RESULTS                   =        0.02
                                                ----------
- TOTAL TIME FOR THIS ANALYSIS              =        0.76
+ TOTAL TIME FOR THIS ANALYSIS              =        0.56
 
 
- N O N L I N E A R   S T A T I C   A N A L Y S I S                      00:24:15
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      12:14:15
 
  CASE: FB+Q0-CR
 
@@ -583,17 +583,17 @@
 
  TIME FOR INITIALIZING ANALYSIS            =        0.00
  TIME FOR CONTROLLING ANALYSIS             =        0.00
- TIME FOR UPDATING LOADS AND STATE         =        0.05
- TIME FOR FORMING STIFFNESS MATRIX         =        0.00
- TIME FOR SOLVING STIFFNESS MATRIX         =        0.60
- TIME FOR CALCULATING DISPLACEMENTS        =        0.02
- TIME FOR DETERMINING EVENTS               =        0.01
- TIME FOR SAVING RESULTS                   =        0.02
+ TIME FOR UPDATING LOADS AND STATE         =        0.00
+ TIME FOR FORMING STIFFNESS MATRIX         =        0.01
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.44
+ TIME FOR CALCULATING DISPLACEMENTS        =        0.04
+ TIME FOR DETERMINING EVENTS               =        0.00
+ TIME FOR SAVING RESULTS                   =        0.01
                                                ----------
- TOTAL TIME FOR THIS ANALYSIS              =        0.70
+ TOTAL TIME FOR THIS ANALYSIS              =        0.50
 
 
- N O N L I N E A R   S T A T I C   A N A L Y S I S                      00:24:16
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      12:14:15
 
  CASE: FB+Q0-PD
 
@@ -722,14 +722,69 @@
 
  TIME FOR INITIALIZING ANALYSIS            =        0.00
  TIME FOR CONTROLLING ANALYSIS             =        0.00
- TIME FOR UPDATING LOADS AND STATE         =        0.05
- TIME FOR FORMING STIFFNESS MATRIX         =        0.00
- TIME FOR SOLVING STIFFNESS MATRIX         =        0.57
- TIME FOR CALCULATING DISPLACEMENTS        =        0.03
+ TIME FOR UPDATING LOADS AND STATE         =        0.02
+ TIME FOR FORMING STIFFNESS MATRIX         =        0.02
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.32
+ TIME FOR CALCULATING DISPLACEMENTS        =        0.02
  TIME FOR DETERMINING EVENTS               =        0.00
- TIME FOR SAVING RESULTS                   =        0.02
+ TIME FOR SAVING RESULTS                   =        0.04
                                                ----------
- TOTAL TIME FOR THIS ANALYSIS              =        0.67
+ TOTAL TIME FOR THIS ANALYSIS              =        0.42
 
 
- A N A L Y S I S   C O M P L E T E                          2020/04/01  00:24:17
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      12:14:16
+
+ CASE: ACASE1
+
+ STARTING FROM ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ LOAD CONTROL TYPE                         =       FORCE
+ TYPE OF GEOMETRIC NONLINEARITY            = LARGE DISPLACEMENT AND P-DELTA
+ USE EVENT STEPPING                        =         YES
+ USE ITERATION                             =         YES
+ USE LINE SEARCH                           =          NO
+ EVENT LUMPING TOLERANCE                   =    0.010000
+ FORCE CONVERGENCE TOLERANCE (RELATIVE)    =    0.000100
+
+ Negative iterations are Constant-Stiffness
+ Positive iterations are Newton-Raphson
+
+  Saved    Null   Total  Iteration   Relative  Curr Step   Curr Sum    Max Sum
+  Steps   Steps   Steps  this Step  Unbalance       Size   of Steps   of Steps
+ (    1      50     200     -10/40   1.000000   1.000000   1.000000   1.000000)
+
+      0       0       1         -1 109797.559   1.000000    .000000    .000000
+      0       0       1         -2 2.4700E+07   1.000000    .000000    .000000
+      0       0       1         -3 5.5576E+09   1.000000    .000000    .000000
+      0       0       1         -4 1.2505E+12   1.000000    .000000    .000000
+      0       0       1          1  59182.647   1.000000    .000000    .000000
+      0       0       1          2   8954.315   1.000000    .000000    .000000
+      0       0       1          3   4623.570   1.000000    .000000    .000000
+      0       0       1          4   1141.580   1.000000    .000000    .000000
+      0       0       1          5 128.436910   1.000000    .000000    .000000
+      0       0       1          6  10.611181   1.000000    .000000    .000000
+      0       0       1  Conv    7   0.842146   1.000000   1.000000   1.000000
+
+ ----------------------------------------
+ BASIC STABILITY CHECK FOR FORCE-CONTROLLED NONLINEAR STATIC LOAD CASES:
+    NUMBER OF NEGATIVE STIFFNESS EIGENVALUES SHOULD BE ZERO FOR STABILITY.
+    (NOTE: FURTHER CHECKS SHOULD BE CONSIDERED AS DEEMED NECESSARY)
+
+    NUMBER FOUND AT FINAL CONVERGED STATE  =           0,  OK.
+ ----------------------------------------
+
+ NUMBER OF STIFFNESS FORMATIONS/SOLUTIONS  =           8
+
+ TIME FOR INITIALIZING ANALYSIS            =        0.00
+ TIME FOR CONTROLLING ANALYSIS             =        0.21
+ TIME FOR UPDATING LOADS AND STATE         =        0.00
+ TIME FOR FORMING STIFFNESS MATRIX         =        0.00
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.05
+ TIME FOR CALCULATING DISPLACEMENTS        =        0.00
+ TIME FOR DETERMINING EVENTS               =        0.02
+ TIME FOR SAVING RESULTS                   =        0.00
+                                               ----------
+ TOTAL TIME FOR THIS ANALYSIS              =        0.28
+
+
+ A N A L Y S I S   C O M P L E T E                          2020/04/19  12:14:16

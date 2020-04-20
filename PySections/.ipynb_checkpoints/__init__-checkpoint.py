@@ -90,7 +90,7 @@ class Nodo:
         this.x = pX
         this.y = pY
         this.restraints = pRestraints
-        this.gdl = np.array([-1, -1, -1])#todo kejesto,
+        this.gdl = np.array([-1, -1, -1])
         this.cargas = np.array([[0], [0], [0]])
         this.ID = pID
 
@@ -135,16 +135,15 @@ class Material:
 class Elemento:
     "Clase para definir los elementos de la estructura y sus atributos"
     def __init__(this, pSeccion, pNodoI, pNodoF, pTipo, pApoyoIzquierdo, pApoyoDerecho, pZa, pZb, pDefCortante):
-        """
-    Método de inicialización de los elementos
+        """Método de inicialización de los elementos
         :param pSeccion: Sección del elemento (creada anteriormente)
         :param pNodoI: Indicador del nodo inicial (creado anteriormente)
         :param pNodoF: Indicador del nodo final (creado anteriormente)
         :param pTipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param pApoyoIzquierdo:TODO
-        :param pApoyoDerecho:TODO
-        :param pZa:TODO
-        :param pZb:TODO
+        :param pApoyoIzquierdo:
+        :param pApoyoDerecho:
+        :param pZa:
+        :param pZb:
         :param pDefCortante:Parámetro binario para tener en cuenta deformaciones por cortante (1,0)
         """
         this.seccion = pSeccion
@@ -201,7 +200,12 @@ class Elemento:
             this.fi = 0
             this.fidiag = 0
         this.calcularMatrizElemento()
+
     def hallarKb(this,psi=0):
+        """Función para hallar la matriz de rigidez básica del elemento
+        :param psi:Factor psi, utilizado para realizar las aproximaciones lineales
+        :return:kb, la matriz de rigidez básica
+        """
         E = this.E
         I = this.Inercia
         A = this.Area
@@ -223,12 +227,23 @@ class Elemento:
         else:
             kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,0]])
         return kb
-    def determinarV0(this):
-        this.kb0 = this.hallarKb()
-        this.q0 = this.p0[np.ix_([3,2,5]),0].T
-        this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
-    def calcularv(this):
 
+    def determinarV0(this):
+        """Función que permite hallar los desplazamientos básicos iniciales del elemento
+        """
+        this.kb0 = this.hallarKb()
+        #Matriz singular
+        this.q0 = this.p0[np.ix_([3,2,5]),0].T
+        if this.Tipo == Tipo.CUATRO:
+            this.v0 = np.array([[1/this.kb0[0][0]*this.p0[0]],[0],[0]])
+        elif this.Tipo == Tipo.UNO:
+            this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
+        else:
+            this.v0 = np.array([[0],[0],[0]])
+
+    def calcularv(this):
+        """Función que permite hallar los desplazamientos básicos del elemento deformado
+        """
         this.deltax0 = this.Longitud*np.cos(this.Angulo)
         this.deltay0 = this.Longitud*np.sin(this.Angulo)
         this.deltaux = this.Ue[3]-this.Ue[0]
@@ -256,6 +271,7 @@ class Elemento:
             v2 = 0
             v3 = 0
         this.v = np.array([[v1],[v2],[v3]])
+
     def calcularMatrizElemento(this):
         """Función para generar la matriz de rigidez del elemento
         """
@@ -291,9 +307,8 @@ class Elemento:
                             [-k6 * fidiag, k5 * fidiag, fidiag * k7 * fi, k6 * fidiag, -k5 * fidiag, k3 * fidiag]])
         this.lbdaz = np.array([[1, 0, 0, 0, 0, 0], [0, 1, this.za, 0, 0, 0], [0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0],
                                [0, 0, 0, 0, 1, -this.zb], [0, 0, 0, 0, 0, 1]])
-        this.Ke = np.dot(np.dot(np.dot(this.lbdaz.T, this.lbda.T), this.Ke), np.dot(this.lbdaz, this.lbda)) #TODO ¿está bien el orden con la multiplicación de las transpuestas?
+        this.Ke = np.dot(np.dot(np.dot(this.lbdaz.T, this.lbda.T), this.Ke), np.dot(this.lbdaz, this.lbda))
 
-    #TODO como funciona el diccionario
     def crearDiccionario(this):
         """
     Función que genera la nomenclatura de grados de libertad correpondientes al elemento
@@ -330,7 +345,10 @@ class Elemento:
         this.lbda[4, 3] = -s
         this.lbda[4, 4] = c
         this.lbda[5, 5] = 1
+
     def fuerzasBasicas(this):
+        """Función asociada a ls matriz de rigidez básica y las matrices de transformación geométrica (lambda y T)
+        """
         q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
         q1 = np.min([q1,-1*10**-5])
         this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
@@ -352,7 +370,11 @@ class Elemento:
         this.lbd[4, 3] = -s
         this.lbd[4, 4] = c
         this.lbd[5, 5] = 1
+
     def matrizYFuerzas(this):
+        """Función asociada al cálculo de matriz de rigidez y fuerzas internas de los elementos con efectos de carga axial
+        :return: Ke y p, matriz de rigidez y vector de fuerzas respectivamente
+        """
         matrizMaterial  = np.dot(this.T.T,np.dot(this.kb,this.T))
         c = np.cos(this.theta)
         s = np.sin(this.theta)
@@ -365,6 +387,7 @@ class Elemento:
         this.Ke1 = parteAxial + matrizMaterial
         this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
         return this.Ke1,this.p1
+
     def calcularVectorDeFuerzas(this):
         """Función que calcula el vector de fuerzas del elemento en coordenadas globales
         """
@@ -406,7 +429,6 @@ class Elemento:
                 this.cargasPuntuales = np.append([], np.array([2 * this.Longitud / 3, -pF]))
         else:
             this.p0 = this.p0 + p0
-            # TODO Mom come pick me up, I'm scared. ¿Los if not son usados para más adelante graficar en la interfaz?
             if not pWy == 0:
                 this.cargasDistribuidas = np.append(this.cargasDistribuidas,
                                                     np.array([[0, -pWy], [2, 1]]).reshape([2, 2]))
@@ -417,7 +439,6 @@ class Elemento:
 
     def factorZonasRigidas(this, apoyoIzquierdo, apoyoDerecho, za, zb):
         """
-#TODO voy en orden
         :param apoyoIzquierdo:
         :param apoyoDerecho:
         :param za:
@@ -508,7 +529,7 @@ class Elemento:
         this.calcularVectorDeFuerzas()
 
     def agregarCargaPostensadoFlexionYAxial(this, f0, e1, e2, e3, remplazar):
-        """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento TODO Momento probable, my job
+        """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.
         :param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
         :param e1: Excentricidad del cable al comienzo del elemento en metros
         :param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
@@ -560,7 +581,7 @@ class Elemento:
         this.P = np.reshape(parcial, [parcial.size, 1]) + this.P0
         this.p = np.dot(this.lbda, this.P)
 class Constraint:
-    "Clase que define los constraints presentes en una estructura" #TODO 2: ¿Clase en proceso?
+    "Clase que define los constraints presentes en una estructura"
     def __init__(this, tipo, nodoI, nodoF):
         """Métoddo que inicializa los constraints del elemento
         :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
@@ -586,7 +607,7 @@ class Constraint:
 
 
 class SuperElemento:
-    "Clase que define los superelementos presentes en una estructura"  #TODO 3: ¿Clase en proceso?
+    "Clase que define los superelementos presentes en una estructura"
     def __init__(this, SE, SF, gdl):
         """Método de inicialización de los elementos
         :param SE:
@@ -639,7 +660,14 @@ class Estructura:
         this.actualizarElementos()
         this.actualizarResortes()
         this.Ur = np.zeros([this.restringidos.size, 1])
-    def newton(this,param,semilla=None):
+
+    def newton(this,param,semilla=None,control='carga'):
+        """Función que realiza el método iterativo de Newton
+        :param param: lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion
+        :param semilla: Semilla inicial del metodo de newton ndarray
+        :param control: Tipo de algotimo de solucion, puede ser carga o desplazamiento
+        """
+        this.calcularFn()
         try:
             if semilla == None:
                 Ul = np.zeros([this.libres.size])
@@ -647,17 +675,83 @@ class Estructura:
                 Ul = semilla
         except:
             Ul = semilla
+        #Alerta de que no se usaran restringidos np.any() creo
         Ur = np.zeros([this.restringidos.size])
         Fn = this.Fn[np.ix_(this.libres)]
-        for i in range(0,param[0]):
-            for i in this.elementos:
-                U = np.append(Ul,Ur)
-                i.Ue = U[np.ix_(i.diccionario)]
-            Kll , P = this.determinacionDeEstado()
-            A = np.dot(np.linalg.inv(Kll),(Fn-P))
-            Ul = Ul + A.T
-        return Ul.T
+        this.RECORDU = []
+        this.RECORDF = []
+        if control == 'carga':
+            #Inicializacion
+            e1 = param[0]
+            e2 = param[1]
+            e3 = param[2]
+            dli = param[3]
+            Nd = param[4]
+            Nj = param[5]
+            gamma = param[6]
+            dlmax = param[7]
+            dlmin = param[8]
+            li = 0
+            incremento = param[9]
+            gdl = param[11]
+            for i in range(0,Nd):
+                
+                #Aasigan los desplazamientos
+                for e in this.elementos:
+                    U = np.append(Ul,Ur)
+                    e.Ue = U[np.ix_(e.diccionario)]
+                Kll , P = this.determinacionDeEstado()
+                if i ==0:
+                     Kll0 = np.copy(Kll)
+                if i > 0:
+                    if incremento == 'constante':
+                        dli = param[3]
+                        dlmin = param[3]
+                        dlmax = param[3]
+                    elif incremento == 'bergan':
+                        num = np.dot(Fn.T,np.dot(np.linalg.inv(Kll0),Fn))
+                        den = np.dot(Fn.T,np.dot(np.linalg.inv(Kll),Fn))
+                        dli = param[3]*(np.dot(num,1/den))**gamma
+                    elif incremento == 'numiter':
+                        dli = param[3]*((i)/Nd)**gamma
+                    else:
+                        dli = param[3]
+                        dlmin = param[3]
+                        dlmax = param[3]
+                dli = np.max([np.max(np.array([dlmin,np.min(np.array([dlmax,dli]))]))*param[10],dli])
+                
+                li = li + dli
+                F = li*Fn
+                #Pensar en un while mejor!
+                for j in range(1,Nj):
+                    R = F-P
+                    if np.linalg.norm(R) > e1:
+                        DUl = np.dot(np.linalg.inv(Kll),R)
+                        if np.linalg.norm(DUl) > e2:
+                            if np.linalg.norm(np.dot(DUl.T,R))*0.5 > e3:
+                                Ul = Ul + DUl.T
+                                for e in this.elementos:
+                                    U = np.append(Ul,Ur)
+                                    e.Ue = U[np.ix_(e.diccionario)]
+                                Kll , P = this.determinacionDeEstado()
+                this.RECORDU = np.append(this.RECORDU,U[np.ix_(gdl)])
+                this.RECORDF = np.append(this.RECORDF,P[np.ix_(gdl)])
+            return Ul.T
+        elif control == 'desplazamiento':
+            print('TODO')
+            for i in range(0,param[0]):
+                for i in this.elementos:
+                    U = np.append(Ul,Ur)
+                    i.Ue = U[np.ix_(i.diccionario)]
+                Kll , P = this.determinacionDeEstado()
+                A = np.dot(np.linalg.inv(Kll),(Fn-P))
+                Ul = Ul + A.T
+            return Ul.T
+
     def determinacionDeEstado(this):
+        """Función para realizar determinación de estado de un elemento
+        :return: Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura
+        """
         n=this.libres.size+this.restringidos.size
         Kll = np.zeros([n,n])
         Pl = np.zeros([n,1])
@@ -696,7 +790,7 @@ class Estructura:
         :param nodoInicial: Identificador del nodo inicial del elemento
         :param nodoFinal: Identificador del nodo final del elemento
         :param tipo: Tipo de elemento a crear (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param apoyoIzquierdo: #Todo Vamos por partes
+        :param apoyoIzquierdo:
         :param za:
         :param apoyoDerecho:
         :param zb:
@@ -710,12 +804,12 @@ class Estructura:
         """Función que permite añadir un nuevo resorte a la estructura
         :param rigidez: Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)
         :param nodo: Nodo sobre el que se va a agregar el resorte
-        :param completo: #TODO 1 x2
+        :param completo:
         """
         this.resortes = np.append(this.resortes, Resorte(this.nodos[nodo], rigidez, completo))
 
     def agregarSuperElementos(this, SE, SF, gdl):
-        """Función que permite realizar un superelemento con la estructura TODO 3 x2
+        """Función que permite realizar un superelemento con la estructura
         :param SE:
         :param SF:
         :param gdl: Número de grados de libertad de la estructura
@@ -724,7 +818,7 @@ class Estructura:
         this.superelementos = np.append(this.superelementos, supelemento)
 
     def definirConstraint(this, tipo, nodoInicial, nodoFinal):
-        """Función que permite definir un constraint en la estructura TODO 2 x2
+        """Función que permite definir un constraint en la estructura
         :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
         :param nodoInicial: Nodo inicial (objeto)
         :param nodoFinal: Nodo final (objeto)
@@ -781,7 +875,7 @@ class Estructura:
 
     def agregarCargaPresfuerzoAxial(this, el, q0, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento
-        :param el: TODO ¿Parámetro innecesario?
+        :param el:
         :param q0: Fuerza de presfuerzo en kiloNewtons
         :param elemento: Elemento sobre el cual se quieren definir las cargas de presfuerzo
         :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
@@ -942,7 +1036,7 @@ class Estructura:
         b = this.Kll[np.ix_(gdlVisibles, gdlVisibles)] - np.dot(klgc, this.Kll[np.ix_(gdlInvisibles, gdlVisibles)])
         return a, b
 
-    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',iteraciones=100):
+    def solucionar(this, verbose=True, dibujar=False, guardar=False, carpeta='Resultados',analisis='EL',param=[]):
         """Función que resuelve el método matricial de rigidez de la estructura
         :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
         :param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
@@ -960,8 +1054,8 @@ class Estructura:
             this.gdls = np.append(this.libres, this.restringidos)
             this.U = np.append(this.Ul, this.Ur)
         elif analisis == 'CR':
-            this.solucionar(verbose=False, dibujar=False, guardar=False, carpeta='',analisis='EL',iteraciones=1)
-            return this.newton([iteraciones])
+            #this.solucionar(verbose=False, dibujar=False, guardar=False, carpeta='',analisis='EL',param=[])
+            return this.newton(param)
         if verbose:
             print(
                 'Se ha terminado de calcular, puedes examinar la variable de la estructura para consultar los resultados.')
