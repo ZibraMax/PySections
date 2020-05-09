@@ -1,0 +1,361 @@
+
+
+ SAP2000 v20.2.0 Ultimate 64-bit (Analysis Build 9663/64)
+ File: C:\Users\david\Desktop\Analisis Avanzado\Python\SapsVarios\TAREA5_2.LOG
+
+
+
+
+ B E G I N   A N A L Y S I S                                2020/04/20  11:37:22
+
+
+ RUNNING ANALYSIS WITHIN THE GUI PROCESS
+ USING THE ADVANCED SOLVER (PROVIDES LIMITED INSTABILITY INFORMATION)
+
+ NUMBER OF JOINTS                          =          29
+    WITH RESTRAINTS                        =           4
+ NUMBER OF FRAME/CABLE/TENDON ELEMENTS     =          27
+ NUMBER OF LOAD PATTERNS                   =           1
+ NUMBER OF ACCELERATION LOADS              =           9
+ NUMBER OF LOAD CASES                      =           3
+
+ ADDRESSABLE PHYSICAL MEMORY (RAM)         =       7.879 GB
+
+ PARALLELIZATION OF ANALYSIS OPERATIONS:
+ (Env. variable SAPFIRE_NUM_THREADS        =           0)
+ NUMBER OF THREADS: STATE (AUTOMATIC)      =           4
+ NUMBER OF THREADS: STIFFNESS (AUTOMATIC)  =           4
+ NUMBER OF THREADS: EVENT (AUTOMATIC)      =           4
+ NUMBER OF THREADS: MOVE (AUTOMATIC)       =           4
+ NUMBER OF THREADS: RESPONSE (AUTOMATIC)   =           4
+ NUMBER OF THREADS: SOLVE (AUTOMATIC)      =           4
+ NUMBER OF THREADS: FORM (AUTOMATIC)       =           4
+
+
+ E L E M E N T   F O R M A T I O N                                      11:37:22
+
+
+
+ L I N E A R   E Q U A T I O N   S O L U T I O N                        11:37:22
+
+ FORMING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ TOTAL NUMBER OF EQUILIBRIUM EQUATIONS     =          99
+ NUMBER OF NON-ZERO STIFFNESS TERMS        =         666
+
+ * * * W A R N I N G * * *
+ THE STRUCTURE IS UNSTABLE OR ILL-CONDITIONED !!
+ CHECK THE STRUCTURE CAREFULLY FOR:
+ - INADEQUATE SUPPORT CONDITIONS, OR
+ - ONE OR MORE INTERNAL MECHANISMS, OR
+ - ZERO OR NEGATIVE STIFFNESS PROPERTIES, OR
+ - EXTREMELY LARGE STIFFNESS PROPERTIES, OR
+ - BUCKLING DUE TO P-DELTA OR GEOMETRIC NONLINEARITY, OR
+ - A FREQUENCY SHIFT (IF ANY) ONTO A NATURAL FREQUENCY
+
+ TO OBTAIN FURTHER INFORMATION:
+ - USE THE STANDARD SOLVER, OR
+ - RUN AN EIGEN ANALYSIS USING AUTO FREQUENCY SHIFTING (WITH
+   ADDITIONAL MASS IF NEEDED) AND INVESTIGATE THE MODE SHAPES
+
+
+ ---------------------------------
+ BASIC STABILITY CHECK FOR LINEAR LOAD CASES:
+    NUMBER OF NEGATIVE STIFFNESS EIGENVALUES SHOULD BE ZERO FOR STABILITY.
+    (NOTE: FURTHER CHECKS SHOULD BE CONSIDERED AS DEEMED NECESSARY,
+     SUCH AS REVIEWING EIGEN MODES FOR MECHANISMS AND RIGID-BODY MOTION)
+
+    NUMBER OF NEGATIVE EIGENVALUES         =           3
+
+ * * * W A R N I N G * * *
+ THE STRUCTURE IS UNSTABLE OR ILL-CONDITIONED !!
+ CHECK THE STRUCTURE CAREFULLY FOR:
+ - INADEQUATE SUPPORT CONDITIONS, OR
+ - ONE OR MORE INTERNAL MECHANISMS, OR
+ - ZERO OR NEGATIVE STIFFNESS PROPERTIES, OR
+ - EXTREMELY LARGE STIFFNESS PROPERTIES, OR
+ - BUCKLING DUE TO P-DELTA OR GEOMETRIC NONLINEARITY, OR
+ - A FREQUENCY SHIFT (IF ANY) ONTO A NATURAL FREQUENCY
+
+
+
+ L I N E A R   S T A T I C   C A S E S                                  11:37:22
+
+ USING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ TOTAL NUMBER OF CASES TO SOLVE            =           1
+ NUMBER OF CASES TO SOLVE PER BLOCK        =           1
+
+ LINEAR STATIC CASES TO BE SOLVED:
+
+ CASE: ACASE1
+
+
+ E I G E N   M O D A L   A N A L Y S I S                                11:37:22
+
+ CASE: MODAL
+
+ USING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ NUMBER OF STIFFNESS DEGREES OF FREEDOM    =          99
+ NUMBER OF MASS DEGREES OF FREEDOM         =          75
+ MAXIMUM NUMBER OF EIGEN MODES SOUGHT      =          12
+ MINIMUM NUMBER OF EIGEN MODES SOUGHT      =           1
+ NUMBER OF RESIDUAL-MASS MODES SOUGHT      =           0
+ NUMBER OF SUBSPACE VECTORS USED           =          24
+ RELATIVE CONVERGENCE TOLERANCE            =    1.00E-09
+
+ FREQUENCY SHIFT  (CENTER) (CYC/TIME)      =     .000000
+ FREQUENCY CUTOFF (RADIUS) (CYC/TIME)      =  -INFINITY-
+ ALLOW AUTOMATIC FREQUENCY SHIFTING        =         YES
+
+
+ Original stiffness at shift : EV= 0.0000000E+00, f=     .000000, T=  -INFINITY-
+ Number of eigenvalues below shift =      3
+ Found mode      1 of     12:  EV= 7.9049691E-13, f=    1.42E-07, T=  7.0669E+06
+ Found mode      2 of     12:  EV= 9.1319773E-13, f=    1.52E-07, T=  6.5750E+06
+ Found mode      3 of     12:  EV= 1.0825991E-12, f=    1.66E-07, T=  6.0387E+06
+ Found mode      4 of     12:  EV= 3.1379688E-12, f=    2.82E-07, T=  3.5470E+06
+ Found mode      5 of     12:  EV= 3.6384492E-12, f=    3.04E-07, T=  3.2940E+06
+ Found mode      6 of     12:  EV=-3.7385113E-12, f=   -3.08E-07, T= -3.2496E+06
+ Found mode      7 of     12:  EV= 5.5187105E-12, f=    3.74E-07, T=  2.6746E+06
+ Found mode      8 of     12:  EV=-5.6841255E-12, f=   -3.79E-07, T= -2.6354E+06
+ Found mode      9 of     12:  EV= 5.7325863E-12, f=    3.81E-07, T=  2.6242E+06
+ Found mode     10 of     12:  EV=-6.3933893E-12, f=   -4.02E-07, T= -2.4849E+06
+ Found mode     11 of     12:  EV= 6.9710889E-12, f=    4.20E-07, T=  2.3797E+06
+ Found mode     12 of     12:  EV= 8.7541712E-12, f=    4.71E-07, T=  2.1236E+06
+
+ NUMBER OF EIGEN MODES FOUND               =          12
+ NUMBER OF ITERATIONS PERFORMED            =           7
+ NUMBER OF STIFFNESS SHIFTS                =           0
+
+
+ N O N L I N E A R   S T A T I C   A N A L Y S I S                      11:37:22
+
+ CASE: DEAD
+
+ STARTING FROM ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ LOAD CONTROL TYPE                         =       FORCE
+ TYPE OF GEOMETRIC NONLINEARITY            = LARGE DISPLACEMENT AND P-DELTA
+ USE EVENT STEPPING                        =         YES
+ USE ITERATION                             =         YES
+ USE LINE SEARCH                           =          NO
+ EVENT LUMPING TOLERANCE                   =    0.010000
+ FORCE CONVERGENCE TOLERANCE (RELATIVE)    =    0.000100
+
+ Negative iterations are Constant-Stiffness
+ Positive iterations are Newton-Raphson
+
+  Saved    Null   Total  Iteration   Relative  Curr Step   Curr Sum    Max Sum
+  Steps   Steps   Steps  this Step  Unbalance       Size   of Steps   of Steps
+ (  100      50     200     -10/40   1.000000   0.010000   1.000000   1.000000)
+
+      0       0       1         -1  99777.558   0.010000    .000000    .000000
+      0       0       1         -2 5.6506E+14   0.010000    .000000    .000000
+      0       0       1         -3 1.1935E+15   0.010000    .000000    .000000
+      0       0       1         -4 9.0029E+14   0.010000    .000000    .000000
+      0       0       1         -5 1.4364E+15   0.010000    .000000    .000000
+      0       0       1          1  52514.504   0.010000    .000000    .000000
+      0       0       1          2   7650.372   0.010000    .000000    .000000
+      0       0       1          3   9165.228   0.010000    .000000    .000000
+      0       0       1          4   7495.765   0.010000    .000000    .000000
+      0       0       1          5   6770.270   0.010000    .000000    .000000
+      0       0       1          6   9395.838   0.010000    .000000    .000000
+      0       0       1          7   3745.709   0.010000    .000000    .000000
+      0       0       1          8   8516.296   0.010000    .000000    .000000
+      0       0       1          9   5040.099   0.010000    .000000    .000000
+      0       0       1         10   8019.354   0.010000    .000000    .000000
+      0       0       1         11   2372.254   0.010000    .000000    .000000
+      0       0       1         12   2003.710   0.010000    .000000    .000000
+      0       0       1         13 660.582750   0.010000    .000000    .000000
+      0       0       1         14 500.274970   0.010000    .000000    .000000
+      0       0       1         15 193.070129   0.010000    .000000    .000000
+      0       0       1         16 146.864651   0.010000    .000000    .000000
+      0       0       1         17 118.419156   0.010000    .000000    .000000
+      0       0       1         18 130.676224   0.010000    .000000    .000000
+      0       0       1         19  37.148623   0.010000    .000000    .000000
+      0       0       1         20  30.362422   0.010000    .000000    .000000
+      0       0       1         21   1.699544   0.010000    .000000    .000000
+      1       0       1  Conv   22   0.117191   0.010000   0.010000   0.010000
+      1       0       2          1  14.002371   0.010000   0.010000   0.010000
+      1       0       2          2  10.919880   0.010000   0.010000   0.010000
+      2       0       2  Conv   -3   0.419033   0.010000   0.020000   0.020000
+      2       0       3         -1   5.602552   0.010000   0.020000   0.020000
+      2       0       3         -2   5.358532   0.010000   0.020000   0.020000
+      2       0       3         -3   1.542791   0.010000   0.020000   0.020000
+      3       0       3  Conv   -4   0.698034   0.010000   0.030000   0.030000
+      3       0       4         -1   2.832759   0.010000   0.030000   0.030000
+      3       0       4         -2   2.662498   0.010000   0.030000   0.030000
+      4       0       4  Conv   -3   0.292001   0.010000   0.040000   0.040000
+      4       0       5         -1   2.493625   0.010000   0.040000   0.040000
+      4       0       5         -2   2.022735   0.010000   0.040000   0.040000
+      5       0       5  Conv   -3   0.156179   0.010000   0.050000   0.050000
+      5       0       6         -1   1.818080   0.010000   0.050000   0.050000
+      5       0       6         -2   1.441924   0.010000   0.050000   0.050000
+      6       0       6  Conv   -3   0.070627   0.010000   0.060000   0.060000
+      6       0       7         -1   1.419870   0.010000   0.060000   0.060000
+      6       0       7         -2   1.110115   0.010000   0.060000   0.060000
+      7       0       7  Conv   -3   0.038080   0.010000   0.070000   0.070000
+      7       0       8         -1   1.173814   0.010000   0.070000   0.070000
+      8       0       8  Conv   -2   0.885074   0.010000   0.080000   0.080000
+      8       0       9         -1   1.260635   0.010000   0.080000   0.080000
+      9       0       9  Conv   -2   0.659610   0.010000   0.090000   0.090000
+      9       0      10         -1   1.061658   0.010000   0.090000   0.090000
+     10       0      10  Conv   -2   0.649690   0.010000   0.100000   0.100000
+     10       0      11         -1   1.002545   0.010000   0.100000   0.100000
+     11       0      11  Conv   -2   0.536689   0.010000   0.110000   0.110000
+     12       0      12  Conv   -1   0.891969   0.010000   0.120000   0.120000
+     12       0      13         -1   1.503373   0.010000   0.120000   0.120000
+     12       0      13         -2   1.855750   0.010000   0.120000   0.120000
+     13       0      13  Conv   -3   0.261646   0.010000   0.130000   0.130000
+     14       0      14  Conv   -1   0.711822   0.010000   0.140000   0.140000
+     14       0      15         -1   1.313427   0.010000   0.140000   0.140000
+     14       0      15         -2   1.466491   0.010000   0.140000   0.140000
+     15       0      15  Conv   -3   0.169371   0.010000   0.150000   0.150000
+     16       0      16  Conv   -1   0.630028   0.010000   0.160000   0.160000
+     16       0      17         -1   1.201749   0.010000   0.160000   0.160000
+     16       0      17         -2   1.197651   0.010000   0.160000   0.160000
+     17       0      17  Conv   -3   0.117347   0.010000   0.170000   0.170000
+     18       0      18  Conv   -1   0.582725   0.010000   0.180000   0.180000
+     18       0      19         -1   1.131459   0.010000   0.180000   0.180000
+     18       0      19         -2   1.006765   0.010000   0.180000   0.180000
+     19       0      19  Conv   -3   0.085799   0.010000   0.190000   0.190000
+     20       0      20  Conv   -1   0.552968   0.010000   0.200000   0.200000
+     20       0      21         -1   1.084531   0.010000   0.200000   0.200000
+     21       0      21  Conv   -2   0.864442   0.010000   0.210000   0.210000
+     21       0      22         -1   1.003900   0.010000   0.210000   0.210000
+     22       0      22  Conv   -2   0.553798   0.010000   0.220000   0.220000
+     23       0      23  Conv   -1   0.761614   0.010000   0.230000   0.230000
+     23       0      24         -1   1.176620   0.010000   0.230000   0.230000
+     24       0      24  Conv   -2   0.742686   0.010000   0.240000   0.240000
+     25       0      25  Conv   -1   0.893749   0.010000   0.250000   0.250000
+     25       0      26         -1   1.248512   0.010000   0.250000   0.250000
+     26       0      26  Conv   -2   0.579316   0.010000   0.260000   0.260000
+     27       0      27  Conv   -1   0.760739   0.010000   0.270000   0.270000
+     27       0      28         -1   1.149311   0.010000   0.270000   0.270000
+     28       0      28  Conv   -2   0.531887   0.010000   0.280000   0.280000
+     29       0      29  Conv   -1   0.722107   0.010000   0.290000   0.290000
+     29       0      30         -1   1.117406   0.010000   0.290000   0.290000
+     30       0      30  Conv   -2   0.483384   0.010000   0.300000   0.300000
+     31       0      31  Conv   -1   0.684546   0.010000   0.310000   0.310000
+     31       0      32         -1   1.088143   0.010000   0.310000   0.310000
+     32       0      32  Conv   -2   0.442691   0.010000   0.320000   0.320000
+     33       0      33  Conv   -1   0.654303   0.010000   0.330000   0.330000
+     33       0      34         -1   1.065059   0.010000   0.330000   0.330000
+     34       0      34  Conv   -2   0.407567   0.010000   0.340000   0.340000
+     35       0      35  Conv   -1   0.629312   0.010000   0.350000   0.350000
+     35       0      36         -1   1.046387   0.010000   0.350000   0.350000
+     36       0      36  Conv   -2   0.377113   0.010000   0.360000   0.360000
+     37       0      37  Conv   -1   0.608543   0.010000   0.370000   0.370000
+     37       0      38         -1   1.031137   0.010000   0.370000   0.370000
+     38       0      38  Conv   -2   0.350394   0.010000   0.380000   0.380000
+     39       0      39  Conv   -1   0.591126   0.010000   0.390000   0.390000
+     39       0      40         -1   1.018567   0.010000   0.390000   0.390000
+     40       0      40  Conv   -2   0.326764   0.010000   0.400000   0.400000
+     41       0      41  Conv   -1   0.576383   0.010000   0.410000   0.410000
+     41       0      42         -1   1.008080   0.010000   0.410000   0.410000
+     42       0      42  Conv   -2   0.305888   0.010000   0.420000   0.420000
+     43       0      43  Conv   -1   0.563951   0.010000   0.430000   0.430000
+     44       0      44  Conv   -1   0.999354   0.010000   0.440000   0.440000
+     44       0      45         -1   1.460854   0.010000   0.440000   0.440000
+     45       0      45  Conv   -2   0.653181   0.010000   0.450000   0.450000
+     46       0      46  Conv   -1   0.803082   0.010000   0.460000   0.460000
+     46       0      47         -1   1.147409   0.010000   0.460000   0.460000
+     47       0      47  Conv   -2   0.251528   0.010000   0.470000   0.470000
+     48       0      48  Conv   -1   0.535022   0.010000   0.480000   0.480000
+     49       0      49  Conv   -1   0.980294   0.010000   0.490000   0.490000
+     49       0      50         -1   1.444467   0.010000   0.490000   0.490000
+     50       0      50  Conv   -2   0.564935   0.010000   0.500000   0.500000
+     51       0      51  Conv   -1   0.732592   0.010000   0.510000   0.510000
+     51       0      52         -1   1.097279   0.010000   0.510000   0.510000
+     52       0      52  Conv   -2   0.220457   0.010000   0.520000   0.520000
+     53       0      53  Conv   -1   0.519923   0.010000   0.530000   0.530000
+     54       0      54  Conv   -1   0.969921   0.010000   0.540000   0.540000
+     54       0      55         -1   1.435003   0.010000   0.540000   0.540000
+     55       0      55  Conv   -2   0.494864   0.010000   0.550000   0.550000
+     56       0      56  Conv   -1   0.679687   0.010000   0.560000   0.560000
+     56       0      57         -1   1.061315   0.010000   0.560000   0.560000
+     57       0      57  Conv   -2   0.195553   0.010000   0.570000   0.570000
+     58       0      58  Conv   -1   0.509017   0.010000   0.580000   0.580000
+     59       0      59  Conv   -1   0.962556   0.010000   0.590000   0.590000
+     59       0      60         -1   1.428301   0.010000   0.590000   0.590000
+     60       0      60  Conv   -2   0.438745   0.010000   0.600000   0.600000
+     61       0      61  Conv   -1   0.639776   0.010000   0.610000   0.610000
+     61       0      62         -1   1.035225   0.010000   0.610000   0.610000
+     62       0      62  Conv   -2   0.175179   0.010000   0.620000   0.620000
+     63       0      63  Conv   -1   0.500941   0.010000   0.630000   0.630000
+     64       0      64  Conv   -1   0.957177   0.010000   0.640000   0.640000
+     64       0      65         -1   1.423416   0.010000   0.640000   0.640000
+     65       0      65  Conv   -2   0.392921   0.010000   0.650000   0.650000
+     66       0      66  Conv   -1   0.609143   0.010000   0.660000   0.660000
+     66       0      67         -1   1.015859   0.010000   0.660000   0.660000
+     67       0      67  Conv   -2   0.158249   0.010000   0.670000   0.670000
+     68       0      68  Conv   -1   0.494839   0.010000   0.680000   0.680000
+     69       0      69  Conv   -1   0.953157   0.010000   0.690000   0.690000
+     69       0      70         -1   1.419770   0.010000   0.690000   0.690000
+     70       0      70  Conv   -2   0.354889   0.010000   0.700000   0.700000
+     71       0      71  Conv   -1   0.585270   0.010000   0.710000   0.710000
+     71       0      72         -1   1.001193   0.010000   0.710000   0.710000
+     72       0      72  Conv   -2   0.143990   0.010000   0.720000   0.720000
+     73       0      73  Conv   -1   0.490146   0.010000   0.730000   0.730000
+     74       0      74  Conv   -1   0.950092   0.010000   0.740000   0.740000
+     74       0      75         -1   1.416993   0.010000   0.740000   0.740000
+     75       0      75  Conv   -2   0.322882   0.010000   0.750000   0.750000
+     76       0      76  Conv   -1   0.566414   0.010000   0.760000   0.760000
+     77       0      77  Conv   -1   0.989888   0.010000   0.770000   0.770000
+     77       0      78         -1   1.442664   0.010000   0.770000   0.770000
+     78       0      78  Conv   -2   0.300809   0.010000   0.780000   0.780000
+     79       0      79  Conv   -1   0.554280   0.010000   0.790000   0.790000
+     80       0      80  Conv   -1   0.982888   0.010000   0.800000   0.800000
+     80       0      81         -1   1.437673   0.010000   0.800000   0.800000
+     81       0      81  Conv   -2   0.286162   0.010000   0.810000   0.810000
+     82       0      82  Conv   -1   0.546471   0.010000   0.820000   0.820000
+     83       0      83  Conv   -1   0.978336   0.010000   0.830000   0.830000
+     83       0      84         -1   1.434341   0.010000   0.830000   0.830000
+     84       0      84  Conv   -2   0.272476   0.010000   0.840000   0.840000
+     85       0      85  Conv   -1   0.539435   0.010000   0.850000   0.850000
+     86       0      86  Conv   -1   0.974278   0.010000   0.860000   0.860000
+     86       0      87         -1   1.431381   0.010000   0.860000   0.860000
+     87       0      87  Conv   -2   0.259909   0.010000   0.870000   0.870000
+     88       0      88  Conv   -1   0.533210   0.010000   0.880000   0.880000
+     89       0      89  Conv   -1   0.970720   0.010000   0.890000   0.890000
+     89       0      90         -1   1.428792   0.010000   0.890000   0.890000
+     90       0      90  Conv   -2   0.248326   0.010000   0.900000   0.900000
+     91       0      91  Conv   -1   0.527677   0.010000   0.910000   0.910000
+     92       0      92  Conv   -1   0.967584   0.010000   0.920000   0.920000
+     92       0      93         -1   1.426516   0.010000   0.920000   0.920000
+     93       0      93  Conv   -2   0.237620   0.010000   0.930000   0.930000
+     94       0      94  Conv   -1   0.522745   0.010000   0.940000   0.940000
+     95       0      95  Conv   -1   0.964811   0.010000   0.950000   0.950000
+     95       0      96         -1   1.424507   0.010000   0.950000   0.950000
+     96       0      96  Conv   -2   0.227699   0.010000   0.960000   0.960000
+     97       0      97  Conv   -1   0.518334   0.010000   0.970000   0.970000
+     98       0      98  Conv   -1   0.962348   0.010000   0.980000   0.980000
+     98       0      99         -1   1.422726   0.010000   0.980000   0.980000
+     99       0      99  Conv   -2   0.218483   0.010000   0.990000   0.990000
+    100       0     100  Conv   -1   0.514379   0.010000   1.000000   1.000000
+
+ ----------------------------------------
+ BASIC STABILITY CHECK FOR FORCE-CONTROLLED NONLINEAR STATIC LOAD CASES:
+    NUMBER OF NEGATIVE STIFFNESS EIGENVALUES SHOULD BE ZERO FOR STABILITY.
+    (NOTE: FURTHER CHECKS SHOULD BE CONSIDERED AS DEEMED NECESSARY)
+
+    NUMBER FOUND AT FINAL CONVERGED STATE  =           0,  OK.
+ ----------------------------------------
+
+ NUMBER OF STIFFNESS FORMATIONS/SOLUTIONS  =         124
+
+ TIME FOR INITIALIZING ANALYSIS            =        0.00
+ TIME FOR CONTROLLING ANALYSIS             =        0.04
+ TIME FOR UPDATING LOADS AND STATE         =        0.26
+ TIME FOR FORMING STIFFNESS MATRIX         =        0.08
+ TIME FOR SOLVING STIFFNESS MATRIX         =        0.30
+ TIME FOR CALCULATING DISPLACEMENTS        =        0.32
+ TIME FOR DETERMINING EVENTS               =        0.04
+ TIME FOR SAVING RESULTS                   =        0.06
+                                               ----------
+ TOTAL TIME FOR THIS ANALYSIS              =        1.10
+
+
+ A N A L Y S I S   C O M P L E T E                          2020/04/20  11:37:23

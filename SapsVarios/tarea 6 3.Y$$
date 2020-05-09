@@ -1,0 +1,18 @@
+  RespType: Case     ,  File: .Y00,  Records:                     0
+                 16808
+  RespType: Displ    ,  File: .Y01,  Records:                     0
+                 38016
+  RespType: React    ,  File: .Y03,  Records:                     0
+                 38016
+  RespType: Frame    ,  File: .Y05,  Records:                     0
+                282312
+  RespType: Spring   ,  File: .Y02,  Records:                     0
+                 12640
+  RespType: Facet    ,  File: .Y06,  Records:                     0
+                257796
+  RespType: StrainAge,  File: .Y04,  Records:                     0
+                 12672
+  StateType: Frame    ,  File: .Y07,  Records:                     0
+                  4112
+  StateType: Facet    ,  File: .Y08,  Records:                     0
+                  1904

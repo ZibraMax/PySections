@@ -1,0 +1,59 @@
+
+
+ SAP2000 v20.2.0 Ultimate 64-bit (Analysis Build 9663/64)
+ File: C:\Users\david\Desktop\Analisis Avanzado\Python\SapsVarios\ESPERAK.LOG
+
+
+
+
+ B E G I N   A N A L Y S I S                                2020/05/07  13:14:48
+
+
+ RUNNING ANALYSIS WITHIN THE GUI PROCESS
+ USING THE ADVANCED SOLVER (PROVIDES LIMITED INSTABILITY INFORMATION)
+
+ NUMBER OF JOINTS                          =           2
+    WITH RESTRAINTS                        =           2
+ NUMBER OF FRAME/CABLE/TENDON ELEMENTS     =           1
+ NUMBER OF LOAD PATTERNS                   =           1
+ NUMBER OF ACCELERATION LOADS              =           9
+ NUMBER OF LOAD CASES                      =           1
+
+ ADDRESSABLE PHYSICAL MEMORY (RAM)         =       7.879 GB
+
+ PARALLELIZATION OF ANALYSIS OPERATIONS:
+ (Env. variable SAPFIRE_NUM_THREADS        =           0)
+ NUMBER OF THREADS: STATE (AUTOMATIC)      =           4
+ NUMBER OF THREADS: STIFFNESS (AUTOMATIC)  =           4
+ NUMBER OF THREADS: EVENT (AUTOMATIC)      =           4
+ NUMBER OF THREADS: MOVE (AUTOMATIC)       =           4
+ NUMBER OF THREADS: RESPONSE (AUTOMATIC)   =           4
+ NUMBER OF THREADS: SOLVE (AUTOMATIC)      =           4
+ NUMBER OF THREADS: FORM (AUTOMATIC)       =           4
+
+
+ E L E M E N T   F O R M A T I O N                                      13:14:49
+
+
+
+ L I N E A R   E Q U A T I O N   S O L U T I O N                        13:14:49
+
+ FORMING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ TOTAL NUMBER OF EQUILIBRIUM EQUATIONS     =           0
+ NUMBER OF NON-ZERO STIFFNESS TERMS        =           0
+
+
+ L I N E A R   S T A T I C   C A S E S                                  13:14:49
+
+ USING STIFFNESS AT ZERO (UNSTRESSED) INITIAL CONDITIONS
+
+ TOTAL NUMBER OF CASES TO SOLVE            =           1
+ NUMBER OF CASES TO SOLVE PER BLOCK        =           1
+
+ LINEAR STATIC CASES TO BE SOLVED:
+
+ CASE: DEAD
+
+
+ A N A L Y S I S   C O M P L E T E                          2020/05/07  13:14:49
