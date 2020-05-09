@@ -1,6 +1,6 @@
 import numpy as np
 from enum import Enum
-
+from IPython.display import clear_output
 
 class TipoSeccion(Enum):
     "Clase auxiliar para enumerar los tipos de secciones transversales (Rectangular, Circular o General)"
@@ -19,7 +19,7 @@ class Tipo(Enum):
 
 class Seccion:
     "Clase que representa la sección de los elementos a utilizar, asi como los materiales que la componen"
-    def __init__(this, nombre, tipo, propiedades, material):
+    def __init__(this, nombre, tipo, propiedades, material,qy=[[9*10**9],[9*10**9],[9*10**9]]):
         """
         Método de inicialización de las secciones
         :param nombre: Nombre definido para la sección a crear
@@ -27,6 +27,7 @@ class Seccion:
         :param propiedades: Dimensiones en metros relacionadas al tipo de geometría (Rectangular: base y altura, Circular: diámetro, General: área, inercia y área de cortante)
         :param material: Tipo de material a utilizar
         """
+        this.qy = qy
         this.propiedadesGeometricas = propiedades
         this.material = material
         this.nombre = nombre
@@ -117,7 +118,7 @@ class Nodo:
 
 class Material:
     "Clase auxiliar para definir el material de los elementos"
-    def __init__(this, nombre, E, v, alfa, gamma):
+    def __init__(this, nombre, E, v, alfa, gamma, sh=1):
         """Método de inicialización de los materiales
         :param nombre: Nombre del material a crear
         :param E: Modulo de elasticidad del material a crear en kiloPascales
@@ -130,6 +131,7 @@ class Material:
         this.v = v
         this.alfa = alfa
         this.gamma = gamma
+        this.sh=sh
 
 
 class Elemento:
@@ -223,7 +225,7 @@ class Elemento:
         elif this.Tipo == Tipo.DOS:
             kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,kb3]])
         elif this.Tipo == Tipo.TRES:
-            kb = np.array([[E*A/L,0,0],[0,0,kb3],[0,0,0]])
+            kb = np.array([[E*A/L,0,0],[0,kb3,0],[0,0,0]])
         else:
             kb = np.array([[E*A/L,0,0],[0,0,0],[0,0,0]])
         return kb
@@ -234,13 +236,7 @@ class Elemento:
         this.kb0 = this.hallarKb()
         #Matriz singular
         this.q0 = this.p0[np.ix_([3,2,5]),0].T
-        if this.Tipo == Tipo.CUATRO:
-            this.v0 = np.array([[1/this.kb0[0][0]*this.p0[0]],[0],[0]])
-        elif this.Tipo == Tipo.UNO:
-            this.v0 = np.dot(np.linalg.inv(this.kb0),this.q0)
-        else:
-            this.v0 = np.array([[0],[0],[0]])
-
+        this.v0 = np.dot(np.linalg.pinv(this.kb0),this.q0)
     def calcularv(this):
         """Función que permite hallar los desplazamientos básicos del elemento deformado
         """
@@ -253,7 +249,7 @@ class Elemento:
         this.L = np.sqrt(this.deltax**2+this.deltay**2)
         this.theta = np.arcsin(this.deltay/this.L)
         this.deltatheta = this.theta-this.Angulo
-
+        print(this.deltatheta)
         if this.Tipo == Tipo.UNO:
             v1 = this.L-this.Longitud
             v2 = this.Ue[2]-this.deltatheta
@@ -349,11 +345,11 @@ class Elemento:
     def fuerzasBasicas(this):
         """Función asociada a ls matriz de rigidez básica y las matrices de transformación geométrica (lambda y T)
         """
-        q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
-        q1 = np.min([q1,-1*10**-5])
-        this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
-        this.kb = this.hallarKb(this.psi)
-        this.q = np.dot(this.kb,this.v-this.v0)
+        Re,v,q,kb,ve,vp = estadoPlasticidadConcentrada(this.v,this.seccion.material.sh,this.seccion.qy,this.E*this.Inercia,this.Longitud,this.E*this.Area,tipo = this.Tipo,v0 = this.v0)
+        this.kb = kb
+        this.ve = ve
+        this.vp = vp
+        this.q = q
         c = np.cos(this.theta)
         s = np.sin(this.theta)
         l = this.L
@@ -385,7 +381,7 @@ class Elemento:
         this.matrizMaterial = matrizMaterial
         this.matrizGlobal = parteAxial
         this.Ke1 = parteAxial + matrizMaterial
-        this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0)
+        this.p1 = np.dot(this.T.T,this.q)+np.dot(this.lbd,this.p0) #Pensar en un malparido metodo numerico
         return this.Ke1,this.p1
 
     def calcularVectorDeFuerzas(this):
@@ -709,8 +705,8 @@ class Estructura:
                         dlmin = param[3]
                         dlmax = param[3]
                     elif incremento == 'bergan':
-                        num = np.dot(Fn.T,np.dot(np.linalg.inv(Kll0),Fn))
-                        den = np.dot(Fn.T,np.dot(np.linalg.inv(Kll),Fn))
+                        num = np.dot(Fn.T,np.dot(np.linalg.pinv(Kll0),Fn))
+                        den = np.dot(Fn.T,np.dot(np.linalg.pinv(Kll),Fn))
                         dli = param[3]*(np.dot(num,1/den))**gamma
                     elif incremento == 'numiter':
                         dli = param[3]*((i)/Nd)**gamma
@@ -726,7 +722,7 @@ class Estructura:
                 for j in range(1,Nj):
                     R = F-P
                     if np.linalg.norm(R) > e1:
-                        DUl = np.dot(np.linalg.inv(Kll),R)
+                        DUl = np.dot(np.linalg.pinv(Kll),R)
                         if np.linalg.norm(DUl) > e2:
                             if np.linalg.norm(np.dot(DUl.T,R))*0.5 > e3:
                                 Ul = Ul + DUl.T
@@ -744,12 +740,12 @@ class Estructura:
                     U = np.append(Ul,Ur)
                     i.Ue = U[np.ix_(i.diccionario)]
                 Kll , P = this.determinacionDeEstado()
-                A = np.dot(np.linalg.inv(Kll),(Fn-P))
+                A = np.dot(np.linalg.pinv(Kll),(Fn-P))
                 Ul = Ul + A.T
             return Ul.T
 
     def determinacionDeEstado(this):
-        """Función para realizar determinación de estado de un elemento
+        """Función para realizar determinación de estado de la estructura.
         :return: Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura
         """
         n=this.libres.size+this.restringidos.size
@@ -1440,3 +1436,61 @@ def tridiag(a, b, c, n):
     return np.diag(va[0], -1) + np.diag(vb[0], 0) + np.diag(vc[0], 1)
 
 
+def estadoPlasticidadConcentrada(vt,sh,qy,EI,l,EA=1,tipo = Tipo.UNO,v0=[[0],[0],[0]],q=[[0],[0],[0]]):
+    qy = np.array(qy)
+    vt = np.array(vt)
+    v0 = np.array(v0)
+    q = np.array(q)
+    error = 1
+    i = 1
+    while error > 1*10**-10 and i<50:
+        psi = calcularPsi(q,l,EI)
+        fe = _fe(psi,l,EI,EA,tipo)
+        fp = _fp(q,qy,EI,l,sh)
+        kb = np.linalg.pinv(fe + fp)
+        ve = fe @ q
+        vp = fp @ (q - np.abs(qy)*np.sign(q))
+        v = vp + ve
+        Re = vt - v0- v
+        dq = kb @ Re
+        q = q + dq
+        i +=1
+        error = np.linalg.norm(Re)
+        clear_output(wait=True)
+        print('Error q: ' + format(error) + ' iteracion ' + format(i))
+    return Re,v,q,kb,ve,vp
+def _fp(q,qy,EI,l,sh,sh2=None):
+    alpha1 = 1*(1-(np.abs(q[1][0]) <= np.abs(qy[1][0])))
+    alpha2 = 1*(1-(np.abs(q[2][0]) <= np.abs(qy[2][0])))
+    kbc2 = (6*EI/l)*sh
+    if sh2 == None:
+        sh2 = sh
+    kbc3 = (6*EI/l)*sh2
+    return np.array([[0,0,0],[0,alpha1/kbc2,0],[0,0,alpha2/kbc3]])
+def _fe(psi,l,EI,EA,tipo=Tipo.UNO):
+    E = 1
+    I = EI
+    L = l
+    if psi < 0.001:
+        kb1 = 4*E*I/L
+        kb2 = 2*E*I/L
+        kb3 = 3*E*I/L
+    else:
+        kb1=((E*I)/(L))*((psi*(np.sin(psi)-psi*np.cos(psi)))/(2-2*np.cos(psi)-psi*np.sin(psi)))
+        kb2=(E*I*(psi*(psi-np.sin(psi))))/(L*(2-2*np.cos(psi)-psi*np.sin(psi)))
+        kb3=(L*(np.sin(psi)-psi*np.cos(psi)))/(E*I*(psi**2*np.sin(psi)))
+    fe1 = (kb1)/(kb1**2-kb2**2)
+    fe2 = -(kb2)/(kb1**2-kb2**2)
+    fe3 = 1/kb3
+    if tipo == Tipo.UNO:
+        fe = np.array([[EA/L,0,0],[0,fe1,fe2],[0,fe2,fe1]])
+    elif tipo == Tipo.DOS:
+        fe = np.array([[EA/L,0,0],[0,0,0],[0,0,fe3]])
+    elif tipo == Tipo.TRES:
+        fe = np.array([[EA/L,0,0],[0,0,fe3],[0,0,0]])
+    else:
+        fe = np.array([[EA/L,0,0],[0,0,0],[0,0,0]])
+    return fe
+def calcularPsi(q,l,EI):
+    q1 = np.min([q[0][0],-1*10**-5])
+    return np.sqrt(-q1*l**2/EI)
