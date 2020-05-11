@@ -1,5 +1,38 @@
-import numpy as np
 import quadpy
+
+
+def estadoPlasticidadConcentradaFeo(vt, sh, qy, EI, l, EA=1, v0=[[0], [0], [0]]):
+    qy = np.array(qy)
+    vt = np.array(vt)
+    v0 = np.array(v0)
+    q = np.array([np.array([[0], [0], [0]])], dtype=np.ndarray)
+    v = np.array([])
+    psi = calcularPsi(q[-1], l, EI)
+    fp = np.array([_fp(q[-1], qy, EI, l, sh)])
+    fe = np.array([_fe(psi, l, EI, EA)])
+    flex = fe[-1] + fp[-1]
+    kb = np.array([np.linalg.inv(flex)])
+    signos = np.sign(q[-1])
+    vp = np.array([np.dot(fp[-1], (q[-1] - qy * (signos)))])
+    v = np.array([np.array([[0], [0], [0]])], dtype=np.ndarray)
+    ve = np.array([np.array([[0], [0], [0]])])
+    i = 0
+    while i < 30:
+        Re = vt - v[-1] - v0
+        dq = np.dot(kb[-1], Re)
+        q = np.append(q, [q[-1] + dq], axis=0)
+        fp = np.append(fp, [_fp(q[-1], qy, EI, l, sh)], axis=0)
+        psi = calcularPsi(q[-1], l, EI)
+        fe = np.append(fe, [_fe(psi, l, EI, EA)], axis=0)
+        flex = fe[-1] + fp[-1]
+        kb = np.append(kb, [np.linalg.inv(flex)], axis=0)
+        signos = np.sign(q[-1])
+        vp = np.append(vp, [np.dot(fp[-1], (q[-1] - qy * (signos)))], axis=0)
+        ve = np.append(ve, [np.dot(fe[-1], q[-1])], axis=0)
+        v = np.append(v, [ve[-1] + vp[-1]], axis=0)
+        i += 1
+    return Re, v, q, kb, ve, vp
+
 
 def estadoPlasticidadConcentrada(vt, sh, qy, EI, l, EA=1, v0=[[0], [0], [0]], q=[[0], [0], [0]]):
     qy = np.array(qy)
@@ -96,7 +129,8 @@ def _esfdeft(epsilon, sh=0.015):  # CURVA ESFUERZO DEFORMACION
     sh = 1 - sh
     ey = 0.001725
     et = 200000000 - sh * 200000000 * (np.abs(epsilon) > ey)
-    s = et * (epsilon - ey * (np.abs(epsilon) > ey)) + ey * np.sign(epsilon) * 200000000 * (np.abs(epsilon) > ey)
+    s = et * (epsilon - ey * np.sign(epsilon) * (np.abs(epsilon) > ey)) + ey * np.sign(epsilon) * 200000000 * (
+                np.abs(epsilon) > ey)
     return s, et
 
 

@@ -19,7 +19,7 @@ class Tipo(Enum):
 
 class Seccion:
     "Clase que representa la sección de los elementos a utilizar, asi como los materiales que la componen"
-    def __init__(this, nombre, tipo, propiedades, material,qy=[[9*10**9],[9*10**9],[9*10**9]]):
+    def __init__(this, nombre, tipo, propiedades, material,qy=None):
         """
         Método de inicialización de las secciones
         :param nombre: Nombre definido para la sección a crear
@@ -249,7 +249,6 @@ class Elemento:
         this.L = np.sqrt(this.deltax**2+this.deltay**2)
         this.theta = np.arcsin(this.deltay/this.L)
         this.deltatheta = this.theta-this.Angulo
-        print(this.deltatheta)
         if this.Tipo == Tipo.UNO:
             v1 = this.L-this.Longitud
             v2 = this.Ue[2]-this.deltatheta
@@ -350,6 +349,29 @@ class Elemento:
         this.ve = ve
         this.vp = vp
         this.q = q
+        c = np.cos(this.theta)
+        s = np.sin(this.theta)
+        l = this.L
+        this.T = np.array([[-c,-s/l,-s/l],[-s,c/l,c/l],[0,1,0],[c,s/l,s/l],[s,-c/l,-c/l],[0,0,1]]).T
+
+        this.lbd = np.zeros([6, 6])
+        this.lbd[0, 0] = c
+        this.lbd[0, 1] = s
+        this.lbd[1, 0] = -s
+        this.lbd[1, 1] = c
+        this.lbd[2, 2] = 1
+        this.lbd[3, 3] = c
+        this.lbd[3, 4] = s
+        this.lbd[4, 3] = -s
+        this.lbd[4, 4] = c
+        this.lbd[5, 5] = 1
+    def fuerzasBasicasEL(this):
+        q1 = this.E*this.Area/this.Longitud*(this.v[0][0]-this.v0[0][0])
+        q1 = np.min([q1,-1*10**-5])
+        
+        this.psi = np.sqrt(-q1*this.Longitud**2/this.E/this.Inercia)
+        this.kb = this.hallarKb(this.psi)
+        this.q = this.kb @ (this.v-this.v0)
         c = np.cos(this.theta)
         s = np.sin(this.theta)
         l = this.L
@@ -754,7 +776,10 @@ class Estructura:
         for i in this.elementos:
             i.determinarV0()
             i.calcularv()
-            i.fuerzasBasicas()
+            if i.seccion.qy == None:
+               i.fuerzasBasicasEL()
+            else:
+                i.fuerzasBasicas()
             [Ke, P] = i.matrizYFuerzas()
             Kll[np.ix_(i.diccionario,i.diccionario)] = Kll[np.ix_(i.diccionario,i.diccionario)] + Ke
             Pl[np.ix_(i.diccionario)] = Pl[np.ix_(i.diccionario)] + P
@@ -1001,7 +1026,7 @@ class Estructura:
         if this.Ur.size == 0:
             this.Ur = np.zeros([this.restringidos.size, 1])
         this.Fl = this.Fn - this.F0
-        this.Ul = np.dot(np.linalg.inv(this.Kll), (this.Fl[this.libres] - np.dot(this.Klr, this.Ur)))
+        this.Ul = np.dot(np.linalg.pinv(this.Kll), (this.Fl[this.libres] - np.dot(this.Klr, this.Ur)))
 
     def calcularReacciones(this):
         """Función que calcula las reacciones de los grados de libertad restringidos de la estructura
@@ -1027,7 +1052,7 @@ class Estructura:
         this.calcularSubmatrices()
         this.Fl = this.Fn - this.F0
         klgc = np.dot(this.Kll[np.ix_(gdlVisibles, gdlInvisibles)],
-                      (np.linalg.inv(this.Kll[np.ix_(gdlInvisibles, gdlInvisibles)])))
+                      (np.linalg.pinv(this.Kll[np.ix_(gdlInvisibles, gdlInvisibles)])))
         a = this.Fl[np.ix_(gdlVisibles)] - np.dot(klgc, this.Fl[np.ix_(gdlInvisibles)])
         b = this.Kll[np.ix_(gdlVisibles, gdlVisibles)] - np.dot(klgc, this.Kll[np.ix_(gdlInvisibles, gdlVisibles)])
         return a, b
@@ -1435,62 +1460,72 @@ def tridiag(a, b, c, n):
     vc[0, :] = c
     return np.diag(va[0], -1) + np.diag(vb[0], 0) + np.diag(vc[0], 1)
 
-
-def estadoPlasticidadConcentrada(vt,sh,qy,EI,l,EA=1,tipo = Tipo.UNO,v0=[[0],[0],[0]],q=[[0],[0],[0]]):
+def estadoPlasticidadConcentrada(vt,sh,qy,EI,l,EA,tipo,v0,q=[[0],[0],[0]]):
     qy = np.array(qy)
     vt = np.array(vt)
     v0 = np.array(v0)
     q = np.array(q)
     error = 1
     i = 1
-    while error > 1*10**-10 and i<50:
-        psi = calcularPsi(q,l,EI)
+    while error > 1*10**-10 and i <= 50:
+        q1 = np.min([q[0][0],-1*10**-5])
+        psi = np.sqrt(((-q1)*l**2)/(EI))
         fe = _fe(psi,l,EI,EA,tipo)
-        fp = _fp(q,qy,EI,l,sh)
+        fp = _fp(q,qy,EI,l,sh,EA)
+        if np.abs(q[0][0]) > np.abs(qy[0][0]):
+            fe = np.zeros([3,3])
+            fp = np.zeros([3,3])
         kb = np.linalg.pinv(fe + fp)
         ve = fe @ q
         vp = fp @ (q - np.abs(qy)*np.sign(q))
         v = vp + ve
-        Re = vt - v0- v
+        Re = vt - v0 - v
         dq = kb @ Re
+        if np.abs(q[0][0]) > np.abs(qy[0][0]):
+            q = [[qy[0][0]],[0],[0]]
+            ve = [[l/EA*qy[0][0]],[0],[0]]
+            vp = vt - ve
+            v = vp + ve
+            Re = np.zeros([3,1])
+            kb = np.zeros([3,3])
+            break
         q = q + dq
         i +=1
         error = np.linalg.norm(Re)
-        clear_output(wait=True)
         print('Error q: ' + format(error) + ' iteracion ' + format(i))
     return Re,v,q,kb,ve,vp
-def _fp(q,qy,EI,l,sh,sh2=None):
+
+def _fp(q,qy,EI,l,sh,EA=1,sh2=None):
+    alpha0 = 1*(1-(np.abs(q[0][0]) <= np.abs(qy[0][0])))
     alpha1 = 1*(1-(np.abs(q[1][0]) <= np.abs(qy[1][0])))
     alpha2 = 1*(1-(np.abs(q[2][0]) <= np.abs(qy[2][0])))
     kbc2 = (6*EI/l)*sh
     if sh2 == None:
         sh2 = sh
     kbc3 = (6*EI/l)*sh2
-    return np.array([[0,0,0],[0,alpha1/kbc2,0],[0,0,alpha2/kbc3]])
+    return np.array([[alpha0*l/EA,0,0],[0,alpha1/kbc2,0],[0,0,alpha2/kbc3]])
 def _fe(psi,l,EI,EA,tipo=Tipo.UNO):
-    E = 1
-    I = EI
     L = l
     if psi < 0.001:
-        kb1 = 4*E*I/L
-        kb2 = 2*E*I/L
-        kb3 = 3*E*I/L
+        kb1 = 4*EI/L
+        kb2 = 2*EI/L
+        kb3 = 3*EI/L
     else:
-        kb1=((E*I)/(L))*((psi*(np.sin(psi)-psi*np.cos(psi)))/(2-2*np.cos(psi)-psi*np.sin(psi)))
-        kb2=(E*I*(psi*(psi-np.sin(psi))))/(L*(2-2*np.cos(psi)-psi*np.sin(psi)))
-        kb3=(L*(np.sin(psi)-psi*np.cos(psi)))/(E*I*(psi**2*np.sin(psi)))
+        kb1=((EI)/(L))*((psi*(np.sin(psi)-psi*np.cos(psi)))/(2-2*np.cos(psi)-psi*np.sin(psi)))
+        kb2=(EI*(psi*(psi-np.sin(psi))))/(L*(2-2*np.cos(psi)-psi*np.sin(psi)))
+        kb3=(L*(np.sin(psi)-psi*np.cos(psi)))/(EI*(psi**2*np.sin(psi)))
     fe1 = (kb1)/(kb1**2-kb2**2)
     fe2 = -(kb2)/(kb1**2-kb2**2)
-    fe3 = 1/kb3
+    fe3 = kb3
     if tipo == Tipo.UNO:
-        fe = np.array([[EA/L,0,0],[0,fe1,fe2],[0,fe2,fe1]])
+        fe = np.array([[L/EA,0,0],[0,fe1,fe2],[0,fe2,fe1]])
     elif tipo == Tipo.DOS:
-        fe = np.array([[EA/L,0,0],[0,0,0],[0,0,fe3]])
+        fe = np.array([[L/EA,0,0],[0,0,0],[0,0,fe3]])
     elif tipo == Tipo.TRES:
-        fe = np.array([[EA/L,0,0],[0,0,fe3],[0,0,0]])
+        fe = np.array([[L/EA,0,0],[0,fe3,0],[0,0,0]])
     else:
-        fe = np.array([[EA/L,0,0],[0,0,0],[0,0,0]])
+        fe = np.array([[L/EA,0,0],[0,0,0],[0,0,0]])
     return fe
 def calcularPsi(q,l,EI):
     q1 = np.min([q[0][0],-1*10**-5])
-    return np.sqrt(-q1*l**2/EI)
+    return 
