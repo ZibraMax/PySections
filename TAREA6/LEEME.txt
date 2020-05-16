@@ -1,0 +1,5 @@
+En el informe se muestran las numeraciondes de nodos y elementos usados.
+El codigo puede correrse en cualquier entorno de python
+El codigo esta en formato de JupyterNotebook
+Se adjuntauna copia en pfd del codigo desarrollado, sin embargo una porcion del codigo (plasticidad Concentrada) se encuentra dentro de la carpeta PySections
+Para esta tarea se uso la libreria quadpy, numpy, y matplotlib
