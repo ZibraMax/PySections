@@ -164,7 +164,7 @@
 <dt id="PySections.Constraint">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Constraint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tipo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoF</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Constraint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase que define los constraints presentes en una estructura</p>
+<p>NO USAR</p>
 </dd></dl>
 
 <dl class="py class">
@@ -175,46 +175,60 @@
 <dl class="py method">
 <dt id="PySections.Elemento.agregarCargaPorTemperatura">
 <code class="sig-name descname"><span class="pre">agregarCargaPorTemperatura</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pDeltaT0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pDeltaTFh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarCargaPorTemperatura" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que simula los efectos de la temperatura en el elemento y los tiene en cuenta para el vector de fuerzas
-:param pDeltaT0: Variación de la temperatura en el elemento (°C)
-:param pDeltaTFh: Relación entre el gradiente de temperatura en el elemento y la altura de este (°C / metros)
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que simula los efectos de la temperatura en el elemento y los tiene en cuenta para el vector de fuerzas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pDeltaT0</strong> (<em>float</em>) – Variación de la temperatura en el elemento (°C)</p></li>
+<li><p><strong>pDeltaTFh</strong> (<em>float</em>) – Relación entre el gradiente de temperatura en el elemento y la altura de este (°C / metros)</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.agregarCargaPostensadoFlexionYAxial">
 <code class="sig-name descname"><span class="pre">agregarCargaPostensadoFlexionYAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarCargaPostensadoFlexionYAxial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.
-:param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
-:param e1: Excentricidad del cable al comienzo del elemento en metros
-:param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
-:param e3: Excentricidad del cable al final del elemento en metros
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f0</strong> (<em>float</em>) – fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons</p></li>
+<li><p><strong>e1</strong> (<em>float</em>) – Excentricidad del cable al comienzo del elemento en metros</p></li>
+<li><p><strong>e2</strong> (<em>float</em>) – Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros</p></li>
+<li><p><strong>e3</strong> (<em>float</em>) – Excentricidad del cable al final del elemento en metros</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.agregarCargaPresfuerzoAxial">
 <code class="sig-name descname"><span class="pre">agregarCargaPresfuerzoAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarCargaPresfuerzoAxial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que simula los efectos de una carga de presfuerzo axial sobre el elemento
-:param q0: Fuerza de presfuerzo en kiloNewtons
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que simula los efectos de una carga de presfuerzo axial sobre el elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q0</strong> (<em>float</em>) – Fuerza de presfuerzo en kiloNewtons</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.agregarCargaPuntual">
 <code class="sig-name descname"><span class="pre">agregarCargaPuntual</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarCargaPuntual" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función que agrega una sola carga puntual a una distancia x del elemento (agregar una a una)</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param f</dt>
-<dd class="field-odd"><p>Magnitud de la fuerza en cuestión en kiloPascales</p>
-</dd>
-<dt class="field-even">param x</dt>
-<dd class="field-even"><p>Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros</p>
-</dd>
-<dt class="field-odd">param remplazar</dt>
-<dd class="field-odd"><p>Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
-</dd>
-</dl>
+<dd><p>Función que agrega una sola carga puntual a una distancia x del elemento (agregar una a una)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>flaot</em>) – Magnitud de la fuerza en cuestión en kiloPascales</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -222,21 +236,25 @@
 <dl class="py method">
 <dt id="PySections.Elemento.agregarDefectoDeFabricacion">
 <code class="sig-name descname"><span class="pre">agregarDefectoDeFabricacion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarDefectoDeFabricacion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que simula los defectos de fabricación del elemento y los tiene en cuenta para el vector de fuerzas
-:param e0: Elongación del elemento
-:param fi0: Curvatura del elemetno (1 / metros)
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que simula los defectos de fabricación del elemento y los tiene en cuenta para el vector de fuerzas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e0</strong> (<em>float</em>) – Elongación del elemento</p></li>
+<li><p><strong>fi0</strong> (<em>float</em>) – Curvatura del elemetno (1 / metros)</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.calcularF0">
 <code class="sig-name descname"><span class="pre">calcularF0</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ngdl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.calcularF0" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función para calcular el vector de fuerzas generadas por cargas externas por elemento (teniendo en cuenta todos los gdl de la estructura)</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param ngdl</dt>
-<dd class="field-odd"><p>Número de grados de libertad de la estructura</p>
-</dd>
-</dl>
+<dd><p>Función para calcular el vector de fuerzas generadas por cargas externas por elemento (teniendo en cuenta todos los gdl de la estructura)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ngdl</strong> (<em>int</em>) – Número de grados de libertad de la estructura</p>
 </dd>
 </dl>
 </dd></dl>
@@ -256,12 +274,10 @@
 <dl class="py method">
 <dt id="PySections.Elemento.calcularVectorDeFuerzasInternas">
 <code class="sig-name descname"><span class="pre">calcularVectorDeFuerzasInternas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">U</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.calcularVectorDeFuerzasInternas" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función para calcular el vector de fuerzas internas del elemento</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param U</dt>
-<dd class="field-odd"><p>Vector de desplazamientos calculados para todos los grados de libertad de la estructura</p>
-</dd>
-</dl>
+<dd><p>Función para calcular el vector de fuerzas internas del elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>U</strong> (<em>np.ndarray</em>) – Vector de desplazamientos calculados para todos los grados de libertad de la estructura</p>
 </dd>
 </dl>
 </dd></dl>
@@ -287,11 +303,17 @@
 <dl class="py method">
 <dt id="PySections.Elemento.definirCargas">
 <code class="sig-name descname"><span class="pre">definirCargas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pWx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pWy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.definirCargas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento
-:param pWx: Carga distribuida en la dirección +x en kiloNewtons / metros
-:param pWy: Carga distribuida en la dirección -y en kiloNewtons / metros
-:param pF: Carga aplicada cada L/3 en la dirección -y en kiloNewtons
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pWx</strong> (<em>float</em>) – Carga distribuida en la dirección +x en kiloNewtons / metros</p></li>
+<li><p><strong>pWy</strong> (<em>float</em>) – Carga distribuida en la dirección -y en kiloNewtons / metros</p></li>
+<li><p><strong>pF</strong> (<em>float</em>) – Carga aplicada cada L/3 en la dirección -y en kiloNewtons</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -303,13 +325,14 @@
 <dl class="py method">
 <dt id="PySections.Elemento.factorZonasRigidas">
 <code class="sig-name descname"><span class="pre">factorZonasRigidas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">apoyoIzquierdo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apoyoDerecho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">za</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.factorZonasRigidas" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Define el factor de zonas rigidaz</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>apoyoIzquierdo</strong> – </p></li>
-<li><p><strong>apoyoDerecho</strong> – </p></li>
-<li><p><strong>za</strong> – </p></li>
-<li><p><strong>zb</strong> – </p></li>
+<li><p><strong>apoyoIzquierdo</strong> (<em>float</em>) – longitud apoy izq</p></li>
+<li><p><strong>apoyoDerecho</strong> (<em>float</em>) – long apoyo der</p></li>
+<li><p><strong>za</strong> (<em>float</em>) – factor izq</p></li>
+<li><p><strong>zb</strong> (<em>float</em>) – factor der</p></li>
 </ul>
 </dd>
 </dl>
@@ -346,12 +369,10 @@
 <dl class="py method">
 <dt id="PySections.Elemento.matrizSuma">
 <code class="sig-name descname"><span class="pre">matrizSuma</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ngdl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.matrizSuma" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función que simula la matriz de rigidez de la estructura, únicamente con el valor de las rigideces del elemento actual</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param ngdl</dt>
-<dd class="field-odd"><p>Número de grados de libertad total de la estructura</p>
-</dd>
-</dl>
+<dd><p>Función que simula la matriz de rigidez de la estructura, únicamente con el valor de las rigideces del elemento actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ngdl</strong> (<em>int</em>) – Número de grados de libertad total de la estructura</p>
 </dd>
 </dl>
 </dd></dl>
@@ -359,8 +380,15 @@
 <dl class="py method">
 <dt id="PySections.Elemento.matrizYFuerzas">
 <code class="sig-name descname"><span class="pre">matrizYFuerzas</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.matrizYFuerzas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función asociada al cálculo de matriz de rigidez y fuerzas internas de los elementos con efectos de carga axial
-:return: Ke y p, matriz de rigidez y vector de fuerzas respectivamente</p>
+<dd><p>Función asociada al cálculo de matriz de rigidez y fuerzas internas de los elementos con efectos de carga axial</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>matriz de rigidez y vector de fuerzas respectivamente</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -391,21 +419,15 @@
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaDistribuida">
 <code class="sig-name descname"><span class="pre">agregarCargaDistribuida</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">WX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">WY</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaDistribuida" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función que permite agregar una carga distribuida sobre un elemento de la estructura</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param WX</dt>
-<dd class="field-odd"><p>Magnitud de la carga distribuida en dirección x en kiloNewtons/metros</p>
-</dd>
-<dt class="field-even">param WY</dt>
-<dd class="field-even"><p>Magnitud de la carga distribuida en dirección y en kiloNewtons/metros</p>
-</dd>
-<dt class="field-odd">param elemento</dt>
-<dd class="field-odd"><p>Identificador del elemento sobre el cual se aplica/n la/s carga/s</p>
-</dd>
-<dt class="field-even">param remplazar</dt>
-<dd class="field-even"><p>Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
-</dd>
-</dl>
+<dd><p>Función que permite agregar una carga distribuida sobre un elemento de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>WX</strong> (<em>float</em><em>, </em><em>optional</em>) – Magnitud de la carga distribuida en dirección x en kiloNewtons/metros. Defaults to 0.</p></li>
+<li><p><strong>WY</strong> (<em>float</em><em>, </em><em>optional</em>) – Magnitud de la carga distribuida en dirección y en kiloNewtons/metros. Defaults to 0.</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Identificador del elemento sobre el cual se aplica/n la/s carga/s. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -413,24 +435,16 @@
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaElemento">
 <code class="sig-name descname"><span class="pre">agregarCargaElemento</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftercios</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaElemento" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función para agregar cargas distribuidas o a tercios del elemento</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param wx</dt>
-<dd class="field-odd"><p>Magnitud de la carga distribuida en dirección x en kiloNewtons/metros</p>
-</dd>
-<dt class="field-even">param wy</dt>
-<dd class="field-even"><p>Magnitud de la carga distribuida en dirección y en kiloNewtons/metros</p>
-</dd>
-<dt class="field-odd">param ftercios</dt>
-<dd class="field-odd"><p>Magnitud de las cargas aplicados a tercios de la longitud del elemento en kiloNewtons</p>
-</dd>
-<dt class="field-even">param elemento</dt>
-<dd class="field-even"><p>Identificador del elemento sobre el cual se aplica/n la/s carga/s</p>
-</dd>
-<dt class="field-odd">param remplazar</dt>
-<dd class="field-odd"><p>Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
-</dd>
-</dl>
+<dd><p>Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wx</strong> (<em>float</em>) – Carga distribuida en la dirección +x en kiloNewtons / metros</p></li>
+<li><p><strong>wy</strong> (<em>float</em>) – Carga distribuida en la dirección -y en kiloNewtons / metros</p></li>
+<li><p><strong>ftercios</strong> (<em>float</em>) – Carga aplicada cada L/3 en la dirección -y en kiloNewtons</p></li>
+<li><p><strong>element</strong> (<em>int</em>) – Identificador del elemento sobre el cual se aplica/n la/s carga/s</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -438,24 +452,16 @@
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaNodo">
 <code class="sig-name descname"><span class="pre">agregarCargaNodo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">px</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">py</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaNodo" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función que permite agregar cargas a los nodos de la estructura</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param nodo</dt>
-<dd class="field-odd"><p>Identificador del nodo sobre el cual se va a agregar la carga puntual</p>
-</dd>
-<dt class="field-even">param px</dt>
-<dd class="field-even"><p>Magnitud de la carga en x en kiloNewtons</p>
-</dd>
-<dt class="field-odd">param py</dt>
-<dd class="field-odd"><p>Magnitud de la carga en y en kiloNewtons</p>
-</dd>
-<dt class="field-even">param m</dt>
-<dd class="field-even"><p>Magnitud del momento aplicado en kiloNewtons-metros</p>
-</dd>
-<dt class="field-odd">param remplazar</dt>
-<dd class="field-odd"><p>Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
-</dd>
-</dl>
+<dd><p>Función que permite agregar cargas a los nodos de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodo</strong> (<em>int</em><em>, </em><em>optional</em>) – Identificador del nodo sobre el cual se va a agregar la carga puntual. Defaults to -1.</p></li>
+<li><p><strong>px</strong> (<em>float</em><em>, </em><em>optional</em>) – Magnitud de la carga en x en kiloNewtons. Defaults to 0.</p></li>
+<li><p><strong>py</strong> (<em>float</em><em>, </em><em>optional</em>) – Magnitud de la carga en y en kiloNewtons. Defaults to 0.</p></li>
+<li><p><strong>m</strong> (<em>float</em><em>, </em><em>optional</em>) – Magnitud del momento aplicado en kiloNewtons-metros. Defaults to 0.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -463,53 +469,65 @@
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaPorTemperatura">
 <code class="sig-name descname"><span class="pre">agregarCargaPorTemperatura</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deltaT0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deltaThf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPorTemperatura" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 2)
-:param deltaT0: Variación de la temperatura en °C
-:param deltaThf: Gradiente de temperatura (°C / metros)
-:param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 2)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deltaT0</strong> (<em>float</em>) – Variación de la temperatura en °C</p></li>
+<li><p><strong>deltaThf</strong> (<em>float</em>) – Gradiente de temperatura (°C / metros)</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el cual se quieren definir los cambios de temperatura. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaPostensadoFlexionYAxial">
 <code class="sig-name descname"><span class="pre">agregarCargaPostensadoFlexionYAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPostensadoFlexionYAxial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite calcular las fuerzas asociadas a una carga de postensado a flexión y axial en el elemento
-:param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
-:param e1: Excentricidad del cable al comienzo del elemento en metros
-:param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
-:param e3: Excentricidad del cable al final del elemento en metros
-:param elemento: Elemento sobre el cual se quieren definir las cargas de postensado
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f0</strong> (<em>float</em>) – fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons</p></li>
+<li><p><strong>e1</strong> (<em>float</em>) – Excentricidad del cable al comienzo del elemento en metros</p></li>
+<li><p><strong>e2</strong> (<em>float</em>) – Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros</p></li>
+<li><p><strong>e3</strong> (<em>float</em>) – Excentricidad del cable al final del elemento en metros</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el que se aplica la carga. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaPresfuerzoAxial">
 <code class="sig-name descname"><span class="pre">agregarCargaPresfuerzoAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPresfuerzoAxial" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento
-:param el:
-:param q0: Fuerza de presfuerzo en kiloNewtons
-:param elemento: Elemento sobre el cual se quieren definir las cargas de presfuerzo
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>el</strong> (<em>float</em>) – no poner nada aquó</p></li>
+<li><p><strong>q0</strong> (<em>float</em>) – Fuerza de presfuerzo en kiloNewtons</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el cual se quieren definir las cargas de presfuerzo. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaPuntual">
 <code class="sig-name descname"><span class="pre">agregarCargaPuntual</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPuntual" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Función que permite agregar una carga puntual a una distancia determinada de un elemento de la estructura</dt><dd><dl class="field-list simple">
-<dt class="field-odd">param f</dt>
-<dd class="field-odd"><p>Magnitud de la carga puntual en kiloNewtons</p>
-</dd>
-<dt class="field-even">param x</dt>
-<dd class="field-even"><p>Ubicación de la fuerza a aplicar desde el nodo inical hasta el nodo final en metros</p>
-</dd>
-<dt class="field-odd">param elemento</dt>
-<dd class="field-odd"><p>Identificador del elemento sobre el cual se aplica la nueva carga puntual</p>
-</dd>
-<dt class="field-even">param remplazar</dt>
-<dd class="field-even"><p>Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
-</dd>
-</dl>
+<dd><p>Función que permite agregar una carga puntual a una distancia determinada de un elemento de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>float</em>) – Magnitud de la carga puntual en kiloNewtons</p></li>
+<li><p><strong>x</strong> (<em>float</em>) – Ubicación de la fuerza a aplicar desde el nodo inical hasta el nodo final en metros</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Identificador del elemento sobre el cual se aplica la nueva carga puntual</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -517,53 +535,83 @@
 <dl class="py method">
 <dt id="PySections.Estructura.agregarDefectoDeFabricacion">
 <code class="sig-name descname"><span class="pre">agregarDefectoDeFabricacion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarDefectoDeFabricacion" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite calcular las fuerzas asociadas a los defectos de fabricación en el elemento
-:param e0: Elongación del elemento
-:param fi0: Curvatura del elemetno (1 / metros)
-:param elemento: Elemento sobre el cual se quieren definir los defectos de fabricación
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que permite calcular las fuerzas asociadas a los defectos de fabricación en el elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e0</strong> (<em>float</em><em>, </em><em>optional</em>) – Elongación del elemento. Defaults to 0.</p></li>
+<li><p><strong>fi0</strong> (<em>float</em><em>, </em><em>optional</em>) – Curvatura del elemetno (1 / metros). Defaults to 0.</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el cual se quieren definir los defectos de fabricación. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarElemento">
 <code class="sig-name descname"><span class="pre">agregarElemento</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">seccion</span></em>, <em class="sig-param"><span class="pre">nodoInicial</span></em>, <em class="sig-param"><span class="pre">nodoFinal</span></em>, <em class="sig-param"><span class="pre">tipo=&lt;Tipo.UNO:</span> <span class="pre">1&gt;</span></em>, <em class="sig-param"><span class="pre">apoyoIzquierdo=0</span></em>, <em class="sig-param"><span class="pre">za=0</span></em>, <em class="sig-param"><span class="pre">apoyoDerecho=0</span></em>, <em class="sig-param"><span class="pre">zb=0</span></em>, <em class="sig-param"><span class="pre">defCortante=True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarElemento" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite añadir un nuevo elemento a la estructura
-:param seccion: Sección del elemento a añadir
-:param nodoInicial: Identificador del nodo inicial del elemento
-:param nodoFinal: Identificador del nodo final del elemento
-:param tipo: Tipo de elemento a crear (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-:param apoyoIzquierdo:
-:param za:
-:param apoyoDerecho:
-:param zb:
-:param defCortante:</p>
+<dd><p>Función que permite añadir un nuevo elemento a la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seccion</strong> (<a class="reference internal" href="#PySections.Seccion" title="PySections.Seccion"><em>Seccion</em></a>) – Sección del elemento a añadir</p></li>
+<li><p><strong>nodoInicial</strong> (<em>int</em>) – Identificador del nodo inicial del elemento</p></li>
+<li><p><strong>nodoFinal</strong> (<em>int</em>) – Identificador del nodo final del elemento</p></li>
+<li><p><strong>tipo</strong> (<a class="reference internal" href="#PySections.Tipo" title="PySections.Tipo"><em>Tipo</em></a><em>, </em><em>optional</em>) – Tipo de elemento a crear (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO). Defaults to Tipo.UNO.</p></li>
+<li><p><strong>apoyoIzquierdo</strong> (<em>float</em><em>, </em><em>optional</em>) – Longitud de apoyo izquierdo. Defaults to 0.</p></li>
+<li><p><strong>za</strong> (<em>float</em><em>, </em><em>optional</em>) – Factor Za. Defaults to 0.</p></li>
+<li><p><strong>apoyoDerecho</strong> (<em>float</em><em>, </em><em>optional</em>) – Longitud de apoyo derecho. Defaults to 0.</p></li>
+<li><p><strong>zb</strong> (<em>float</em><em>, </em><em>optional</em>) – Factor zb. Defaults to 0.</p></li>
+<li><p><strong>defCortante</strong> (<em>bool</em><em>, </em><em>optional</em>) – Tener o no encuenta deformaciones por cortante. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarNodo">
 <code class="sig-name descname"><span class="pre">agregarNodo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[True,</span> <span class="pre">True,</span> <span class="pre">True]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarNodo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que agrega un nodo a la estructura
-:param x: Posición x del nodo en metros
-:param y: Posición y del nodo en metros
-:param fix: Condiciones de apoyo del nodo (True = restringido, False = libre)</p>
+<dd><p>Función que agrega un nodo a la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – Posición x del nodo en metros</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – Posición y del nodo en metros</p></li>
+<li><p><strong>fix</strong> (<em>list</em><em>, </em><em>optional</em>) – Condiciones de apoyo del nodo (True = restringido, False = libre). Defaults to [True, True, True].</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarResorte">
 <code class="sig-name descname"><span class="pre">agregarResorte</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rigidez</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarResorte" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite añadir un nuevo resorte a la estructura
-:param rigidez: Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)
-:param nodo: Nodo sobre el que se va a agregar el resorte
-:param completo:</p>
+<dd><p>Función que permite añadir un nuevo resorte a la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rigidez</strong> (<em>np.ndarray</em>) – Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)</p></li>
+<li><p><strong>nodo</strong> (<em>int</em><em>, </em><em>optional</em>) – Nodo sobre el que se va a agregar el resorte. Defaults to -1.</p></li>
+<li><p><strong>completo</strong> (<em>bool</em><em>, </em><em>optional</em>) – Si el resorte es completo (3x3). Ver constructor de Resorte Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarSuperElementos">
 <code class="sig-name descname"><span class="pre">agregarSuperElementos</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarSuperElementos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite realizar un superelemento con la estructura
-:param SE:
-:param SF:
-:param gdl: Número de grados de libertad de la estructura</p>
+<dd><p>Función que permite realizar un superelemento con la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>SE</strong> (<em>idk</em>) – idk</p></li>
+<li><p><strong>SF</strong> (<em>idk</em>) – [description]</p></li>
+<li><p><strong>gdl</strong> (<em>int</em>) – Número de grados de libertad de la estructura]</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -611,78 +659,140 @@
 <dl class="py method">
 <dt id="PySections.Estructura.definirCambiosTemperatura">
 <code class="sig-name descname"><span class="pre">definirCambiosTemperatura</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inicial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exterior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.definirCambiosTemperatura" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 1)
-:param inicial: Temperatura ambiente a la que fue construida la estructura en °C
-:param interior: Temperatura interna de la estructura en °C
-:param exterior: Temperatura externa de la estructura en °C
-:param h: Altura de la sección transversal del elemento en metros
-:param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 1)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inicial</strong> (<em>float</em>) – Temperatura ambiente a la que fue construida la estructura en °C</p></li>
+<li><p><strong>interior</strong> (<em>float</em>) – Temperatura interna de la estructura en °C</p></li>
+<li><p><strong>exterior</strong> (<em>float</em>) – Temperatura externa de la estructura en °C</p></li>
+<li><p><strong>h</strong> (<em>float</em>) – Altura de la sección transversal del elemento en metros</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el cual se quieren definir los cambios de temperatura. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.definirConstraint">
 <code class="sig-name descname"><span class="pre">definirConstraint</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tipo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoInicial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoFinal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.definirConstraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite definir un constraint en la estructura
-:param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-:param nodoInicial: Nodo inicial (objeto)
-:param nodoFinal: Nodo final (objeto)</p>
+<dd><p>NO IMPLEMENTADO NO USAR</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tipo</strong> (<a class="reference internal" href="#PySections.Tipo" title="PySections.Tipo"><em>Tipo</em></a>) – Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)</p></li>
+<li><p><strong>nodoInicial</strong> (<em>int</em>) – Nodo inicial (objeto)</p></li>
+<li><p><strong>nodoFinal</strong> (<em>int</em>) – Nodo final (objeto)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.definirDesplazamientoRestringido">
 <code class="sig-name descname"><span class="pre">definirDesplazamientoRestringido</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.definirDesplazamientoRestringido" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite asignar un desplazamiento conocido a uno de los grados de libertad restringidos
-:param nodo: Identificador del nodo sobre el que se va a asignar el desplazamiento
-:param gdl: Grado de libertad del nodo sobre el que se va a asignar el desplazamiento
-:param valor: Magnitud del desplazamiento asignado (en metros o radianes según el caso)</p>
+<dd><p>Función que permite asignar un desplazamiento conocido a uno de los grados de libertad restringidos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodo</strong> (<em>int</em>) – Identificador del nodo sobre el que se va a asignar el desplazamiento</p></li>
+<li><p><strong>gdl</strong> (<em>int</em>) – Grado de libertad del nodo sobre el que se va a asignar el desplazamiento</p></li>
+<li><p><strong>valor</strong> (<em>float</em>) – Magnitud del desplazamiento asignado (en metros o radianes según el caso)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.definirDesplazamientosRestringidos">
 <code class="sig-name descname"><span class="pre">definirDesplazamientosRestringidos</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">desplazamientos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.definirDesplazamientosRestringidos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite asignar desplazamientos conocidos a los grados de libertad restringidos
-:param desplazamientos: Vector de los desplazamientos restringidos (metros o radianes según el caso)</p>
+<dd><p>Función que permite asignar desplazamientos conocidos a los grados de libertad restringidos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>desplazamientos</strong> (<em>np.ndarray</em>) – Vector de los desplazamientos restringidos (metros o radianes según el caso)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.definirFactorPesoPropio">
 <code class="sig-name descname"><span class="pre">definirFactorPesoPropio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.definirFactorPesoPropio" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que permite incluir la carga agregada producida por el peso propio del elemento
-:param f: Factor de multipliación de peso propio (utilizado para combinaciones de carga)
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función que permite incluir la carga agregada producida por el peso propio del elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>float</em><em>, </em><em>optional</em>) – Factor de multipliación de peso propio (utilizado para combinaciones de carga). Defaults to 0.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.determinacionDeEstado">
 <code class="sig-name descname"><span class="pre">determinacionDeEstado</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.determinacionDeEstado" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para realizar determinación de estado de la estructura.
-:return: Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura</p>
+<dd><p>Función para realizar determinación de estado de la estructura.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.guardarResultados">
 <code class="sig-name descname"><span class="pre">guardarResultados</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">carpeta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.guardarResultados" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para generar y guardar un archivo con los resultados del análisis obtenido
-:param carpeta: Dirección de la carpeta destino en donde se guardarán los archivos creados</p>
+<dd><p>Función para generar y guardar un archivo con los resultados del análisis obtenido</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>carpeta</strong> (<em>str</em>) – Dirección de la carpeta destino en donde se guardarán los archivos creados</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.hacerSuperElemento">
 <code class="sig-name descname"><span class="pre">hacerSuperElemento</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gdlVisibles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdlInvisibles</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.hacerSuperElemento" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para realizar un superelemento en la estructura
-:param gdlVisibles: Conjunto de grados de libertad que se quieren mantener
-:param gdlInvisibles: Conjunto de grados de libertad que se quieren condensar
-:return: El vector de fuerzas y la matriz de rigidez condensados</p>
+<dd><p>Función para realizar un superelemento en la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gdlVisibles</strong> (<em>np.ndarray</em>) – Conjunto de grados de libertad que se quieren mantener</p></li>
+<li><p><strong>gdlInvisibles</strong> (<em>np.ndarray</em>) – Conjunto de grados de libertad que se quieren condensar</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>El vector de fuerzas y la matriz de rigidez condensados</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Estructura.newton">
 <code class="sig-name descname"><span class="pre">newton</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semilla</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'carga'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.newton" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que realiza el método iterativo de Newton
-:param param: lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion
-:param semilla: Semilla inicial del metodo de newton ndarray
-:param control: Tipo de algotimo de solucion, puede ser carga o desplazamiento</p>
+<dd><p>Función que realiza el método iterativo de Newton</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> (<em>list</em>) – lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion</p></li>
+<li><p><strong>semilla</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – Semilla inicial del metodo de newton ndarray. Defaults to None.</p></li>
+<li><p><strong>control</strong> (<em>str</em><em>, </em><em>optional</em>) – Tipo de algotimo de solucion, puede ser carga o desplazamiento. Defaults to ‘carga’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matriz de desplazamiento</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -694,11 +804,19 @@
 <dl class="py method">
 <dt id="PySections.Estructura.solucionar">
 <code class="sig-name descname"><span class="pre">solucionar</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dibujar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guardar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">carpeta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Resultados'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analisis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EL'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.solucionar" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función que resuelve el método matricial de rigidez de la estructura
-:param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
-:param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
-:param guardar: Opción para guardar los resultados del análisis (True = guardar, False = no guardar)
-:param carpeta: Dirección de la carpeta destinno</p>
+<dd><p>Función que resuelve el método matricial de rigidez de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar). Defaults to True.</p></li>
+<li><p><strong>dibujar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar). Defaults to False.</p></li>
+<li><p><strong>guardar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para guardar los resultados del análisis (True = guardar, False = no guardar). Defaults to False.</p></li>
+<li><p><strong>carpeta</strong> (<em>str</em><em>, </em><em>optional</em>) – Dirección de la carpeta destinno. Defaults to ‘Resultados’.</p></li>
+<li><p><strong>analisis</strong> (<em>str</em><em>, </em><em>optional</em>) – Tipo de análisis. Defaults to ‘EL’.</p></li>
+<li><p><strong>param</strong> (<em>list</em><em>, </em><em>optional</em>) – Lista de parámetros. Defaults to [].</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -816,17 +934,35 @@
 <dl class="py method">
 <dt id="PySections.SuperElemento.calcularF0">
 <code class="sig-name descname"><span class="pre">calcularF0</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.SuperElemento.calcularF0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para calcular el vector de fuerzas condensado de la estructura
-:param n:
-:return:</p>
+<dd><p>Función para calcular el vector de fuerzas condensado de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Numero de grados de libertad de la estructura</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Vector de fuerzas</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.SuperElemento.calcularKSUMA">
 <code class="sig-name descname"><span class="pre">calcularKSUMA</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.SuperElemento.calcularKSUMA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para calcular la matriz de rigidez condensada de la estructura
-:param n:
-:return:</p>
+<dd><p>Función para calcular la matriz de rigidez condensada de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – Numero de grados de libertad de la estructura</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>matriz KSuma</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -883,22 +1019,71 @@
 <dl class="py function">
 <dt id="PySections.calcularPsi">
 <code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">calcularPsi</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EI</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.calcularPsi" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>función auxiliar</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>q</strong> (<em>float</em>) – carga</p></li>
+<li><p><strong>l</strong> (<em>float</em>) – longitud</p></li>
+<li><p><strong>EI</strong> (<em>float</em>) – Modulo de Ypung multiplicado por la inercia</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>q0</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="PySections.estadoPlasticidadConcentrada">
 <code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">estadoPlasticidadConcentrada</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EI</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tipo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[0],</span> <span class="pre">[0],</span> <span class="pre">[0]]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.estadoPlasticidadConcentrada" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Determinación de estado con plasticidad concentrada</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vt</strong> (<em>list</em>) – Arreglo de vt</p></li>
+<li><p><strong>sh</strong> (<em>float</em>) – valor para sh</p></li>
+<li><p><strong>qy</strong> (<em>list</em>) – arreglo de qy del elemento</p></li>
+<li><p><strong>EI</strong> (<em>float</em>) – Modulo de Ypung multiplicado por la inercia</p></li>
+<li><p><strong>l</strong> (<em>float</em>) – Longitud del elemento</p></li>
+<li><p><strong>EA</strong> (<em>float</em>) – Modulo de young multplicado por el area del elemento</p></li>
+<li><p><strong>tipo</strong> (<a class="reference internal" href="#PySections.Tipo" title="PySections.Tipo"><em>Tipo</em></a>) – Tipo del elemento</p></li>
+<li><p><strong>v0</strong> (<em>list</em>) – Lista de v0s</p></li>
+<li><p><strong>q</strong> (<em>list</em><em>, </em><em>optional</em>) – Carga sobre el elemento. Defaults to [[0], [0], [0]].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="PySections.tridiag">
 <code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">tridiag</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.tridiag" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función auxiliar para crear una matriz tridiagonal (utilizada en FEM)
-:param a: Valor de la diagonal adyacente inferior
-:param b: Valor de la diagonal principal
-:param c: Valor de la diagonal adyacente superior
-:param n: Tamaño de la matriz nxn
-:return: La matriz tridiagonal creada a partir de los parámetros dados</p>
+<dd><p>Función auxiliar para crear una matriz tridiagonal (utilizada en FEM)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – Valor de la diagonal adyacente inferior</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – Valor de la diagonal principal</p></li>
+<li><p><strong>c</strong> (<em>float</em>) – Valor de la diagonal adyacente superior</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Tamaño de la matriz nxn</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Matriz tridiagonal</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
