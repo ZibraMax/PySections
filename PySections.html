@@ -329,9 +329,18 @@
 <dl class="py method">
 <dt id="PySections.Elemento.hallarKb">
 <code class="sig-name descname"><span class="pre">hallarKb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.hallarKb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para hallar la matriz de rigidez básica del elemento
-:param psi:Factor psi, utilizado para realizar las aproximaciones lineales
-:return:kb, la matriz de rigidez básica</p>
+<dd><p>Función para hallar la matriz de rigidez básica del elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>psi</strong> (<em>int</em><em>, </em><em>optional</em>) – Factor psi, utilizado para realizar las aproximaciones lineales. Defaults to 0.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>la matriz de rigidez básica</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -698,29 +707,58 @@
 <dt id="PySections.Material">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Material</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alfa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Material" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase auxiliar para definir el material de los elementos</p>
+<p>Método de inicialización de los materiales</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nombre</strong> (<em>str</em>) – Nombre del material a crear</p></li>
+<li><p><strong>E</strong> (<em>float</em>) – Modulo de elasticidad del material a crear en kiloPascales</p></li>
+<li><p><strong>v</strong> (<em>float</em>) – Coeficiente de Poisson</p></li>
+<li><p><strong>alfa</strong> (<em>float</em>) – Coeficiente de expansión térmica en 1/°C</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Peso específico del material en kiloNewtons / metro cúbico</p></li>
+<li><p><strong>sh</strong> (<em>float</em><em>, </em><em>optional</em>) – Factor de reducción para no linealidad material. Defaults to 1.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt id="PySections.Nodo">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Nodo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pRestraints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Nodo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase que representa un nodo de la estructura y todos sus atributos</p>
+<p>Método de inicialización de nodos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pX</strong> (<em>float</em>) – Coordenada x del nodo a crear</p></li>
+<li><p><strong>pY</strong> (<em>float</em>) – Coordenada y del nodo a crear</p></li>
+<li><p><strong>pRestraints</strong> (<em>list</em>) – Restricciones del nodo (x,y,m)</p></li>
+<li><p><strong>pID</strong> (<em>int</em>) – Identificador del nodo a crear (Número de nodo actual)</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="PySections.Nodo.calcularFn">
 <code class="sig-name descname"><span class="pre">calcularFn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ngdl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Nodo.calcularFn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Función para definir el vector de fuerzas nodales
-:param ngdl: Número de grados de libertad de toda la estructura</p>
+:param ngdl: Número de grados de libertad de toda la estructura
+:type ngdl: int</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Nodo.definirCargas">
 <code class="sig-name descname"><span class="pre">definirCargas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Nodo.definirCargas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función para asignar cargas puntuales en los nodos creados
-:param pX: Magnitud de carga puntual en x en kiloNewtons
-:param pY: Magnitud de carga puntual en y en kiloNewtons
-:param pM: Magnitud de momento puntual en kiloNewtons-metro
-:param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p>
+<dd><p>Función para asignar cargas puntuales en los nodos creados</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pX</strong> (<em>float</em>) – Magnitud de carga puntual en x en kiloNewtons</p></li>
+<li><p><strong>pY</strong> (<em>float</em>) – Magnitud de carga puntual en y en kiloNewtons</p></li>
+<li><p><strong>pM</strong> (<em>float</em>) – Magnitud de momento puntual en kiloNewtons-metro</p></li>
+<li><p><strong>remplazar</strong> (<em>boll</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -730,11 +768,24 @@
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Resorte</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rigidez</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">completo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Resorte" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Clase que simula la rigidez de un resorte en un nodo de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodo</strong> (<a class="reference internal" href="#PySections.Nodo" title="PySections.Nodo"><em>Nodo</em></a>) – Nodo sobre el cual se quiere asignar el resorte</p></li>
+<li><p><strong>rigidez</strong> (<em>list</em>) – Vector con las magnitudes de la rigideces asignadas al resorte en kiloNewtons / metros (Kx, Ky, Km)</p></li>
+<li><p><strong>completo</strong> (<em>bool</em>) – Sintetiza un resorte con 3 GDL si se especifica el parametro rigidez debe contener una matriz de numpy 3x3</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt id="PySections.Resorte.calcularKe">
 <code class="sig-name descname"><span class="pre">calcularKe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ngdl</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Resorte.calcularKe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Función auxiliar para agregar los valores de rigidez del resorte a la matriz de rigidez de la estructura
-:param ngdl: Número de grados de libertad de la estructura</p>
+<dd><p>Función auxiliar para agregar los valores de rigidez del resorte a la matriz de rigidez de la estructura</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ngdl</strong> (<em>int</em>) – Número de grados de libertad de la estructura</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -744,6 +795,17 @@
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Seccion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tipo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propiedades</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">material</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Seccion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Clase que representa la sección de los elementos a utilizar, asi como los materiales que la componen</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nombre</strong> (<em>str</em>) – Nombre definido para la sección a crear</p></li>
+<li><p><strong>tipo</strong> (<a class="reference internal" href="#PySections.Tipo" title="PySections.Tipo"><em>Tipo</em></a>) – Geometría de la sección transversal (Rectangular, Circular o General)</p></li>
+<li><p><strong>propiedades</strong> (<em>list</em>) – Dimensiones en metros relacionadas al tipo de geometría (Rectangular: base y altura, Circular: diámetro, General: área, inercia y área de cortante)</p></li>
+<li><p><strong>material</strong> (<a class="reference internal" href="#PySections.Material" title="PySections.Material"><em>Material</em></a>) – Tipo de material a utilizar</p></li>
+<li><p><strong>qy</strong> (<em>list</em><em>, </em><em>optional</em>) – Esto era algo de no lineal material pero no recuerdo. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
@@ -773,7 +835,7 @@
 <dt id="PySections.Tipo">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">Tipo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Tipo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<p>Clase auxiliar para enumerar el tipo de elemento a utilizar (Tipo1, Tipo2, Tipo3 o Tipo4)</p>
+<p>Clase auxiliar para enumerar el tipo de elemento a utilizar (UNO, DOS, TRES o CUATRO)</p>
 <dl class="py attribute">
 <dt id="PySections.Tipo.CUATRO">
 <code class="sig-name descname"><span class="pre">CUATRO</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#PySections.Tipo.CUATRO" title="Permalink to this definition">¶</a></dt>
@@ -800,7 +862,7 @@
 <dt id="PySections.TipoSeccion">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">PySections.</span></code><code class="sig-name descname"><span class="pre">TipoSeccion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.TipoSeccion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
-<p>Clase auxiliar para enumerar los tipos de secciones transversales (Rectangular, Circular o General)</p>
+<p>Clase auxiliar para enumerar los tipos de secciones transversales (RECTANGULAR, CIRCULAR o GENERAL)</p>
 <dl class="py attribute">
 <dt id="PySections.TipoSeccion.CIRCULAR">
 <code class="sig-name descname"><span class="pre">CIRCULAR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#PySections.TipoSeccion.CIRCULAR" title="Permalink to this definition">¶</a></dt>
