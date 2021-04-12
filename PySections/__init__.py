@@ -379,9 +379,10 @@ class Elemento:
              self.nodoF.gdl[2]])
 
     def matrizSuma(self, ngdl):
-        """
-    Función que simula la matriz de rigidez de la estructura, únicamente con el valor de las rigideces del elemento actual
-        :param ngdl: Número de grados de libertad total de la estructura
+        """Función que simula la matriz de rigidez de la estructura, únicamente con el valor de las rigideces del elemento actual
+
+        Args:
+            ngdl (int): Número de grados de libertad total de la estructura
         """
         self.kee = np.zeros([ngdl, ngdl])
         for i in range(0, 6):
@@ -462,7 +463,9 @@ class Elemento:
 
     def matrizYFuerzas(self):
         """Función asociada al cálculo de matriz de rigidez y fuerzas internas de los elementos con efectos de carga axial
-        :return: Ke y p, matriz de rigidez y vector de fuerzas respectivamente
+
+        Returns:
+            tuple: matriz de rigidez y vector de fuerzas respectivamente
         """
         matrizMaterial = np.dot(self.T.T, np.dot(self.kb, self.T))
         c = np.cos(self.theta)
@@ -487,10 +490,12 @@ class Elemento:
 
     def definirCargas(self, pWx, pWy, pF, remplazar):
         """Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento
-        :param pWx: Carga distribuida en la dirección +x en kiloNewtons / metros
-        :param pWy: Carga distribuida en la dirección -y en kiloNewtons / metros
-        :param pF: Carga aplicada cada L/3 en la dirección -y en kiloNewtons
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            pWx (float): Carga distribuida en la dirección +x en kiloNewtons / metros
+            pWy (float): Carga distribuida en la dirección -y en kiloNewtons / metros
+            pF (float): Carga aplicada cada L/3 en la dirección -y en kiloNewtons
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         self.wx = pWx
         self.wy = pWy
@@ -541,11 +546,13 @@ class Elemento:
         self.calcularVectorDeFuerzas()
 
     def factorZonasRigidas(self, apoyoIzquierdo, apoyoDerecho, za, zb):
-        """
-        :param apoyoIzquierdo:
-        :param apoyoDerecho:
-        :param za:
-        :param zb:
+        """Define el factor de zonas rigidaz
+
+        Args:
+            apoyoIzquierdo (float): longitud apoy izq
+            apoyoDerecho (float): long apoyo der
+            za (float): factor izq
+            zb (float): factor der
         """
         self.za = za
         self.zb = zb
@@ -553,11 +560,12 @@ class Elemento:
         self.apoyoDerecho = apoyoDerecho
 
     def agregarCargaPuntual(self, f, x, remplazar):
-        """
-    Función que agrega una sola carga puntual a una distancia x del elemento (agregar una a una)
-        :param f: Magnitud de la fuerza en cuestión en kiloPascales
-        :param x: Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que agrega una sola carga puntual a una distancia x del elemento (agregar una a una)
+
+        Args:
+            f (flaot): Magnitud de la fuerza en cuestión en kiloPascales
+            x (float): Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         l = self.Longitud
 
@@ -581,9 +589,11 @@ class Elemento:
 
     def agregarDefectoDeFabricacion(self, e0, fi0, remplazar):
         """Función que simula los defectos de fabricación del elemento y los tiene en cuenta para el vector de fuerzas
-        :param e0: Elongación del elemento
-        :param fi0: Curvatura del elemetno (1 / metros)
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            e0 (float): Elongación del elemento
+            fi0 (float): Curvatura del elemetno (1 / metros)
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         L = self.Longitud
         E = self.seccion.material.E
@@ -608,9 +618,11 @@ class Elemento:
 
     def agregarCargaPorTemperatura(self, pDeltaT0, pDeltaTFh, remplazar):
         """Función que simula los efectos de la temperatura en el elemento y los tiene en cuenta para el vector de fuerzas
-        :param pDeltaT0: Variación de la temperatura en el elemento (°C)
-        :param pDeltaTFh: Relación entre el gradiente de temperatura en el elemento y la altura de este (°C / metros)
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            pDeltaT0 (float): Variación de la temperatura en el elemento (°C)
+            pDeltaTFh (float): Relación entre el gradiente de temperatura en el elemento y la altura de este (°C / metros)
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         self.deltaT0 = pDeltaT0
         self.deltaTFh = pDeltaTFh
@@ -622,8 +634,10 @@ class Elemento:
 
     def agregarCargaPresfuerzoAxial(self, q0, remplazar):
         """Función que simula los efectos de una carga de presfuerzo axial sobre el elemento
-        :param q0: Fuerza de presfuerzo en kiloNewtons
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            q0 (float): Fuerza de presfuerzo en kiloNewtons
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         p0 = np.array([[-q0], [0], [0], [q0], [0], [0]])
         if remplazar:
@@ -634,11 +648,14 @@ class Elemento:
 
     def agregarCargaPostensadoFlexionYAxial(self, f0, e1, e2, e3, remplazar):
         """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.
-        :param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
-        :param e1: Excentricidad del cable al comienzo del elemento en metros
-        :param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
-        :param e3: Excentricidad del cable al final del elemento en metros
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            f0 (float): fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
+            e1 (float): Excentricidad del cable al comienzo del elemento en metros
+            e2 (float): Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
+            e3 (float): Excentricidad del cable al final del elemento en metros
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
         """
         L = self.Longitud
         c = e1
@@ -667,18 +684,20 @@ class Elemento:
         self.calcularVectorDeFuerzas()
 
     def calcularF0(self, ngdl):
-        """
-    Función para calcular el vector de fuerzas generadas por cargas externas por elemento (teniendo en cuenta todos los gdl de la estructura)
-        :param ngdl: Número de grados de libertad de la estructura
+        """Función para calcular el vector de fuerzas generadas por cargas externas por elemento (teniendo en cuenta todos los gdl de la estructura)
+
+        Args:
+            ngdl (int): Número de grados de libertad de la estructura
         """
         self.F0 = np.zeros([ngdl, 1])
         for i in range(0, 6):
             self.F0[self.diccionario[i], 0] = self.P0[i, 0]
 
     def calcularVectorDeFuerzasInternas(self, U):
-        """
-    Función para calcular el vector de fuerzas internas del elemento
-        :param U: Vector de desplazamientos calculados para todos los grados de libertad de la estructura
+        """Función para calcular el vector de fuerzas internas del elemento
+
+        Args:
+            U (np.ndarray): Vector de desplazamientos calculados para todos los grados de libertad de la estructura
         """
         self.Ue = U[self.diccionario]
         parcial = np.dot(self.Ke, self.Ue)
@@ -687,14 +706,10 @@ class Elemento:
 
 
 class Constraint:
-    "Clase que define los constraints presentes en una estructura"
+    "NO USAR"
 
     def __init__(self, tipo, nodoI, nodoF):
-        """Métoddo que inicializa los constraints del elemento
-        :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param nodoI: Nodo inicial (objeto)
-        :param nodoF: Nodo final (objeto)
-        """
+        """NO USAR"""
         self.nodoI = nodoI
         self.nodoF = nodoF
         self.tipo = tipo
@@ -719,9 +734,11 @@ class SuperElemento:
 
     def __init__(self, SE, SF, gdl):
         """Método de inicialización de los elementos
-        :param SE:
-        :param SF:
-        :param gdl: Grados de libertad de la estructura
+
+        Args:
+            SE (idk): idk
+            SF (idk): idk
+            gdl (int): Grados de libertad de la estructura
         """
         self.SE = SE
         self.SF = SF
@@ -729,8 +746,12 @@ class SuperElemento:
 
     def calcularKSUMA(self, n):
         """Función para calcular la matriz de rigidez condensada de la estructura
-        :param n:
-        :return:
+
+        Args:
+            n (int): Numero de grados de libertad de la estructura
+
+        Returns:
+            np.ndarray: matriz KSuma
         """
         a = np.zeros([n, n])
         a[np.ix_(self.gdl, self.gdl)] = self.SE
@@ -738,8 +759,12 @@ class SuperElemento:
 
     def calcularF0(self, n):
         """Función para calcular el vector de fuerzas condensado de la estructura
-        :param n:
-        :return:
+
+        Args:
+            n (int): Numero de grados de libertad de la estructura
+
+        Returns:
+            np.ndarray: Vector de fuerzas
         """
         a = np.zeros([n, 1])
         a[np.ix_(self.gdl)] = self.SF
@@ -761,9 +786,11 @@ class Estructura:
 
     def agregarNodo(self, x, y, fix=[True, True, True]):
         """Función que agrega un nodo a la estructura
-        :param x: Posición x del nodo en metros
-        :param y: Posición y del nodo en metros
-        :param fix: Condiciones de apoyo del nodo (True = restringido, False = libre)
+
+        Args:
+            x (float): Posición x del nodo en metros
+            y (float): Posición y del nodo en metros
+            fix (list, optional):  Condiciones de apoyo del nodo (True = restringido, False = libre). Defaults to [True, True, True].
         """
         self.nodos = np.append(self.nodos, Nodo(x, y, fix, self.nodos.size))
         self.actualizarGDL()
@@ -773,9 +800,14 @@ class Estructura:
 
     def newton(self, param, semilla=None, control='carga'):
         """Función que realiza el método iterativo de Newton
-        :param param: lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion
-        :param semilla: Semilla inicial del metodo de newton ndarray
-        :param control: Tipo de algotimo de solucion, puede ser carga o desplazamiento
+
+        Args:
+            param (list): lista de parametrso del metodo de Newton TODO especificar los parametros en la documentacion
+            semilla (np.ndarray, optional): Semilla inicial del metodo de newton ndarray. Defaults to None.
+            control (str, optional): Tipo de algotimo de solucion, puede ser carga o desplazamiento. Defaults to 'carga'.
+
+        Returns:
+            np.ndarray: Matriz de desplazamiento
         """
         self.calcularFn()
         try:
@@ -861,7 +893,9 @@ class Estructura:
 
     def determinacionDeEstado(self):
         """Función para realizar determinación de estado de la estructura.
-        :return: Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura
+
+        Returns:
+            tuple: Kll y Pl, matriz de rigidez y vector de fuerzas de la estructura
         """
         n = self.libres.size+self.restringidos.size
         Kll = np.zeros([n, n])
@@ -901,15 +935,17 @@ class Estructura:
     def agregarElemento(self, seccion, nodoInicial, nodoFinal, tipo=Tipo.UNO, apoyoIzquierdo=0, za=0, apoyoDerecho=0, zb=0,
                         defCortante=True):
         """Función que permite añadir un nuevo elemento a la estructura
-        :param seccion: Sección del elemento a añadir
-        :param nodoInicial: Identificador del nodo inicial del elemento
-        :param nodoFinal: Identificador del nodo final del elemento
-        :param tipo: Tipo de elemento a crear (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param apoyoIzquierdo:
-        :param za:
-        :param apoyoDerecho:
-        :param zb:
-        :param defCortante:
+
+        Args:
+            seccion (Seccion): Sección del elemento a añadir
+            nodoInicial (int): Identificador del nodo inicial del elemento
+            nodoFinal (int): Identificador del nodo final del elemento
+            tipo (Tipo, optional): Tipo de elemento a crear (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO). Defaults to Tipo.UNO.
+            apoyoIzquierdo (float, optional): Longitud de apoyo izquierdo. Defaults to 0.
+            za (float, optional): Factor Za. Defaults to 0.
+            apoyoDerecho (float, optional): Longitud de apoyo derecho. Defaults to 0.
+            zb (float, optional): Factor zb. Defaults to 0.
+            defCortante (bool, optional): Tener o no encuenta deformaciones por cortante. Defaults to True.
         """
         self.elementos = np.append(self.elementos,
                                    Elemento(seccion, self.nodos[nodoInicial], self.nodos[nodoFinal], tipo,
@@ -917,27 +953,33 @@ class Estructura:
 
     def agregarResorte(self, rigidez, nodo=-1, completo=False):
         """Función que permite añadir un nuevo resorte a la estructura
-        :param rigidez: Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)
-        :param nodo: Nodo sobre el que se va a agregar el resorte
-        :param completo:
+
+        Args:
+            rigidez (np.ndarray): Vector con las magnitudes de las rigideces del resorte en kiloPascales (Kx,Ky,Km)
+            nodo (int, optional): Nodo sobre el que se va a agregar el resorte. Defaults to -1.
+            completo (bool, optional): Si el resorte es completo (3x3). Ver constructor de Resorte Defaults to False.
         """
         self.resortes = np.append(self.resortes, Resorte(
             self.nodos[nodo], rigidez, completo))
 
     def agregarSuperElementos(self, SE, SF, gdl):
         """Función que permite realizar un superelemento con la estructura
-        :param SE:
-        :param SF:
-        :param gdl: Número de grados de libertad de la estructura
+
+        Args:
+            SE (idk): idk
+            SF (idk): [description]
+            gdl (int): Número de grados de libertad de la estructura]
         """
         supelemento = SuperElemento(SE, SF, gdl)
         self.superelementos = np.append(self.superelementos, supelemento)
 
     def definirConstraint(self, tipo, nodoInicial, nodoFinal):
-        """Función que permite definir un constraint en la estructura
-        :param tipo: Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-        :param nodoInicial: Nodo inicial (objeto)
-        :param nodoFinal: Nodo final (objeto)
+        """NO IMPLEMENTADO NO USAR
+
+        Args:
+            tipo (Tipo): Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
+            nodoInicial (int): Nodo inicial (objeto)
+            nodoFinal (int): Nodo final (objeto)
         """
         nodoF = self.nodos[nodoFinal]
         nodoI = self.nodos[nodoInicial]
@@ -960,12 +1002,14 @@ class Estructura:
 
     def definirCambiosTemperatura(self, inicial, interior, exterior, h, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 1)
-        :param inicial: Temperatura ambiente a la que fue construida la estructura en °C
-        :param interior: Temperatura interna de la estructura en °C
-        :param exterior: Temperatura externa de la estructura en °C
-        :param h: Altura de la sección transversal del elemento en metros
-        :param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            inicial (float): Temperatura ambiente a la que fue construida la estructura en °C
+            interior (float): Temperatura interna de la estructura en °C
+            exterior (float): Temperatura externa de la estructura en °C
+            h (float): Altura de la sección transversal del elemento en metros
+            elemento (int, optional): Elemento sobre el cual se quieren definir los cambios de temperatura. Defaults to -1.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         dta = 1 / 2 * ((exterior - inicial) + (interior - inicial))
         dtf = (interior - exterior)
@@ -974,84 +1018,97 @@ class Estructura:
 
     def agregarCargaPorTemperatura(self, deltaT0, deltaThf, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a los cambios de temperatura en el elemento (CASO 2)
-        :param deltaT0: Variación de la temperatura en °C
-        :param deltaThf: Gradiente de temperatura (°C / metros)
-        :param elemento: Elemento sobre el cual se quieren definir los cambios de temperatura
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            deltaT0 (float): Variación de la temperatura en °C
+            deltaThf (float): Gradiente de temperatura (°C / metros)
+            elemento (int, optional): Elemento sobre el cual se quieren definir los cambios de temperatura. Defaults to -1.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         self.elementos[elemento].agregarCargaPorTemperatura(
             deltaT0, deltaThf, remplazar)
 
     def agregarDefectoDeFabricacion(self, e0=0, fi0=0, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a los defectos de fabricación en el elemento
-        :param e0: Elongación del elemento
-        :param fi0: Curvatura del elemetno (1 / metros)
-        :param elemento: Elemento sobre el cual se quieren definir los defectos de fabricación
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            e0 (float, optional): Elongación del elemento. Defaults to 0.
+            fi0 (float, optional): Curvatura del elemetno (1 / metros). Defaults to 0.
+            elemento (int, optional): Elemento sobre el cual se quieren definir los defectos de fabricación. Defaults to -1.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         self.elementos[elemento].agregarDefectoDeFabricacion(
             e0, fi0, remplazar)
 
     def agregarCargaPresfuerzoAxial(self, el, q0, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento
-        :param el:
-        :param q0: Fuerza de presfuerzo en kiloNewtons
-        :param elemento: Elemento sobre el cual se quieren definir las cargas de presfuerzo
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            el (float): no poner nada aquó
+            q0 (float): Fuerza de presfuerzo en kiloNewtons
+            elemento (int, optional): Elemento sobre el cual se quieren definir las cargas de presfuerzo. Defaults to -1.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         self.elementos[elemento].agregarCargaPresfuerzoAxial(q0, remplazar)
 
     def agregarCargaPostensadoFlexionYAxial(self, f0, e1, e2, e3, elemento=-1, remplazar=False):
-        """Función que permite calcular las fuerzas asociadas a una carga de postensado a flexión y axial en el elemento
-        :param f0: fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
-        :param e1: Excentricidad del cable al comienzo del elemento en metros
-        :param e2: Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
-        :param e3: Excentricidad del cable al final del elemento en metros
-        :param elemento: Elemento sobre el cual se quieren definir las cargas de postensado
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.
+
+        Args:
+            f0 (float): fuerza de presfuerzo aplicada (puede incluir pérdidas) en kiloNewtons
+            e1 (float): Excentricidad del cable al comienzo del elemento en metros
+            e2 (float): Excentricidad del cable a la distancia donde ocurre el mínimo del elemento en metros
+            e3 (float): Excentricidad del cable al final del elemento en metros
+            elemento (int, optional): Elemento sobre el que se aplica la carga. Defaults to -1.
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
         """
         self.elementos[elemento].agregarCargaPostensadoFlexionYAxial(
             f0, e1, e2, e3, remplazar)
 
     def agregarCargaElemento(self, wx=0, wy=0, ftercios=0, elemento=-1, remplazar=False):
-        """
-    Función para agregar cargas distribuidas o a tercios del elemento
-        :param wx: Magnitud de la carga distribuida en dirección x en kiloNewtons/metros
-        :param wy: Magnitud de la carga distribuida en dirección y en kiloNewtons/metros
-        :param ftercios: Magnitud de las cargas aplicados a tercios de la longitud del elemento en kiloNewtons
-        :param elemento: Identificador del elemento sobre el cual se aplica/n la/s carga/s
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento
+
+        Args:
+            wx (float): Carga distribuida en la dirección +x en kiloNewtons / metros
+            wy (float): Carga distribuida en la dirección -y en kiloNewtons / metros
+            ftercios (float): Carga aplicada cada L/3 en la dirección -y en kiloNewtons
+            element (int): Identificador del elemento sobre el cual se aplica/n la/s carga/s
+            remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
         self.elementos[elemento].definirCargas(wx, wy, ftercios, remplazar)
 
     def agregarCargaNodo(self, nodo=-1, px=0, py=0, m=0, remplazar=False):
-        """
-    Función que permite agregar cargas a los nodos de la estructura
-        :param nodo: Identificador del nodo sobre el cual se va a agregar la carga puntual
-        :param px: Magnitud de la carga en x en kiloNewtons
-        :param py: Magnitud de la carga en y en kiloNewtons
-        :param m: Magnitud del momento aplicado en kiloNewtons-metros
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que permite agregar cargas a los nodos de la estructura
+
+        Args:
+            nodo (int, optional): Identificador del nodo sobre el cual se va a agregar la carga puntual. Defaults to -1.
+            px (float, optional): Magnitud de la carga en x en kiloNewtons. Defaults to 0.
+            py (float, optional): Magnitud de la carga en y en kiloNewtons. Defaults to 0.
+            m (float, optional): Magnitud del momento aplicado en kiloNewtons-metros. Defaults to 0.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         self.nodos[nodo].definirCargas(px, py, m, remplazar)
 
     def agregarCargaPuntual(self, f, x, elemento=-1, remplazar=False):
-        """
-    Función que permite agregar una carga puntual a una distancia determinada de un elemento de la estructura
-        :param f: Magnitud de la carga puntual en kiloNewtons
-        :param x: Ubicación de la fuerza a aplicar desde el nodo inical hasta el nodo final en metros
-        :param elemento: Identificador del elemento sobre el cual se aplica la nueva carga puntual
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que permite agregar una carga puntual a una distancia determinada de un elemento de la estructura
+
+        Args:
+            f (float): Magnitud de la carga puntual en kiloNewtons
+            x (float): Ubicación de la fuerza a aplicar desde el nodo inical hasta el nodo final en metros
+            elemento (int, optional): Identificador del elemento sobre el cual se aplica la nueva carga puntual
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         self.elementos[elemento].agregarCargaPuntual(f, x, remplazar)
 
     def agregarCargaDistribuida(self, WX=0, WY=0, elemento=-1, remplazar=False):
-        """
-    Función que permite agregar una carga distribuida sobre un elemento de la estructura
-        :param WX: Magnitud de la carga distribuida en dirección x en kiloNewtons/metros
-        :param WY: Magnitud de la carga distribuida en dirección y en kiloNewtons/metros
-        :param elemento: Identificador del elemento sobre el cual se aplica/n la/s carga/s
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+        """Función que permite agregar una carga distribuida sobre un elemento de la estructura
+
+        Args:
+            WX (float, optional): Magnitud de la carga distribuida en dirección x en kiloNewtons/metros. Defaults to 0.
+            WY (float, optional): Magnitud de la carga distribuida en dirección y en kiloNewtons/metros. Defaults to 0.
+            elemento (int, optional): Identificador del elemento sobre el cual se aplica/n la/s carga/s. Defaults to -1.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         s = np.sin(self.elementos[elemento].Angulo)
         c = np.cos(self.elementos[elemento].Angulo)
@@ -1060,8 +1117,10 @@ class Estructura:
 
     def definirFactorPesoPropio(self, f=0, remplazar=False):
         """Función que permite incluir la carga agregada producida por el peso propio del elemento
-        :param f: Factor de multipliación de peso propio (utilizado para combinaciones de carga)
-        :param remplazar: Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
+
+        Args:
+            f (float, optional): Factor de multipliación de peso propio (utilizado para combinaciones de carga). Defaults to 0.
+            remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
         """
         for i in range(0, self.elementos.size):
             sw = f * self.elementos[i].Area * \
@@ -1090,7 +1149,9 @@ class Estructura:
 
     def definirDesplazamientosRestringidos(self, desplazamientos):
         """Función que permite asignar desplazamientos conocidos a los grados de libertad restringidos
-        :param desplazamientos: Vector de los desplazamientos restringidos (metros o radianes según el caso)
+
+        Args:
+            desplazamientos (np.ndarray): Vector de los desplazamientos restringidos (metros o radianes según el caso)
         """
         if desplazamientos.size == self.restringidos.size:
             self.Ur = desplazamientos
@@ -1099,9 +1160,11 @@ class Estructura:
 
     def definirDesplazamientoRestringido(self, nodo, gdl, valor):
         """Función que permite asignar un desplazamiento conocido a uno de los grados de libertad restringidos
-        :param nodo: Identificador del nodo sobre el que se va a asignar el desplazamiento
-        :param gdl: Grado de libertad del nodo sobre el que se va a asignar el desplazamiento
-        :param valor: Magnitud del desplazamiento asignado (en metros o radianes según el caso)
+
+        Args:
+            nodo (int): Identificador del nodo sobre el que se va a asignar el desplazamiento
+            gdl (int): Grado de libertad del nodo sobre el que se va a asignar el desplazamiento
+            valor (float): Magnitud del desplazamiento asignado (en metros o radianes según el caso)
         """
         if any(np.isin(self.restringidos, self.nodos[nodo].gdl[gdl])):
             for i in range(0, self.restringidos.size):
@@ -1148,9 +1211,13 @@ class Estructura:
 
     def hacerSuperElemento(self, gdlVisibles, gdlInvisibles):
         """Función para realizar un superelemento en la estructura
-        :param gdlVisibles: Conjunto de grados de libertad que se quieren mantener
-        :param gdlInvisibles: Conjunto de grados de libertad que se quieren condensar
-        :return: El vector de fuerzas y la matriz de rigidez condensados
+
+        Args:
+            gdlVisibles (np.ndarray): Conjunto de grados de libertad que se quieren mantener
+            gdlInvisibles (np.ndarray): Conjunto de grados de libertad que se quieren condensar
+
+        Returns:
+            tuple: El vector de fuerzas y la matriz de rigidez condensados
         """
         self.crearMatrizDeRigidez()
         self.calcularF0()
@@ -1167,10 +1234,15 @@ class Estructura:
 
     def solucionar(self, verbose=True, dibujar=False, guardar=False, carpeta='Resultados', analisis='EL', param=[]):
         """Función que resuelve el método matricial de rigidez de la estructura
-        :param verbose: Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar)
-        :param dibujar: Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar)
-        :param guardar: Opción para guardar los resultados del análisis (True = guardar, False = no guardar)
-        :param carpeta: Dirección de la carpeta destinno
+
+        Args:
+            verbose (bool, optional): Opción para mostrar mensaje de análisis exitoso (True = mostrar, False = no mostrar). Defaults to True.
+            dibujar (bool, optional): Opción para realizar interfaz gráfica (True = mostrar, False = no mostrar). Defaults to False.
+            guardar (bool, optional): Opción para guardar los resultados del análisis (True = guardar, False = no guardar). Defaults to False.
+            carpeta (str, optional): Dirección de la carpeta destinno. Defaults to 'Resultados'.
+            analisis (str, optional): Tipo de análisis. Defaults to 'EL'.
+            param (list, optional): Lista de parámetros. Defaults to [].
+
         """
         if analisis == 'EL':
             self.crearMatrizDeRigidez()
@@ -1546,7 +1618,9 @@ class Estructura:
 
     def guardarResultados(self, carpeta):
         """Función para generar y guardar un archivo con los resultados del análisis obtenido
-        :param carpeta: Dirección de la carpeta destino en donde se guardarán los archivos creados
+
+        Args:
+            carpeta (str): Dirección de la carpeta destino en donde se guardarán los archivos creados
         """
         import os
         import shutil
@@ -1585,11 +1659,14 @@ class Estructura:
 
 def tridiag(a, b, c, n):
     """Función auxiliar para crear una matriz tridiagonal (utilizada en FEM)
-    :param a: Valor de la diagonal adyacente inferior
-    :param b: Valor de la diagonal principal
-    :param c: Valor de la diagonal adyacente superior
-    :param n: Tamaño de la matriz nxn
-    :return: La matriz tridiagonal creada a partir de los parámetros dados
+
+    Args:
+        a (float): Valor de la diagonal adyacente inferior
+        b (float): Valor de la diagonal principal
+        c (float): Valor de la diagonal adyacente superior
+        n (int): Tamaño de la matriz nxn
+    Returns:
+        np.ndarray: Matriz tridiagonal
     """
     va = np.zeros([1, n - 1])
     vb = np.zeros([1, n])
@@ -1601,6 +1678,22 @@ def tridiag(a, b, c, n):
 
 
 def estadoPlasticidadConcentrada(vt, sh, qy, EI, l, EA, tipo, v0, q=[[0], [0], [0]]):
+    """Determinación de estado con plasticidad concentrada
+
+    Args:
+        vt (list): Arreglo de vt
+        sh (float): valor para sh
+        qy (list): arreglo de qy del elemento
+        EI (float): Modulo de Ypung multiplicado por la inercia
+        l (float): Longitud del elemento
+        EA (float): Modulo de young multplicado por el area del elemento
+        tipo (Tipo): Tipo del elemento
+        v0 (list): Lista de v0s
+        q (list, optional): Carga sobre el elemento. Defaults to [[0], [0], [0]].
+
+    Returns:
+        [type]: [description]
+    """
     qy = np.array(qy)
     vt = np.array(vt)
     v0 = np.array(v0)
@@ -1637,6 +1730,20 @@ def estadoPlasticidadConcentrada(vt, sh, qy, EI, l, EA, tipo, v0, q=[[0], [0], [
 
 
 def _fp(q, qy, EI, l, sh, EA=1, sh2=None):
+    """Función auxiliar
+
+    Args:
+        q (list): Vector q
+        qy (list): vector qy
+        EI (EI): Modulo de Ypung multiplicado por la inercia
+        l (float): Longitud del elemento
+        sh (float): valor para sh
+        EA (float, optional): Modulo de young multplicado por el area del elemento. Defaults to 1.
+        sh2 (float, optional): valor para el segundo sh. Defaults to None.
+
+    Returns:
+        np.ndarray: matriz fp
+    """
     alpha0 = 1*(1-(np.abs(q[0][0]) <= np.abs(qy[0][0])))
     alpha1 = 1*(1-(np.abs(q[1][0]) <= np.abs(qy[1][0])))
     alpha2 = 1*(1-(np.abs(q[2][0]) <= np.abs(qy[2][0])))
@@ -1648,6 +1755,18 @@ def _fp(q, qy, EI, l, sh, EA=1, sh2=None):
 
 
 def _fe(psi, l, EI, EA, tipo=Tipo.UNO):
+    """Función auxiliar
+
+    Args:
+        psi (float): Valor para psi
+        l (float): Longitud del elemento
+        EI (float): Modulo de Ypung multiplicado por la inercia
+        EA (float): Modulo de young multplicado por el area del element
+        tipo (Tipo, optional): Tipo de elemento. Defaults to Tipo.UNO.
+
+    Returns:
+        np.ndarray: matriz fe
+    """
     L = l
     if psi < 0.001:
         kb1 = 4*EI/L
@@ -1674,5 +1793,15 @@ def _fe(psi, l, EI, EA, tipo=Tipo.UNO):
 
 
 def calcularPsi(q, l, EI):
+    """función auxiliar
+
+    Args:
+        q (float): carga
+        l (float): longitud
+        EI (float): Modulo de Ypung multiplicado por la inercia
+
+    Returns:
+        float: q0
+    """
     q1 = np.min([q[0][0], -1*10**-5])
-    return
+    return q1
