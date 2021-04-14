@@ -1,5 +1,7 @@
 from PySections import *
 import matplotlib.pyplot as plt
+# Modelado con dos elementos
+
 estructura = Estructura()
 
 CONCRETO = Material('CONCRETO', 25000000, 1, 1, 0)
@@ -19,7 +21,8 @@ estructura.agregarCargaNodo(nodo=1, px=0, py=-80, m=0)
 estructura.solucionar(True, False)
 estructura.elementos[0].diagramas(100)
 estructura.elementos[1].diagramas(100)
-a = 0
+
+# Modelado con solo un elemento
 estructura = Estructura()
 estructura.agregarNodo(x=0, y=0, fix=[False, False, False])
 estructura.agregarNodo(x=12, y=0, fix=[False, False, False])
@@ -29,4 +32,3 @@ estructura.agregarElemento(
 estructura.agregarCargaPuntual(80, 6)
 estructura.solucionar(True, False)
 estructura.elementos[0].diagramas(100)
-a = 0

@@ -760,7 +760,7 @@ class Elemento:
         ax = fig.add_subplot(2, 1, 1)
         X1 = [0] + X.tolist() + [self.Longitud]
         U1 = [0] + U[:, 0].tolist() + [0]
-        ax.plot(X1, U1, color='black')
+        ax.fill(X1, U1, color='b')
         ax.set_xlabel('x')
         ax.set_ylabel('M')
         ax.grid()
@@ -779,7 +779,7 @@ class Elemento:
 
         ax = fig.add_subplot(2, 1, 2)
         X1 = [0] + X.tolist() + [self.Longitud]
-        ax.plot(X1, [0]+du+[0], color='black')
+        ax.fill(X1, [0]+du+[0], color='r')
         ax.set_xlabel('x')
         ax.set_ylabel('V')
         ax.ticklabel_format(axis='both', style='plain')
