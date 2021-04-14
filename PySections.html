@@ -225,7 +225,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>flaot</em>) – Magnitud de la fuerza en cuestión en kiloPascales</p></li>
+<li><p><strong>f</strong> (<em>flaot</em>) – Magnitud de la fuerza en cuestión en kiloNewton</p></li>
 <li><p><strong>x</strong> (<em>float</em>) – Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros</p></li>
 <li><p><strong>remplazar</strong> (<em>bool</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)</p></li>
 </ul>
@@ -302,7 +302,7 @@
 
 <dl class="py method">
 <dt id="PySections.Elemento.definirCargas">
-<code class="sig-name descname"><span class="pre">definirCargas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pWx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pWy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.definirCargas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">definirCargas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pWx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pWy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.definirCargas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -321,6 +321,11 @@
 <code class="sig-name descname"><span class="pre">determinarV0</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.determinarV0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Función que permite hallar los desplazamientos básicos iniciales del elemento</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="PySections.Elemento.diagramas">
+<code class="sig-name descname"><span class="pre">diagramas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.diagramas" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.factorZonasRigidas">
@@ -502,12 +507,11 @@
 
 <dl class="py method">
 <dt id="PySections.Estructura.agregarCargaPresfuerzoAxial">
-<code class="sig-name descname"><span class="pre">agregarCargaPresfuerzoAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">el</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPresfuerzoAxial" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">agregarCargaPresfuerzoAxial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaPresfuerzoAxial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>el</strong> (<em>float</em>) – no poner nada aquó</p></li>
 <li><p><strong>q0</strong> (<em>float</em>) – Fuerza de presfuerzo en kiloNewtons</p></li>
 <li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el cual se quieren definir las cargas de presfuerzo. Defaults to -1.</p></li>
 <li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
