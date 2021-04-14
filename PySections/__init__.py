@@ -1,6 +1,7 @@
 import numpy as np
 from enum import Enum
 from IPython.display import clear_output
+import matplotlib.pyplot as plt
 
 
 class TipoSeccion(Enum):
@@ -211,6 +212,7 @@ class Elemento:
         self.cargasPuntuales = np.array([])
         self.defCortante = pDefCortante
         self.factorZonasRigidas(pApoyoIzquierdo, pApoyoDerecho, pZa, pZb)
+        self.cargas = [{'tipo': 'DIST', 'valor': 0}]
         if not (self.nodoF.x - self.nodoI.x == 0):
             self.Angulo = np.arctan(
                 (self.nodoF.y - self.nodoI.y) / (self.nodoF.x - self.nodoI.x))
@@ -488,7 +490,7 @@ class Elemento:
         """
         self.P0 = np.dot(np.dot(self.lbda.T, self.lbdaz.T), self.p0)
 
-    def definirCargas(self, pWx, pWy, pF, remplazar):
+    def definirCargas(self, pWx, pWy, pF, remplazar=False):
         """Función que define las cargas (distribuidas en kiloNewtons / metros o puntuales en Newtons cada L/3) aplicadas sobre el elemento
 
         Args:
@@ -523,7 +525,12 @@ class Elemento:
             p0 = np.array([[-wx * l / 2], [wy * l / 2], [0],
                           [-wx * l / 2], [wy * l / 2], [0]])
             p0 = p0 + np.array([[0], [f], [0], [0], [f], [0]])
+        self.cargas += [{'tipo': 'DIST', 'valor': wy}, {'tipo': 'PUNT', 'x': self.Longitud /
+                                                        3, 'valor': -pF}, {'tipo': 'PUNT', 'x': 2*self.Longitud / 3, 'valor': -pF}]
+
         if remplazar:
+            self.cargas = [{'tipo': 'DIST', 'valor': wy}, {'tipo': 'PUNT', 'x': self.Longitud /
+                                                           3, 'valor': -pF}, {'tipo': 'PUNT', 'x': 2*self.Longitud / 3, 'valor': -pF}]
             self.p0 = p0
             if not pWy == 0:
                 self.cargasDistribuidas = np.append(
@@ -563,7 +570,7 @@ class Elemento:
         """Función que agrega una sola carga puntual a una distancia x del elemento (agregar una a una)
 
         Args:
-            f (flaot): Magnitud de la fuerza en cuestión en kiloPascales
+            f (flaot): Magnitud de la fuerza en cuestión en kiloNewton
             x (float): Distancia de la fuerza en cuestión desde el nodo inicial hasta el nodo final en metros
             remplazar (bool): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega)
         """
@@ -581,9 +588,12 @@ class Elemento:
                            [f * x ** 2 * (3 * l - x) / (2 * l ** 3)], [0]])
         elif self.Tipo == Tipo.CUATRO:
             p0 = np.array([[0], [f * (l - x) / l], [0], [0], [f * x / l], [0]])
+
         if remplazar:
+            self.cargas += [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
             self.p0 = p0
         else:
+            self.cargas = [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
             self.p0 = self.p0 + p0
         self.calcularVectorDeFuerzas()
 
@@ -611,8 +621,11 @@ class Elemento:
         elif self.Tipo == Tipo.CUATRO:
             p0 = np.array([[E * A * e0], [0], [0], [-E * A * e0], [0], [0]])
         if remplazar:
+            self.cargas = [{'tipo': 'DIST', 'valor': 0}]
             self.p0 = p0
         else:
+            self.cargas += [{'tipo': 'DIST', 'valor': 0}]
+
             self.p0 = self.p0 + p0
         self.calcularVectorDeFuerzas()
 
@@ -678,8 +691,10 @@ class Elemento:
         elif self.Tipo == Tipo.CUATRO:
             p0 = np.array([[-f0x], [0], [0], [f0x], [0], [0]])
         if remplazar:
+            self.cargas = [{'tipo': 'DIST', 'valor': 0}]
             self.p0 = p0
         else:
+            self.cargas += [{'tipo': 'DIST', 'valor': 0}]
             self.p0 = self.p0 + p0
         self.calcularVectorDeFuerzas()
 
@@ -703,6 +718,74 @@ class Elemento:
         parcial = np.dot(self.Ke, self.Ue)
         self.P = np.reshape(parcial, [parcial.size, 1]) + self.P0
         self.p = np.dot(self.lbda, self.P)
+
+    def diagramas(self, n=3):
+        def psi(x, he): return np.array(
+            [[(1-x/he)*(1-2*x/he)], [4*x/he*(1-x/he)], [-x/he*(1-2*x/he)]])
+
+        def dpsi(x, he): return np.array(
+            [[-3/he + 4*(x)/(he**2)], [4/he-8*x/(he**2)], [-1/he+4*x/he**2]])
+        def Ke(he): return 1/3/he * \
+            np.array([[7, -8, 1], [-8, 16, -8], [1, -8, 7]])
+
+        def Fe(P, he): return P*he/6*np.array([[1], [4], [1]])
+        M = n*2+1
+        K = np.zeros([M, M])
+        F = np.zeros([M, M])
+        he = self.Longitud/n
+        for i in range(n):
+            gdl = [i*2, i*2+1, i*2+2]
+            K[np.ix_(gdl, gdl)] += Ke(he)
+            for carga in self.cargas:
+                if carga['tipo'] == 'DIST':
+                    F[np.ix_(gdl)] += Fe(carga['valor'], he)
+                elif carga['tipo'] == 'PUNT':  # X,VALOR
+                    if carga['x'] > i*he and carga['x'] <= (i+1)*he:
+                        psis = psi(carga['x'] - i*he, he)
+                        F[np.ix_(gdl)] += -carga['valor']*psis
+        cbe = [[0, -self.p[2]], [-1, self.p[-1]]]
+        for i in cbe:
+            ui = np.zeros([M, 1])
+            ui[int(i[0])] = i[1]
+            vv = np.dot(K, ui)
+            F -= vv
+            K[int(i[0]), :] = 0
+            K[:, int(i[0])] = 0
+            K[int(i[0]), int(i[0])] = 1
+        for i in cbe:
+            F[int(i[0])] = i[1]
+        X = np.linspace(0, self.Longitud, M)
+        U = np.linalg.solve(K, F)
+        fig = plt.figure()
+        ax = fig.add_subplot(2, 1, 1)
+        X1 = [0] + X.tolist() + [self.Longitud]
+        U1 = [0] + U[:, 0].tolist() + [0]
+        ax.plot(X1, U1, color='black')
+        ax.set_xlabel('x')
+        ax.set_ylabel('M')
+        ax.grid()
+        ax.ticklabel_format(axis='both', style='plain')
+        du = []
+        for i in range(n):
+            x = X[i*2]
+            derivadas = dpsi(x - i*he, he)
+            du += [(U[np.ix_([i*2, i*2+1, i*2+2])].T@derivadas)[0, 0]]
+            x = X[i*2+1]
+            derivadas = dpsi(x - i*he, he)
+            du += [(U[np.ix_([i*2, i*2+1, i*2+2])].T@derivadas)[0, 0]]
+
+        derivadas = dpsi(he, he)
+        du += [(U[np.ix_([i*2, i*2+1, i*2+2])].T@derivadas)[0, 0]]
+
+        ax = fig.add_subplot(2, 1, 2)
+        X1 = [0] + X.tolist() + [self.Longitud]
+        ax.plot(X1, [0]+du+[0], color='black')
+        ax.set_xlabel('x')
+        ax.set_ylabel('V')
+        ax.ticklabel_format(axis='both', style='plain')
+        ax.grid()
+
+        plt.show()
 
 
 class Constraint:
@@ -1040,11 +1123,10 @@ class Estructura:
         self.elementos[elemento].agregarDefectoDeFabricacion(
             e0, fi0, remplazar)
 
-    def agregarCargaPresfuerzoAxial(self, el, q0, elemento=-1, remplazar=False):
+    def agregarCargaPresfuerzoAxial(self, q0, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a una carga de presfuerzo axial en el elemento
 
         Args:
-            el (float): no poner nada aquó
             q0 (float): Fuerza de presfuerzo en kiloNewtons
             elemento (int, optional): Elemento sobre el cual se quieren definir las cargas de presfuerzo. Defaults to -1.
             remplazar (bool, optional): Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.
