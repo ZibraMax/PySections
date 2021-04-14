@@ -1,0 +1,7 @@
+Test clase module
+=================
+
+.. automodule:: Test clase
+   :members:
+   :undoc-members:
+   :show-inheritance:

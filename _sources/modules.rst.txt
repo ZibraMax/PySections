@@ -5,3 +5,4 @@ PySections
    :maxdepth: 4
 
    PySections
+   Test clase
