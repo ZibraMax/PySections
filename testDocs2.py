@@ -26,4 +26,6 @@ estructura.agregarElemento(viga_concreto, 1, 2, tipo=Tipo.UNO)
 estructura.agregarCargaDistribuida(elemento=0, WX=0, WY=15)
 estructura.agregarCargaNodo(nodo=1, px=0, py=0, m=63.5)
 
-estructura.solucionar(verbose=False, dibujar=True)
+estructura.solucionar(verbose=False, dibujar=False)
+elementos = [0, 1]
+estructura.diagramaConjunto(elementos)
