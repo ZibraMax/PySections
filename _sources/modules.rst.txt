@@ -6,3 +6,5 @@ PySections
 
    PySections
    ValidacionesMomentos
+   testDocs
+   testDocs2
