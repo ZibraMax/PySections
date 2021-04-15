@@ -38,7 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Test clase module" href="Test%20clase.html" />
+    <link rel="next" title="ValidacionesMomentos module" href="ValidacionesMomentos.html" />
     <link rel="prev" title="PySections" href="modules.html" /> 
 </head>
 
@@ -88,7 +88,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">PySections</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">PySections package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Test%20clase.html">Test clase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ValidacionesMomentos.html">ValidacionesMomentos module</a></li>
 </ul>
 </li>
 </ul>
@@ -236,6 +236,11 @@
 </dd></dl>
 
 <dl class="py method">
+<dt id="PySections.Elemento.agregarCargaTrapecio">
+<code class="sig-name descname"><span class="pre">agregarCargaTrapecio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarCargaTrapecio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="PySections.Elemento.agregarDefectoDeFabricacion">
 <code class="sig-name descname"><span class="pre">agregarDefectoDeFabricacion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.agregarDefectoDeFabricacion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Función que simula los defectos de fabricación del elemento y los tiene en cuenta para el vector de fuerzas</p>
@@ -326,8 +331,23 @@
 
 <dl class="py method">
 <dt id="PySections.Elemento.diagramas">
-<code class="sig-name descname"><span class="pre">diagramas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.diagramas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname"><span class="pre">diagramas</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graficar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Elemento.diagramas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crea el diagrama de momentosflectores y fuerzas cortantes para el elemento usando elementios finitos. Se usa aproximación cuadrática</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Número de elementos para calcular el diagrama. Si hay fuerzas puntuales se recomienda un numero de elementos &gt;100. Defaults to 40.</p></li>
+<li><p><strong>graficar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Si se grafica o no los diagramas. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dos matrices. La primera contiene el diagrama de momentos y la segunda el diagrama de cortantes. La primera fila de cada matriz son los valores para X donde se evalua el diagraam y la segunda fila es el valor del diagraam</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="PySections.Elemento.factorZonasRigidas">
@@ -533,6 +553,22 @@
 <li><p><strong>x</strong> (<em>float</em>) – Ubicación de la fuerza a aplicar desde el nodo inical hasta el nodo final en metros</p></li>
 <li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Identificador del elemento sobre el cual se aplica la nueva carga puntual</p></li>
 <li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Opción para remplazar las cargas anteriores o no (True = remplaza, False = agrega). Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="PySections.Estructura.agregarCargaTrapecio">
+<code class="sig-name descname"><span class="pre">agregarCargaTrapecio</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elemento</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remplazar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.agregarCargaTrapecio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Agrega una carga trapezoidal sobre un elemento</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a0</strong> (<em>float</em>) – Base izquierda del trapecio</p></li>
+<li><p><strong>a1</strong> (<em>float</em>) – Base derecha del trapecio</p></li>
+<li><p><strong>elemento</strong> (<em>int</em><em>, </em><em>optional</em>) – Elemento sobre el que se aplica la carga. Defaults to -1.</p></li>
+<li><p><strong>remplazar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Si se remplaza o no las cargas existentes. Defaults to False.</p></li>
 </ul>
 </dd>
 </dl>
@@ -745,6 +781,27 @@
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="PySections.Estructura.diagramaConjunto">
+<code class="sig-name descname"><span class="pre">diagramaConjunto</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elementos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graficar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PySections.Estructura.diagramaConjunto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permite generar diagramas de momentos de varios elementos a la vez</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elementos</strong> (<em>list</em>) – lista de elementos en el orden en el que los diagramas se agregarán, por ejemplo [0,1,2]</p></li>
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Número de elementos para extraer el diagrama. Defaults to 100.</p></li>
+<li><p><strong>graficar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Si se grafican o no los diagramas. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dos matrices. La primera contiene el diagrama de momentos y la segunda el diagrama de cortantes. La primera fila de cada matriz son los valores para X donde se evalua el diagraam y la segunda fila es el valor del diagraam</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1100,7 +1157,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Test%20clase.html" class="btn btn-neutral float-right" title="Test clase module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ValidacionesMomentos.html" class="btn btn-neutral float-right" title="ValidacionesMomentos module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="modules.html" class="btn btn-neutral float-left" title="PySections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
