@@ -174,7 +174,228 @@
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li></li>
 </ul>
+</div>
+<div class="section" id="pysections">
+<h1>PySections<a class="headerlink" href="#pysections" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://github.com/ZibraMax/PySections/actions/workflows/docs.yml"><img alt="Docs" src="https://github.com/ZibraMax/PySections/actions/workflows/docs.yml/badge.svg" /></a>
+</div>
+<div class="section" id="analisis-estructural-avanzado">
+<h1>Analisis Estructural Avanzado<a class="headerlink" href="#analisis-estructural-avanzado" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="guia">
+<h2>Guia:<a class="headerlink" href="#guia" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="inicializar-una-estructura">
+<h3>Inicializar una estructura<a class="headerlink" href="#inicializar-una-estructura" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PySections</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1">#Recomendado</span>
+<span class="n">estructura</span> <span class="o">=</span> <span class="n">Estructura</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="agregar-nodos">
+<h3>Agregar nodos<a class="headerlink" href="#agregar-nodos" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">estructura</span><span class="o">.</span><span class="n">agregarNodo</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+<span class="n">estructura</span><span class="o">.</span><span class="n">agregarNodo</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<span class="n">estructura</span><span class="o">.</span><span class="n">agregarNodo</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fix</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Al agregar nodos se debe especificar las coordenadas x,y del nodo y sus condiciones de apoyo. fix=[False, False, True] es un nodo con restriccion de movimiento pero sin restricción de rotación (pin)
+, fix=[False, False, False] es un nodo empotradro y fix=[True, True, True] es un nodo libre. Si no se especifica el fix, se asume que el nodo es libre.</p>
+</div>
+<div class="section" id="agregar-elementos">
+<h3>Agregar elementos<a class="headerlink" href="#agregar-elementos" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="definir-secciones-y-materiales">
+<h4>Definir secciones y materiales.<a class="headerlink" href="#definir-secciones-y-materiales" title="Permalink to this headline">¶</a></h4>
+<p>Para poder agregar elementos se definen primero el material y seccion del cual esta compuesto el elemento, para ello:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="mi">21000000</span> <span class="c1">#Modulo de Young</span>
+<span class="n">v</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="c1">#Coeficiente de Poisson</span>
+<span class="n">alfa</span> <span class="o">=</span> <span class="mf">9.9</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="o">-</span><span class="mi">6</span> <span class="c1">#Coeficiente de expansión térmica</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">23.54</span> <span class="c1">#Peso unitario</span>
+
+<span class="n">concreto</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Concreto&#39;</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alfa</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+<span class="n">acero</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Acero&#39;</span><span class="p">,</span> <span class="mi">200000000</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">9.9</span><span class="o">*</span><span class="mi">10</span><span class="o">**-</span><span class="mi">6</span><span class="p">,</span> <span class="mf">78.6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Para cada material se define un nombre, su módulo de Young, su coeficiente de Poisson, coeficiente de expansión térmica y su peso unitario.</p>
+<p>Luego de definir los materiales se pueden definir las secciones</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">altura</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">radio</span> <span class="o">=</span> <span class="mf">0.45</span>
+<span class="n">area</span> <span class="o">=</span> <span class="mf">35.3</span><span class="o">*</span><span class="p">(</span><span class="mf">0.0254</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1">#W12X120</span>
+<span class="n">inercia</span> <span class="o">=</span> <span class="mi">1070</span><span class="o">*</span><span class="p">(</span><span class="mf">0.0254</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span> <span class="c1">#W12X120</span>
+<span class="n">viga_concreto</span> <span class="o">=</span> <span class="n">Seccion</span><span class="p">(</span><span class="s1">&#39;Viga 1&#39;</span><span class="p">,</span> <span class="n">TipoSeccion</span><span class="o">.</span><span class="n">RECTANGULAR</span><span class="p">,</span> <span class="p">[</span><span class="n">base</span><span class="p">,</span><span class="n">altura</span><span class="p">],</span> <span class="n">concreto</span><span class="p">)</span>
+<span class="n">columna_concreto</span> <span class="o">=</span> <span class="n">Seccion</span><span class="p">(</span><span class="s1">&#39;C 1&#39;</span><span class="p">,</span> <span class="n">TipoSeccion</span><span class="o">.</span><span class="n">CIRCULAR</span><span class="p">,</span> <span class="p">[</span><span class="n">radio</span><span class="p">],</span> <span class="n">concreto</span><span class="p">)</span>
+<span class="n">columna_acero</span> <span class="o">=</span> <span class="n">Seccion</span><span class="p">(</span><span class="s1">&#39;C 2&#39;</span><span class="p">,</span> <span class="n">TipoSeccion</span><span class="o">.</span><span class="n">GENERAL</span><span class="p">,</span> <span class="p">[</span><span class="n">area</span><span class="p">,</span><span class="n">inercia</span><span class="p">],</span> <span class="n">acero</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>Agregar elementos<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Para agregar elementos se usa la siguiente sintaxis <code class="docutils literal notranslate"><span class="pre">estructura.agregarElemento(Seccion,</span> <span class="pre">nodo1,</span> <span class="pre">nodo2,</span> <span class="pre">tipo=Tipo[UNO,DOS,TRES,CUATRO])</span></code></p>
+<p>Para este caso:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">estructura</span><span class="o">.</span><span class="n">agregarElemento</span><span class="p">(</span><span class="n">viga_concreto</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">Tipo</span><span class="o">.</span><span class="n">UNO</span><span class="p">)</span>
+<span class="n">estructura</span><span class="o">.</span><span class="n">agregarElemento</span><span class="p">(</span><span class="n">viga_concreto</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">Tipo</span><span class="o">.</span><span class="n">UNO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Los elementos tipo 1 no tiene pines</p>
+<p>Los elementos tipo 2 tienen un pin en el nodo inicial</p>
+<p>Los elementos tipo 3 tienen un pin en el nodo final</p>
+<p>Los elementos tipo 4 tienen pin en ambos nodos (tipo cercha)</p>
+</div>
+</div>
+<div class="section" id="agregar-cargas">
+<h3>Agregar cargas<a class="headerlink" href="#agregar-cargas" title="Permalink to this headline">¶</a></h3>
+<p>El programa cuenta con diferentes opciones para cargas, entre ellas:</p>
+<ul class="simple">
+<li><p>Cargas distribuidas en elementos <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaDistribuida</span></code></p></li>
+<li><p>Cargas puntuales en elementos <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaPuntual</span></code></p></li>
+<li><p>Cargas y momentos en nodos <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaNodo</span></code></p></li>
+<li><p>Cargas por temperatura <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaPorTemperatura</span></code></p></li>
+<li><p>Cargas por preesfuerzo axial <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaPreesfuerzoAxial</span></code></p></li>
+<li><p>Cargas por preesfuerzo axial-flexión <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaPostensadoFlexionAxial</span></code></p></li>
+<li><p>Cargas trapezoidales en elementos <code class="docutils literal notranslate"><span class="pre">estructura.agregarCargaTrapecio</span></code></p></li>
+</ul>
+<p>Las direcciones de las cargas en los elementos son positivas en la dirección de la gravedad y positivas hacia la derecha. Es decir, una carga uniforme sobre una viga de 4.45 kN/m en dirección de la gravedad se asigna como 4.45, no como -4.45.</p>
+<p>Para este caso, se agregará una carga distribuida sobre una de las vigas y un momento puntual sobre el nodo interior</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">estructura</span><span class="o">.</span><span class="n">agregarCargaDistribuida</span><span class="p">(</span><span class="n">elemento</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">WX</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">WY</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">estructura</span><span class="o">.</span><span class="n">agregarCargaNodo</span><span class="p">(</span><span class="n">nodo</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">px</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">py</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">63.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="solucion-y-post-proceso">
+<h3>Solución y post proceso<a class="headerlink" href="#solucion-y-post-proceso" title="Permalink to this headline">¶</a></h3>
+<p>Para solucionar se usa el comando</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">estructura</span><span class="o">.</span><span class="n">solucionar</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dibujar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>En este caso, se abrirán diferentes ventanas mostrando la estructura, reacciones en los apoyos y desplazamientos en nodos libres.</p>
+<p>Al correr este comando las pantallas toman este aspecto:</p>
+<p><strong>Estructura:</strong></p>
+<p><span class="raw-html-m2r"><img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Estructura.jpeg'></span></p>
+<p><strong>Reacciones:</strong></p>
+<p><span class="raw-html-m2r"><img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Reacciones.jpeg'></span></p>
+<p><strong>Desplazamientos:</strong></p>
+<p><span class="raw-html-m2r"><img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Desplazamientos.jpeg'></span></p>
+<p>Para extraer diagramas de fuerzas internas se puede usar el comando:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">elementos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">estructura</span><span class="o">.</span><span class="n">diagramaConjunto</span><span class="p">(</span><span class="n">elementos</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>En este caso, al método diagrama conjunto se le pasa por parámetro una lista de elementos sobre los que se quiere extraer el diagrama. Si se pasan varios elementos los diagramas se juntarán horizontalmente. Esto permite la visualización de varios diagramas al tiempo como el caso de vigas compuestas por varios elementos. Si se quiere el diagrama de un solo elemento se pasa por parámetro una lista con el elemento que se requiere.</p>
+<p>El resultado anterior es el siguiente:</p>
+<p><span class="raw-html-m2r"><img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Diagrama.png'></span></p>
+</div>
+</div>
+<div class="section" id="ejemplo-con-portico">
+<h2>Ejemplo con pórtico<a class="headerlink" href="#ejemplo-con-portico" title="Permalink to this headline">¶</a></h2>
+<details>
+<summary>Código</summary>
+
+```python
+from PySections import *  # Recomendado
+
+
+E = 21000000  # Modulo de Young
+v = 0.2  # Coeficiente de Poisson
+alfa = 9.9 * 10 ** -6  # Coeficiente de expansión térmica
+gamma = 23.54  # Peso unitario
+
+concreto = Material('Concreto', E, v, alfa, gamma)
+acero = Material('Acero', 200000000, 0.2, 9.9*10**-6, 78.6)
+
+base = 0.3
+altura = 0.6
+radio = 0.45
+area = 35.3*(0.0254)**2  # W12X120
+inercia = 1070*(0.0254)**4  # W12X120
+viga_concreto = Seccion('Viga 1', TipoSeccion.RECTANGULAR, [
+                        base, altura], concreto)
+columna_concreto = Seccion('C 1', TipoSeccion.CIRCULAR, [radio], concreto)
+columna_acero = Seccion('C 2', TipoSeccion.GENERAL, [area, inercia], acero)
+
+estructura = Estructura()
+vanos = [4.5, 3.5/2, 3.5/2, 4.5, 0]
+alturas = [4, 3, 3, 3, 0]
+W = 40
+offset = 2
+#Creación de nodos
+Y = 0
+for altura in alturas:
+    X = 0
+    for vano in vanos:
+        estructura.agregarNodo(
+            x=X, y=Y, fix=[1-(Y == 0), 1-(Y == 0), 1-(Y == 0)])
+        X += vano
+    Y += altura
+#Creación de vigas
+for i in range(1, len(alturas)):
+    for j in range(len(vanos)-1):
+        nodo = i*len(vanos)+j
+        estructura.agregarElemento(viga_concreto, nodo, nodo+1)
+#Creación de columnas
+for i in range(len(vanos)):
+    for j in range(len(alturas)-1):
+        nodo = j*len(vanos)
+        if i != offset:
+            estructura.agregarElemento(
+                columna_concreto, nodo+i, nodo+len(vanos)+i)
+#Creación de riostras
+for j in range(len(alturas)-1):
+    base = j*len(vanos)+offset
+    top = (j+1)*len(vanos)+offset
+    if j % 2 == 0:
+        nodo1 = base
+        nodo2 = top-1
+        nodo3 = top+1
+        estructura.agregarElemento(
+            columna_acero, nodo1, nodo2, tipo=Tipo.CUATRO)
+        estructura.agregarElemento(
+            columna_acero, nodo1, nodo3, tipo=Tipo.CUATRO)
+    else:
+        nodo1 = top
+        nodo2 = base-1
+        nodo3 = base+1
+        estructura.agregarElemento(
+            columna_acero, nodo2, nodo1, tipo=Tipo.CUATRO)
+        estructura.agregarElemento(
+            columna_acero, nodo3, nodo1, tipo=Tipo.CUATRO)
+#Creación de cargas
+for i in range((len(vanos)-1)*(len(alturas)-1)):
+    estructura.agregarCargaElemento(elemento=i, wy=W)
+
+for j in range(len(alturas)-1):
+    nodo = j*len(vanos)
+    fact = j/(len(alturas)-1)
+    estructura.agregarCargaNodo(nodo=nodo, px=300*fact, py=0, m=0)
+
+estructura.solucionar(True, True)
+
+
+for j in range(len(alturas)-1):
+    elementos = (np.array(list(range(len(vanos)-1))) +
+                 (len(alturas)-1)*j).tolist()
+    estructura.diagramaConjunto(elementos)
+```
+</details><details>
+<summary>Resultado</summary>
+
+**Estructura:**
+
+<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Estructura2.jpeg'>
+
+**Reacciones:**
+
+<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Reacciones2.jpeg'>
+
+**Desplazamientos:**
+
+<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Desplazamientos2.jpeg'>
+
+**Diagramas:**
+Viga del primer piso
+
+<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Diagrama2.png'>
+</details></div>
 </div>
 
 
