@@ -235,5 +235,5 @@ for j in range(len(alturas)-1):
 **Diagramas:**
 Viga del primer piso
 
-<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Diagrama2.png'>
+<img src='https://raw.githubusercontent.com/ZibraMax/PySections/master/Test/Imagenes/Diagramas2.png'>
 </details>
