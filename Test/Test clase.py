@@ -18,9 +18,10 @@ estructura.agregarElemento(
 # estructura.agregarCargaElemento(elemento=0, wy=3.56)
 # estructura.agregarCargaElemento(elemento=1, wy=3.56)
 estructura.agregarCargaNodo(nodo=1, px=0, py=-80, m=0)
-estructura.solucionar(True, False)
-estructura.elementos[0].diagramas(100)
-estructura.elementos[1].diagramas(100)
+estructura.solucionar(True, True)
+estructura.diagramaConjunto([0, 1])
+# estructura.elementos[0].diagramas(100)
+# estructura.elementos[1].diagramas(100)
 
 # Modelado con solo un elemento
 estructura = Estructura()
@@ -30,5 +31,5 @@ estructura.agregarElemento(
     seccion=VIGA, nodoInicial=0, nodoFinal=1, tipo=Tipo.UNO, defCortante=False)
 # estructura.agregarCargaElemento(elemento=0, wy=3.56)
 estructura.agregarCargaPuntual(80, 6)
-estructura.solucionar(True, False)
+estructura.solucionar(True, True)
 estructura.elementos[0].diagramas(100)

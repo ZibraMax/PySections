@@ -590,10 +590,10 @@ class Elemento:
             p0 = np.array([[0], [f * (l - x) / l], [0], [0], [f * x / l], [0]])
 
         if remplazar:
-            self.cargas += [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
+            self.cargas = [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
             self.p0 = p0
         else:
-            self.cargas = [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
+            self.cargas += [{'tipo': 'PUNT', 'x': x, 'valor': -f}]
             self.p0 = self.p0 + p0
         self.calcularVectorDeFuerzas()
 
@@ -659,6 +659,24 @@ class Elemento:
             self.p0 = self.p0 + p0
         self.calcularVectorDeFuerzas()
 
+    def agregarCargaTrapecio(self, a0, a1, remplazar=False):
+        L = self.Longitud
+        p0 = np.array([
+            [0],
+            [L*(7*a0+3*a1)/20],
+            [-((-L**(2)*(3*a0+2*a1))/(60))],
+            [0],
+            [((L*(3*a0+7*a1))/(20))],
+            [-((L**(2)*(2*a0+3*a1))/(60))]])
+        if remplazar:
+            self.cargas = [{'tipo': 'TRAP', 'valor': lambda x: a0 + (a1-a0)/L}]
+            self.p0 = p0
+        else:
+            self.cargas += [{'tipo': 'TRAP',
+                             'valor': [a0, a1]}]
+            self.p0 = self.p0 + p0
+        self.calcularVectorDeFuerzas()
+
     def agregarCargaPostensadoFlexionYAxial(self, f0, e1, e2, e3, remplazar):
         """Función que simula los efectos de una carga de postensado a flexión y axial sobre el elemento.
 
@@ -719,7 +737,17 @@ class Elemento:
         self.P = np.reshape(parcial, [parcial.size, 1]) + self.P0
         self.p = np.dot(self.lbda, self.P)
 
-    def diagramas(self, n=3):
+    def diagramas(self, n=40, graficar=True):
+        """Crea el diagrama de momentosflectores y fuerzas cortantes para el elemento usando elementios finitos. Se usa aproximación cuadrática
+
+        Args:
+            n (int, optional): Número de elementos para calcular el diagrama. Si hay fuerzas puntuales se recomienda un numero de elementos >100. Defaults to 40.
+            graficar (bool, optional): Si se grafica o no los diagramas. Defaults to True.
+
+        Returns:
+            tuple: Dos matrices. La primera contiene el diagrama de momentos y la segunda el diagrama de cortantes. La primera fila de cada matriz son los valores para X donde se evalua el diagraam y la segunda fila es el valor del diagraam
+        """
+
         def psi(x, he): return np.array(
             [[(1-x/he)*(1-2*x/he)], [4*x/he*(1-x/he)], [-x/he*(1-2*x/he)]])
 
@@ -729,6 +757,7 @@ class Elemento:
             np.array([[7, -8, 1], [-8, 16, -8], [1, -8, 7]])
 
         def Fe(P, he): return P*he/6*np.array([[1], [4], [1]])
+        def FeT(a0, a1, he): return he/6*np.array([[a0], [2*(a0+a1)], [a1]])
         M = n*2+1
         K = np.zeros([M, M])
         F = np.zeros([M, M])
@@ -743,6 +772,13 @@ class Elemento:
                     if carga['x'] > i*he and carga['x'] <= (i+1)*he:
                         psis = psi(carga['x'] - i*he, he)
                         F[np.ix_(gdl)] += -carga['valor']*psis
+                elif carga['tipo'] == 'TRAP':
+                    a00 = carga['valor'][0]
+                    a10 = carga['valor'][1]
+                    def fx(x): return a00 + (a10-a00)/self.Longitud*x
+                    a0 = fx(i*he)
+                    a1 = fx((i+1)*he)
+                    F[np.ix_(gdl)] += FeT(a0, a1, he)
         cbe = [[0, -self.p[2]], [-1, self.p[-1]]]
         for i in cbe:
             ui = np.zeros([M, 1])
@@ -756,15 +792,6 @@ class Elemento:
             F[int(i[0])] = i[1]
         X = np.linspace(0, self.Longitud, M)
         U = np.linalg.solve(K, F)
-        fig = plt.figure()
-        ax = fig.add_subplot(2, 1, 1)
-        X1 = [0] + X.tolist() + [self.Longitud]
-        U1 = [0] + U[:, 0].tolist() + [0]
-        ax.fill(X1, U1, color='b')
-        ax.set_xlabel('x')
-        ax.set_ylabel('M')
-        ax.grid()
-        ax.ticklabel_format(axis='both', style='plain')
         du = []
         for i in range(n):
             x = X[i*2]
@@ -776,16 +803,31 @@ class Elemento:
 
         derivadas = dpsi(he, he)
         du += [(U[np.ix_([i*2, i*2+1, i*2+2])].T@derivadas)[0, 0]]
-
-        ax = fig.add_subplot(2, 1, 2)
         X1 = [0] + X.tolist() + [self.Longitud]
-        ax.fill(X1, [0]+du+[0], color='r')
-        ax.set_xlabel('x')
-        ax.set_ylabel('V')
-        ax.ticklabel_format(axis='both', style='plain')
-        ax.grid()
+        U1 = [0] + U[:, 0].tolist() + [0]
+        X2 = [0] + X.tolist() + [self.Longitud]
+        U2 = [0]+du+[0]
 
-        plt.show()
+        if graficar:
+            fig = plt.figure()
+            ax = fig.add_subplot(2, 1, 1)
+            ax.fill(X1, U1, color='b')
+            ax.set_ylabel('M')
+            ax.grid()
+            ax.ticklabel_format(axis='both', style='plain')
+            ax.set_title('Max'+format(np.max(U1), '.4f') +
+                         ' Min'+format(np.min(U1), '.4f'))
+
+            ax = fig.add_subplot(2, 1, 2)
+            ax.fill(X2, U2, color='r')
+            ax.set_xlabel('x')
+            ax.set_ylabel('V')
+            ax.ticklabel_format(axis='both', style='plain')
+            ax.set_title('Max'+format(np.max(U2), '.4f') +
+                         ' Min'+format(np.min(U2), '.4f'))
+            ax.grid()
+            plt.show()
+        return [X1, U1], [X2, U2]
 
 
 class Constraint:
@@ -866,6 +908,53 @@ class Estructura:
         self.Ur = np.array([])
         self.constraints = np.array([])
         self.superelementos = np.array([])
+
+    def diagramaConjunto(self, elementos, n=100, graficar=True):
+        """Permite generar diagramas de momentos de varios elementos a la vez
+
+        Args:
+            elementos (list): lista de elementos en el orden en el que los diagramas se agregarán, por ejemplo [0,1,2]
+            n (int, optional): Número de elementos para extraer el diagrama. Defaults to 100.
+            graficar (bool, optional): Si se grafican o no los diagramas. Defaults to True.
+
+        Returns:
+            tuple: Dos matrices. La primera contiene el diagrama de momentos y la segunda el diagrama de cortantes. La primera fila de cada matriz son los valores para X donde se evalua el diagraam y la segunda fila es el valor del diagraam
+        """
+        XGM = []
+        MG = []
+        XGV = []
+        VG = []
+        offsetM = 0
+        offsetV = 0
+        for i in elementos:
+            e = self.elementos[i]
+            M, V = e.diagramas(n, False)
+            MG += M[1]
+            VG += V[1]
+            XGM += (np.array(M[0])+offsetM).tolist()
+            XGV += (np.array(V[0])+offsetV).tolist()
+            offsetM = XGM[-1]
+            offsetV = XGV[-1]
+        if graficar:
+            fig = plt.figure()
+            ax = fig.add_subplot(2, 1, 1)
+            ax.fill(XGM, MG, color='b')
+            ax.set_ylabel('M')
+            ax.grid()
+            ax.set_title('Max'+format(np.max(MG), '.4f') +
+                         ' Min'+format(np.min(MG), '.4f'))
+            ax.ticklabel_format(axis='both', style='plain')
+
+            ax = fig.add_subplot(2, 1, 2)
+            ax.fill(XGV, VG, color='r')
+            ax.set_xlabel('x')
+            ax.set_ylabel('V')
+            ax.set_title('Max'+format(np.max(VG), '.4f') +
+                         ' Min'+format(np.min(VG), '.4f'))
+            ax.ticklabel_format(axis='both', style='plain')
+            ax.grid()
+            plt.show()
+        return [XGM, MG], [XGV, VG]
 
     def agregarNodo(self, x, y, fix=[True, True, True]):
         """Función que agrega un nodo a la estructura
@@ -1110,6 +1199,19 @@ class Estructura:
         """
         self.elementos[elemento].agregarCargaPorTemperatura(
             deltaT0, deltaThf, remplazar)
+
+    # TODO Aver si funciona
+    def agregarCargaTrapecio(self, a0, a1, elemento=-1, remplazar=False):
+        """Agrega una carga trapezoidal sobre un elemento
+
+        Args:
+            a0 (float): Base izquierda del trapecio
+            a1 (float): Base derecha del trapecio
+            elemento (int, optional): Elemento sobre el que se aplica la carga. Defaults to -1.
+            remplazar (bool, optional): Si se remplaza o no las cargas existentes. Defaults to False.
+        """
+        self.elementos[elemento].agregarCargaTrapecio(
+            a0, a1, remplazar=remplazar)
 
     def agregarDefectoDeFabricacion(self, e0=0, fi0=0, elemento=-1, remplazar=False):
         """Función que permite calcular las fuerzas asociadas a los defectos de fabricación en el elemento
