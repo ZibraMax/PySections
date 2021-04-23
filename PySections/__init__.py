@@ -201,6 +201,7 @@ class Elemento:
             pZb (float): Factor de zonas rigídas derecho
             pDefCortante (int): Parámetro binario para tener en cuenta deformaciones por cortante (1,0)
         """
+        self.constraints = None
         self.seccion = pSeccion
         self.Area = self.seccion.area
         self.Inercia = self.seccion.inercia
@@ -258,6 +259,11 @@ class Elemento:
             self.fi = 0
             self.fidiag = 0
         self.calcularMatrizElemento()
+
+    def crearConstraint(self):
+        c = np.cos(self.theta)
+        s = np.sin(self.theta)
+        self.constraints = np.array([c, s, 0, -s-c, 0])
 
     def hallarKb(self, psi=0):
         """Función para hallar la matriz de rigidez básica del elemento
@@ -830,30 +836,6 @@ class Elemento:
         return [X1, U1], [X2, U2]
 
 
-class Constraint:
-    "NO USAR"
-
-    def __init__(self, tipo, nodoI, nodoF):
-        """NO USAR"""
-        self.nodoI = nodoI
-        self.nodoF = nodoF
-        self.tipo = tipo
-        if not (nodoF.x - nodoI.x == 0):
-            self.Angulo = np.arctan((nodoF.y - nodoI.y) / (nodoF.x - nodoI.x))
-        else:
-            if (nodoF.y > nodoI.y):
-                self.Angulo = np.pi / 2
-            else:
-                self.Angulo = -np.pi / 2
-        self.r = np.zeros([3, 6])
-        t = self.Angulo
-        c = np.cos(t)
-        s = np.sin(t)
-        self.independientes = [
-            self.nodoI.gdl[0], self.nodoI.gdl[1], self.nodoI.gdl[2], self.nodoF.gdl[2]]
-        self.dependientes = [self.nodoF.gdl[0], self.nodoF.gdl[1]]
-
-
 class SuperElemento:
     "Clase que define los superelementos presentes en una estructura"
 
@@ -955,6 +937,21 @@ class Estructura:
             ax.grid()
             plt.show()
         return [XGM, MG], [XGV, VG]
+
+    def agregarConstraint(self, elemento=-1):
+        self.elementos[elemento].crearConstraint()
+        # self.crearMatrizConstraints()
+
+    def crearMatrizConstraints(self, visibles, invisibles):
+        self.A = []
+        nc = 0
+        for e in self.elementos:
+            if e.constraints:
+                A += [e.constraints]
+                nc += 1
+        self.A = np.array(self.A)
+        self.AI = self.A[np.ix_(visibles, visibles)]
+        self.AD = self.A[np.ix_(invisibles, invisibles)]
 
     def agregarNodo(self, x, y, fix=[True, True, True]):
         """Función que agrega un nodo a la estructura
@@ -1144,19 +1141,6 @@ class Estructura:
         """
         supelemento = SuperElemento(SE, SF, gdl)
         self.superelementos = np.append(self.superelementos, supelemento)
-
-    def definirConstraint(self, tipo, nodoInicial, nodoFinal):
-        """NO IMPLEMENTADO NO USAR
-
-        Args:
-            tipo (Tipo): Tipo de elemento (Tipo.UNO, Tipo.DOS, Tipo.TRES, Tipo.CUATRO)
-            nodoInicial (int): Nodo inicial (objeto)
-            nodoFinal (int): Nodo final (objeto)
-        """
-        nodoF = self.nodos[nodoFinal]
-        nodoI = self.nodos[nodoInicial]
-        constraint = Constraint(tipo, nodoI, nodoF)
-        self.constraints = np.append(self.constraints, constraint)
 
     def crearMatrizDeRigidez(self):
         """Función que permite calcular la matriz de rigidez de la estructura
