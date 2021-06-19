@@ -1,0 +1,7 @@
+T5\_4 module
+============
+
+.. automodule:: T5_4
+   :members:
+   :undoc-members:
+   :show-inheritance:
