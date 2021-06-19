@@ -5,7 +5,7 @@ E = 20000000  # Modulo de Young
 v = 0.2  # Coeficiente de Poisson
 alfa = 9.9 * 10 ** -6  # Coeficiente de expansión térmica
 gamma = 23.54  # Peso unitario
-MULT_INF = 100000
+MULT_INF = 1
 concreto = Material('Concreto', E, v, alfa, gamma)
 
 bViga = 0.45
@@ -21,7 +21,7 @@ areaCol = bCol*hCol
 inerciaCol = bCol*hCol**3/12
 
 viga_concreto = Seccion('Viga 1', TipoSeccion.GENERAL, [
-    areaViga*MULT_INF, inerciaViga], concreto)
+    areaViga*MULT_INF, inerciaViga*MULT_INF], concreto)
 columna_concreto = Seccion('C 1', TipoSeccion.GENERAL, [
                            areaCol*MULT_INF, inerciaCol], concreto)
 
@@ -41,7 +41,7 @@ for i in range(0, n-1):
     for j in range(m):
         estructura.agregarElemento(
             columna_concreto, i*m+j, (i+1)*m+j, tipo=Tipo.UNO, defCortante=False)
-estructura.solucionar(verbose=False, dibujar=False)
+estructura.solucionar(verbose=False, dibujar=True)
 
 visibles = [21, 15, 9, 3]
 escondidos = []

@@ -1529,8 +1529,8 @@ class Estructura:
                                -margen + wiw - i.nodoF.y * mult, fill="gray", width=2)
             xx = i.nodoF.x - (i.nodoF.x - i.nodoI.x) / 2
             yy = i.nodoF.y - (i.nodoF.y - i.nodoI.y) / 2
-            canvas.create_text(margen + xx * mult + 10, -margen +
-                               wiw - yy * mult - 10, fill="red", text=format(count))
+            canvas.create_text(margen + xx * mult + 13, -margen +
+                               wiw - yy * mult - 25, fill="red", text='E: '+format(count))
             count = count + 1
             r = 3
             radio = tmañoNodo + r
@@ -1576,7 +1576,24 @@ class Estructura:
                                     margen + i.x * mult + tmañoNodo, -
                                     margen + wiw - (i.y * mult + tmañoNodo),
                                     fill="#F1C531", width=1)
-
+            canvas.create_text(margen + i.x * mult, -margen + wiw - (i.y * mult + 60),
+                               text='Uy: '+format(i.gdl[1]), fill="red")
+            canvas.create_line(margen + i.x * mult, -margen + wiw - i.y * mult - tmañoNodo, margen + i.x * mult,
+                               -margen + wiw - (i.y * mult + 50), fill="red", width=2)
+            canvas.create_line(margen + i.x * mult, -margen + wiw - (i.y * mult + 50), margen + i.x*mult - 10,
+                               -margen + wiw - (i.y * mult + 40), fill="red", width=2)
+            canvas.create_line(margen + i.x * mult, -margen + wiw - (i.y * mult + 50), margen + i.x * mult + 10,
+                               -margen + wiw - (i.y * mult + 40), fill="red", width=2)
+            canvas.create_line(margen + i.x * mult + tmañoNodo, -margen + wiw - i.y * mult,
+                               margen + i.x * mult + 50, -margen + wiw - (i.y * mult), fill="green", width=2)
+            canvas.create_text(margen + i.x * mult + 80, -margen + wiw - (i.y * mult + 7),
+                               text='Ux: '+format(i.gdl[0]), fill="green")
+            canvas.create_line(margen + i.x * mult + 50, -margen + wiw - (i.y * mult), margen + i.x * mult + 40,
+                               -margen + wiw - (i.y * mult + 10), fill="green", width=2)
+            canvas.create_line(margen + i.x * mult + 50, -margen + wiw - (i.y * mult), margen + i.x * mult + 40,
+                               -margen + wiw - (i.y * mult - 10), fill="green", width=2)
+            canvas.create_text(margen + i.x * mult + 15, -margen + wiw - (i.y * mult + 13),
+                               text='R: ' + format(i.gdl[2]), fill="blue")
             if i.restraints == [False, False, True]:
                 canvas.create_line(margen + i.x * mult - tmañoNodo, -margen + wiw - (i.y * mult - 2 * tmañoNodo),
                                    margen + i.x * mult + 0 * tmañoNodo, -
@@ -1641,6 +1658,7 @@ class Estructura:
                                    -margen + wiw - (i.y * mult - 3 * tmañoNodo), fill="blue", width=2)
             canvas.create_text(margen + i.x * mult, -margen + wiw - i.y * mult, fill="black", text=format(i.ID),
                                justify='center', font=("TkDefaultFont", tmañoNodo + 1))
+
         canvas.pack()
         canvas.mainloop()
 
